@@ -8,19 +8,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequiredArgsConstructor
 public class QRController {
 
     private final QRService qrService;
 
-    @SneakyThrows
-    @GetMapping
-    void getQR(
-            HttpServletResponse servletResponse,
-            @RequestParam String data
-    ){
-        qrService.generateQR(servletResponse, data);
+    @GetMapping()
+    public CompletableFuture<Void> generateQR(HttpServletResponse response,
+                                              @RequestParam String data) throws Exception {
+        return qrService.generateQRAsync(response, data);
     }
 
 }

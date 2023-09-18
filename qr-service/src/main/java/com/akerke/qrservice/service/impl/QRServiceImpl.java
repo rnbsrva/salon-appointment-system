@@ -8,12 +8,14 @@ import com.google.zxing.common.BitMatrix;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class QRServiceImpl implements QRService {
@@ -21,6 +23,17 @@ public class QRServiceImpl implements QRService {
 
     @Value("${qr.charset}")
     private String charset;
+
+    @Async("asyncExecutor")
+    @Override
+    public CompletableFuture<Void> generateQRAsync(HttpServletResponse response, String data) {
+        try {
+            generateQR(response, data);
+            return CompletableFuture.completedFuture(null);
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
+    }
 
     @Override
     @SneakyThrows
