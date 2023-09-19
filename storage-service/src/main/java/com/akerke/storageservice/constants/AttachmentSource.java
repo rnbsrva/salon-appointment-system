@@ -7,9 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AttachmentSource {
     SALON_IMAGE("salon-image"),
+
     MASTER_IMAGE("master-image");
 
-
     private final String name;
-
 }

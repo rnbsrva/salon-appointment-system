@@ -5,6 +5,7 @@ import com.akerke.storageservice.dto.FileOperationDTO;
 import com.akerke.storageservice.service.MinIOService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,24 @@ public class MinIOController {
         minIOService.putObject(new FileOperationDTO(target, source, name), file);
     }
 
+    @GetMapping("/downloadByGroup")
+    void downloadFiles(
+            @RequestParam Long target,
+            @RequestParam AttachmentSource source,
+            HttpServletResponse httpServletResponse
+    ){
+        minIOService.getObjects(target, source, httpServletResponse);
+    }
+
+    @DeleteMapping("/deleteByGroup")
+    void deleteFolder(
+            @RequestParam Long target,
+            @RequestParam AttachmentSource source
+    ){
+        minIOService.removeObjects(target, source);
+
+    }
+
     @GetMapping("/download")
     void downloadFile(
             @RequestParam String name,
@@ -36,6 +55,7 @@ public class MinIOController {
     }
 
     @PatchMapping("delete")
+    @SneakyThrows
     void deleteObject(
             @RequestBody FileOperationDTO dto
     ) {

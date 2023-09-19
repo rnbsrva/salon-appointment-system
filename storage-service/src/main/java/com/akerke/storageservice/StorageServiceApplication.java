@@ -10,4 +10,7 @@ public class StorageServiceApplication {
         SpringApplication.run(StorageServiceApplication.class, args);
     }
 
+    // extract method for file path in minio
+    // async
+    // save data
 }
