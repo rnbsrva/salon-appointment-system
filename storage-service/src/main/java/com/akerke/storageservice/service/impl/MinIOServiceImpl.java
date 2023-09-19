@@ -2,10 +2,9 @@ package com.akerke.storageservice.service.impl;
 
 import com.akerke.storageservice.constants.AttachmentSource;
 import com.akerke.storageservice.dto.FileOperationDTO;
+import com.akerke.storageservice.exception.FileOperationException;
 import com.akerke.storageservice.service.MinIOService;
 import io.minio.*;
-import io.minio.errors.*;
-import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -39,7 +36,7 @@ public class MinIOServiceImpl implements MinIOService {
                                 .object(dto.target().toString().concat("/").concat(objectName))
                                 .stream(in, -1, 10485760).build());
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new FileOperationException(e.getMessage());
             }
         }).get(1, TimeUnit.MINUTES);
     }
@@ -57,7 +54,7 @@ public class MinIOServiceImpl implements MinIOService {
                                 .build()
                 );
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new FileOperationException(e.getMessage());
             }
 
             response.setContentType("application/octet-stream");
@@ -93,7 +90,7 @@ public class MinIOServiceImpl implements MinIOService {
                             .build()
             );
         } catch (Exception e){
-            throw new RuntimeException(e);
+            throw new FileOperationException(e.getMessage());
         }}).get(1, TimeUnit.MINUTES);
 
     }
@@ -111,7 +108,7 @@ public class MinIOServiceImpl implements MinIOService {
                                 .build()
                 );
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new FileOperationException(e.getMessage());
             }
         }).get(1, TimeUnit.MINUTES);
     }
@@ -141,7 +138,7 @@ public class MinIOServiceImpl implements MinIOService {
                 }
                 response.getWriter().println("</body></html>");
             } catch (Exception e){
-                throw new RuntimeException(e);
+                throw new FileOperationException(e.getMessage());
             }
 
         }).get(1, TimeUnit.MINUTES);
@@ -168,7 +165,7 @@ public class MinIOServiceImpl implements MinIOService {
                     );
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new FileOperationException(e.getMessage());
             }
         }).get(1, TimeUnit.MINUTES);
     }

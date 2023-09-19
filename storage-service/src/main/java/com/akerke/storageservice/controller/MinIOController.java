@@ -2,10 +2,13 @@ package com.akerke.storageservice.controller;
 
 import com.akerke.storageservice.constants.AttachmentSource;
 import com.akerke.storageservice.dto.FileOperationDTO;
+import com.akerke.storageservice.exception.FileOperationException;
 import com.akerke.storageservice.service.MinIOService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +34,7 @@ public class MinIOController {
             @RequestParam Long target,
             @RequestParam AttachmentSource source,
             HttpServletResponse httpServletResponse
-    ){
+    ) {
         minIOService.getObjects(target, source, httpServletResponse);
     }
 
@@ -39,7 +42,7 @@ public class MinIOController {
     void deleteFolder(
             @RequestParam Long target,
             @RequestParam AttachmentSource source
-    ){
+    ) {
         minIOService.removeObjects(target, source);
 
     }
@@ -61,4 +64,11 @@ public class MinIOController {
     ) {
         minIOService.removeObject(dto);
     }
+
+    @ExceptionHandler(FileOperationException.class)
+    ProblemDetail handle(FileOperationException e) {
+        return ProblemDetail
+                .forStatusAndDetail(HttpStatusCode.valueOf(500), e.getMessage());
+    }
+
 }
