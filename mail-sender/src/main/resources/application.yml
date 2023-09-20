@@ -1,4 +1,6 @@
 spring:
+  freemarker:
+    template-loader-path: "classpath:/templates"
   mail:
     host: smtp.gmail.com
     port: 587

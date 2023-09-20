@@ -1,4 +1,4 @@
-package com.akerke.mailsender.mail;
+package com.akerke.mailsender.dto;
 
 public record EmailDetails (
      String recipient,

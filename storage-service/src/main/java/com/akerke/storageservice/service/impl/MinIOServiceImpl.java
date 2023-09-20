@@ -9,24 +9,30 @@ import io.minio.messages.Item;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MinIOServiceImpl implements MinIOService {
 
     private final MinioClient minioClient;
     private final AsyncTaskExecutor applicationTaskExecutor;
 
+    private static final Integer TIME_LIMIT = 3;
+
     @Override
-    @SneakyThrows
     public void putObject(FileOperationDTO dto, MultipartFile file) {
-        applicationTaskExecutor.submit(()-> {
+        this.getFromFuture(submit(() -> {
             try {
                 var in = new ByteArrayInputStream(file.getBytes());
                 var objectName = file.getOriginalFilename();
@@ -38,13 +44,13 @@ public class MinIOServiceImpl implements MinIOService {
             } catch (Exception e) {
                 throw new FileOperationException(e.getMessage());
             }
-        }).get(1, TimeUnit.MINUTES);
+        }));
     }
 
     @Override
     @SneakyThrows
     public void getObject(FileOperationDTO dto, HttpServletResponse response) {
-        applicationTaskExecutor.submit(()-> {
+        this.getFromFuture(submit(() -> {
             GetObjectResponse minioInputStream;
             try {
                 minioInputStream = minioClient.getObject(
@@ -72,34 +78,34 @@ public class MinIOServiceImpl implements MinIOService {
             } catch (Exception e) {
                 throw new RuntimeException();
             }
-        }).get(1, TimeUnit.MINUTES);
+        }));
     }
 
     @Override
     @SneakyThrows
     public void removeBucket(Long target, AttachmentSource source) {
 
-        applicationTaskExecutor.submit(()-> {
+        this.getFromFuture(submit(() -> {
 
-        var bucketName = toBucketName(source,target);
+            var bucketName = toBucketName(source, target);
 
-        try {
-            minioClient.removeBucket(
-                    RemoveBucketArgs.builder()
-                            .bucket(bucketName)
-                            .build()
-            );
-        } catch (Exception e){
-            throw new FileOperationException(e.getMessage());
-        }}).get(1, TimeUnit.MINUTES);
+            try {
+                minioClient.removeBucket(
+                        RemoveBucketArgs.builder()
+                                .bucket(bucketName)
+                                .build()
+                );
+            } catch (Exception e) {
+                throw new FileOperationException(e.getMessage());
+            }
+        }));
 
     }
 
     @Override
     @SneakyThrows
     public void removeObject(FileOperationDTO dto) {
-        applicationTaskExecutor.submit(()-> {
-
+        this.getFromFuture(submit(() -> {
             try {
                 minioClient.removeObject(
                         RemoveObjectArgs.builder()
@@ -110,44 +116,44 @@ public class MinIOServiceImpl implements MinIOService {
             } catch (Exception e) {
                 throw new FileOperationException(e.getMessage());
             }
-        }).get(1, TimeUnit.MINUTES);
+        }));
     }
 
     @Override
     @SneakyThrows
     public void getObjects(Long target, AttachmentSource source, HttpServletResponse response) {
-        applicationTaskExecutor.submit(()-> {
+        this.getFromFuture(submit(() -> {
+                            var minioInputStream = minioClient.listObjects(
+                                    ListObjectsArgs.builder()
+                                            .bucket(source.getName())
+                                            .prefix(target.toString().concat("/"))
+                                            .recursive(true)
+                                            .build()
+                            );
 
-            var minioInputStream = minioClient.listObjects(
-                    ListObjectsArgs.builder()
-                            .bucket(source.getName())
-                            .prefix(target.toString().concat("/"))
-                            .recursive(true)
-                            .build()
-            );
+                            try {
+                                response.setContentType("text/html");
+                                response.getWriter().println("<html><body>");
 
-            try {
-                response.setContentType("text/html");
-                response.getWriter().println("<html><body>");
-
-                for (Result<Item> result : minioInputStream) {
-                    var objectName = result.get().objectName();
-                    String originalName = objectName.replaceFirst("\\d+/", "");
-                    String downloadLink = "http://localhost:8080/storage/download?source=" + source + "&name=" + originalName + "&target=" + target;
-                    response.getWriter().println("<a href='" + downloadLink + "'>" + originalName + "</a><br>");
-                }
-                response.getWriter().println("</body></html>");
-            } catch (Exception e){
-                throw new FileOperationException(e.getMessage());
-            }
-
-        }).get(1, TimeUnit.MINUTES);
+                                for (Result<Item> result : minioInputStream) {
+                                    var objectName = result.get().objectName();
+                                    String originalName = objectName.replaceFirst("\\d+/", "");
+                                    String downloadLink = "http://localhost:8080/storage/download?source=" + source + "&name=" + originalName + "&target=" + target;
+                                    response.getWriter().println("<a href='" + downloadLink + "'>" + originalName + "</a><br>");
+                                }
+                                response.getWriter().println("</body></html>");
+                            } catch (Exception e) {
+                                throw new FileOperationException(e.getMessage());
+                            }
+                        }
+                )
+        );
     }
 
     @Override
     @SneakyThrows
     public void removeObjects(Long target, AttachmentSource source) {
-        applicationTaskExecutor.submit(()->{
+        this.getFromFuture(submit(() -> {
             try {
                 var objects = minioClient.listObjects(
                         ListObjectsArgs.builder()
@@ -167,31 +173,28 @@ public class MinIOServiceImpl implements MinIOService {
             } catch (Exception e) {
                 throw new FileOperationException(e.getMessage());
             }
-        }).get(1, TimeUnit.MINUTES);
+        }));
+
     }
 
-    @SneakyThrows
-    private void checkBucketExisting(String bucketName) {
-        var bucketExist = minioClient.bucketExists(
-                BucketExistsArgs.builder()
-                        .bucket(bucketName)
-                        .build()
-        );
-        System.out.println(bucketExist);
-        if (!bucketExist) {
-            minioClient.makeBucket(
-                    MakeBucketArgs.builder()
-                            .bucket(bucketName)
-                            .build()
-            );
-        }
-    }
-
-    private String toBucketName(AttachmentSource source,Long target) {
+    private String toBucketName(AttachmentSource source, Long target) {
         return source.getName().concat("-") + target;
     }
 
-    private String toObjectNameWithFolder (FileOperationDTO dto) {
+    private String toObjectNameWithFolder(FileOperationDTO dto) {
         return dto.target().toString().concat("/").concat(dto.name());
     }
+
+    private Future<?> submit(Runnable r) {
+        return applicationTaskExecutor.submit(r);
+    }
+
+    private void getFromFuture(Future<?> f) {
+        try {
+            f.get(TIME_LIMIT, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw new FileOperationException(e);
+        }
+    }
+
 }

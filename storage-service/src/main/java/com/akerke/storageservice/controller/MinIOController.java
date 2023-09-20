@@ -44,7 +44,6 @@ public class MinIOController {
             @RequestParam AttachmentSource source
     ) {
         minIOService.removeObjects(target, source);
-
     }
 
     @GetMapping("/download")
