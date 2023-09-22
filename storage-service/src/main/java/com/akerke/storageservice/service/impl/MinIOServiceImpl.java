@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +30,9 @@ public class MinIOServiceImpl implements MinIOService {
     private final AsyncTaskExecutor applicationTaskExecutor;
 
     private static final Integer TIME_LIMIT = 3;
+
+    @Value("${spring.minio.download-link-prefix}")
+    private String urlPrefix;
 
     @Override
     public void putObject(FileOperationDTO dto, MultipartFile file) {
@@ -138,7 +142,7 @@ public class MinIOServiceImpl implements MinIOService {
                                 for (Result<Item> result : minioInputStream) {
                                     var objectName = result.get().objectName();
                                     String originalName = objectName.replaceFirst("\\d+/", "");
-                                    String downloadLink = "http://localhost:8080/storage/download?source=" + source + "&name=" + originalName + "&target=" + target;
+                                    String downloadLink = toDownloadLink(source.getName(), target.toString(), originalName);
                                     response.getWriter().println("<a href='" + downloadLink + "'>" + originalName + "</a><br>");
                                 }
                                 response.getWriter().println("</body></html>");
@@ -195,6 +199,10 @@ public class MinIOServiceImpl implements MinIOService {
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new FileOperationException(e);
         }
+    }
+
+    private String toDownloadLink(String source, String target, String originalName) {
+        return urlPrefix+"/storage/download?source=" + source + "&name=" + originalName + "&target=" + target;
     }
 
 }

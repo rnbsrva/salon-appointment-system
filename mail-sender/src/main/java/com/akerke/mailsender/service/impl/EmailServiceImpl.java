@@ -32,6 +32,7 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
+    @Override
     public void sendSimpleMail(EmailDetails details, MessageType messageType) {
 
         var msg = javaMailSender.createMimeMessage();
@@ -50,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
                     "link", details.msgBody()
             ));
 
-            helper.setText(html,true);
+            helper.setText(html, true);
             helper.setTo(details.recipient());
             helper.setFrom(sender);
             helper.setSubject(details.subject());
