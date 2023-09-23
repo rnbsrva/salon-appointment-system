@@ -6,7 +6,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface QRService {
 
-    void generateQR(HttpServletResponse response, String data);
+    String generateQR(HttpServletResponse response, String data);
 
     CompletableFuture<Void> generateQRAsync(HttpServletResponse response, String data);
 

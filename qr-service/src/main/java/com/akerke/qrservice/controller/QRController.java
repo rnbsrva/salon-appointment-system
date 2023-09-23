@@ -18,7 +18,7 @@ public class QRController {
 
     @GetMapping()
     public CompletableFuture<Void> generateQR(HttpServletResponse response,
-                                              @RequestParam String data) throws Exception {
+                                              @RequestParam String data) {
         return qrService.generateQRAsync(response, data);
     }
 

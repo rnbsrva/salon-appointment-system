@@ -1,12 +1,17 @@
 package com.akerke.qrservice.service.impl;
 
+import com.akerke.qrservice.entity.QR;
+import com.akerke.qrservice.repository.QRRepository;
 import com.akerke.qrservice.service.QRService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -14,12 +19,16 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.concurrent.CompletableFuture;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class QRServiceImpl implements QRService {
 
+    private final QRRepository qrRepository;
 
     @Value("${qr.charset}")
     private String charset;
@@ -27,20 +36,46 @@ public class QRServiceImpl implements QRService {
     @Async("asyncExecutor")
     @Override
     public CompletableFuture<Void> generateQRAsync(HttpServletResponse response, String data) {
-        try {
-            generateQR(response, data);
-            return CompletableFuture.completedFuture(null);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
+
+        var optionalQR = qrRepository.findByLink(data);
+        if (optionalQR.isPresent()) {
+
+            var qr = optionalQR.get();
+            byte[] bytes = Base64.decodeBase64(qr.getBase64Data());
+
+            response.setContentType("application/octet-stream");
+            response.setContentLength(bytes.length);
+            response.setHeader("Content-Disposition", "attachment; filename=\"downloaded_file.bin\"");
+
+            return CompletableFuture.runAsync(() -> {
+                try {
+                    log.info("return existing qr code");
+                    response.getOutputStream().write(bytes);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+        } else {
+            return CompletableFuture.runAsync(() -> {
+                try {
+                    var base64Data = generateQR(response, data);
+                    var qr = new QR(data,base64Data);
+                    qrRepository.save(qr);
+                    log.info("generate qr code");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
     }
 
     @Override
     @SneakyThrows
-    public void generateQR(HttpServletResponse response, String qrURL) {
+    public String generateQR(HttpServletResponse response, String qrURL) {
         BitMatrix matrix = new MultiFormatWriter().encode(
                 new String(qrURL.getBytes(charset), charset),
-                BarcodeFormat.QR_CODE, 400, 400);
+                BarcodeFormat.QR_CODE, 600, 600);
 
         BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(matrix);
 
@@ -53,7 +88,11 @@ public class QRServiceImpl implements QRService {
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
         byteArrayOutputStream.writeTo(outputStream);
 
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        String base64Image = Base64.encodeBase64String(byteArray);
+
         outputStream.flush();
         outputStream.close();
+        return base64Image;
     }
 }
