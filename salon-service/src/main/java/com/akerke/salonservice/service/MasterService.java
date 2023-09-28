@@ -1,0 +1,19 @@
+package com.akerke.salonservice.service;
+
+import com.akerke.salonservice.entity.Master;
+
+import java.util.List;
+
+public interface MasterService {
+
+    void save (MasterDTO masterDTO);
+
+    void delete (Long id);
+
+    void update (MasterDTO masterDTO, Long id);
+
+    Master getMaster(Long id);
+
+    List<Master> getMasters();
+
+}
