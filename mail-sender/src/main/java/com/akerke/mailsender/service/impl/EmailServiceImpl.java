@@ -4,22 +4,23 @@ import com.akerke.mailsender.dto.EmailDetails;
 import com.akerke.mailsender.service.EmailService;
 import com.akerke.mailsender.utils.MessageType;
 import freemarker.template.Configuration;
+import freemarker.template.Template;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Objects;
+
+import reactor.core.scheduler.Schedulers;
 
 @Service
 @RequiredArgsConstructor
@@ -33,12 +34,9 @@ public class EmailServiceImpl implements EmailService {
     private String sender;
 
     @Override
-    public void sendSimpleMail(EmailDetails details, MessageType messageType) {
-
+    public Mono<Void> sendSimpleMail(EmailDetails details, MessageType messageType) {
         var msg = javaMailSender.createMimeMessage();
-
         try {
-
             var helper = new MimeMessageHelper(
                     msg,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -47,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
 
             var template = ftl.getTemplate(messageType.getTemplate());
 
-            var html = FreeMarkerTemplateUtils.processTemplateIntoString(template, Map.of(
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, Map.of(
                     "link", details.msgBody()
             ));
 
@@ -55,37 +53,42 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(details.recipient());
             helper.setFrom(sender);
             helper.setSubject(details.subject());
+
+            System.out.println("a");
             javaMailSender.send(msg);
+            System.out.println("b");
+
             log.info("Mail Sent Successfully");
         } catch (Exception e) {
             log.error("Error while Sending Mail, msg {}", e.getMessage());
         }
+        return Mono.empty();
     }
 
-    public void sendMailWithAttachment(EmailDetails details) {
-        var mimeMessage
-                = javaMailSender.createMimeMessage();
+
+    @Override
+    public Mono<Void> sendMailWithAttachment(EmailDetails details) {
+
+        var mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
 
         try {
-            mimeMessageHelper
-                    = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setFrom(sender);
             mimeMessageHelper.setTo(details.recipient());
             mimeMessageHelper.setText(details.msgBody());
-            mimeMessageHelper.setSubject(
-                    details.subject());
+            mimeMessageHelper.setSubject(details.subject());
 
             FileSystemResource file = new FileSystemResource(new File(details.attachment()));
 
-            mimeMessageHelper.addAttachment(Objects.requireNonNull(file.getFilename()), file);
+            mimeMessageHelper.addAttachment(file.getFilename(), file);
 
             javaMailSender.send(mimeMessage);
             log.info("Mail Sent Successfully");
-
         } catch (MessagingException e) {
             log.error("Error while Sending Mail: msg {}", e.getMessage());
         }
+        return Mono.empty();
     }
 }
 

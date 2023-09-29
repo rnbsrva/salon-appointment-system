@@ -2,10 +2,11 @@ package com.akerke.mailsender.service;
 
 import com.akerke.mailsender.dto.EmailDetails;
 import com.akerke.mailsender.utils.MessageType;
+import reactor.core.publisher.Mono;
 
 public interface EmailService {
 
-    void sendSimpleMail(EmailDetails details, MessageType messageType);
+    Mono<Void> sendSimpleMail(EmailDetails details, MessageType messageType);
 
-    void sendMailWithAttachment(EmailDetails details);
+    Mono<Void> sendMailWithAttachment(EmailDetails details);
 }

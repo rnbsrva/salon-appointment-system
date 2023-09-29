@@ -8,12 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
-import org.springframework.kafka.retrytopic.RetryTopicConfigurationBuilder;
 import org.springframework.kafka.retrytopic.TopicSuffixingStrategy;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
@@ -25,11 +25,12 @@ public class EmailListener {
     @RetryableTopic(
             backoff = @Backoff(delay = 1000, multiplier = 2.0),
             autoCreateTopics = "false",
-            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE)
+            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE
+    )
     @KafkaListener(topics = "email_verification", groupId = "0")
-    void listenVerification(EmailDetails emailDetails) {
+    Mono<Void> listenVerification(EmailDetails emailDetails) {
         log.info("new email sending {}", emailDetails.toString());
-        emailService.sendSimpleMail(emailDetails, MessageType.CONFIRM_EMAIL);
+        return emailService.sendSimpleMail(emailDetails,MessageType.CONFIRM_EMAIL);
     }
 
     @RetryableTopic(
@@ -38,14 +39,15 @@ public class EmailListener {
             topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE
     )
     @KafkaListener(topics = "reset_password", groupId = "0")
-    void listerResetPassword(EmailDetails emailDetails) {
+    Mono<Void> listerResetPassword(EmailDetails emailDetails) {
         log.info("new reset password request");
-        emailService.sendSimpleMail(emailDetails, MessageType.RESET_PASSWORD);
+        return emailService.sendSimpleMail(emailDetails, MessageType.RESET_PASSWORD);
     }
 
     @DltHandler
-    public void dlt(String in, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+    public Mono<Void> dlt(String in, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         log.info(in + " from " + topic);
+        return Mono.empty();
     }
 
 }
