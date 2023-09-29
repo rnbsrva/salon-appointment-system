@@ -1,5 +1,6 @@
 package com.akerke.salonservice.service;
 
+import com.akerke.salonservice.dto.TreatmentDTO;
 import com.akerke.salonservice.entity.Treatment;
 
 import java.util.List;

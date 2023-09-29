@@ -1,5 +1,6 @@
 package com.akerke.salonservice.service;
 
+import com.akerke.salonservice.dto.AppointmentDTO;
 import com.akerke.salonservice.entity.Appointment;
 
 import java.util.List;

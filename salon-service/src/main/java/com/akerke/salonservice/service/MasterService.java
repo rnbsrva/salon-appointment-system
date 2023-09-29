@@ -1,5 +1,6 @@
 package com.akerke.salonservice.service;
 
+import com.akerke.salonservice.dto.MasterDTO;
 import com.akerke.salonservice.entity.Master;
 
 import java.util.List;
@@ -12,8 +13,8 @@ public interface MasterService {
 
     void update (MasterDTO masterDTO, Long id);
 
-    Master getMaster(Long id);
+    Master getById(Long id);
 
-    List<Master> getMasters();
+    List<Master> getAll();
 
 }

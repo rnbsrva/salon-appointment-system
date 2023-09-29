@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,20 +22,14 @@ public class WorkDay extends DateAudit {
     private Long id;
 
     private WeekDay weekDay;
-    private LocalDateTime workStartTime;
-    private LocalDateTime workEndTime;
+    private Date workStartTime;
+    private Date workEndTime;
     private Boolean isHoliday;
 
     @OneToMany(
             mappedBy = "work_day",
             cascade = CascadeType.ALL
     )
-    private List<WorkTime> workTimeList;
+    private List<WorkTime> workTimes;
 
-    public WorkDay(WeekDay weekDay, LocalDateTime workStartTime, LocalDateTime workEndTime, Boolean isHoliday) {
-        this.weekDay = weekDay;
-        this.workStartTime = workStartTime;
-        this.workEndTime = workEndTime;
-        this.isHoliday = isHoliday;
-    }
 }

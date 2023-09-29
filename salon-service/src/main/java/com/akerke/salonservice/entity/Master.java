@@ -48,12 +48,4 @@ public class Master extends DateAudit {
     )
     private List<WorkTime> workTimes;
 
-
-    public Master(User user, String position, Date experienceDate, String about) {
-        this.user = user;
-        this.position = position;
-        this.experienceDate = experienceDate;
-        this.about = about;
-    }
-
 }

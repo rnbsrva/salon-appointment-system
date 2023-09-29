@@ -22,7 +22,6 @@ public class Treatment extends DateAudit {
 
     private Long price;
     private Long minutes;
-    private String description;
     private TreatmentType treatmentType;
     @OneToMany(
             mappedBy = "treatment",
@@ -30,10 +29,9 @@ public class Treatment extends DateAudit {
     )
     private List<Appointment> appointments;
 
-    public Treatment(Long price, Long minutes, String description, TreatmentType treatmentType) {
+    public Treatment(Long price, Long minutes,  TreatmentType treatmentType) {
         this.price = price;
         this.minutes = minutes;
-        this.description = description;
         this.treatmentType = treatmentType;
     }
 }

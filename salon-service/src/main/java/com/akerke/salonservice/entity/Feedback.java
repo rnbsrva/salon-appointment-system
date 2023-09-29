@@ -24,4 +24,6 @@ public class Feedback {
     @ManyToOne
     private Appointment appointment;
 
+    private String feedbackText;
+
 }
