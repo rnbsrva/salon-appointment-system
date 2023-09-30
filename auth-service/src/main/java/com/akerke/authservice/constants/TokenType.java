@@ -19,7 +19,7 @@ public enum TokenType {
      * They are used to grant access to protected resources, such as API endpoints, for a limited time.
      * Access tokens are commonly used for user authentication and authorization.
      */
-    ACCESS_TOKEN(60, HS384),
+    ACCESS_TOKEN(60, HS384, "access_token"),
 
     /**
      * Represents a refresh token.
@@ -27,7 +27,7 @@ public enum TokenType {
      * They are used to obtain new access tokens without requiring the user to re-enter their credentials.
      * Refresh tokens are essential for maintaining continuous user sessions and improving security.
      */
-    REFRESH_TOKEN(1440, HS512),
+    REFRESH_TOKEN(1440, HS512, "refresh_token"),
 
     /**
      * Represents a verification token.
@@ -35,7 +35,7 @@ public enum TokenType {
      * They have a short expiration time to ensure timely email verification.
      * Verification tokens help verify the authenticity of the email address provided during registration.
      */
-    VERIFICATION_TOKEN(10, HS256);
+    VERIFICATION_TOKEN(10, HS256, "verification_token");
 
     /**
      * The expiration time of the token in minutes.
@@ -46,5 +46,8 @@ public enum TokenType {
      * The signature algorithm used for signing tokens of this type.
      */
     private final SignatureAlgorithm algorithm;
+
+    private final String name;
+
 }
 

@@ -1,8 +1,10 @@
 package com.akerke.authservice.entity;
 
 import com.akerke.authservice.constants.SecurityRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
@@ -10,6 +12,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Role {
 
     @Id
@@ -28,6 +31,11 @@ public class Role {
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private User user;
 
+    public Role(SecurityRole role, User user) {
+        this.role = role;
+        this.user = user;
+    }
 }

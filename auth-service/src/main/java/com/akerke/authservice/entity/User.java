@@ -19,9 +19,14 @@ public class User {
     private String surname;
     private String email;
 
+    private Boolean emailVerified;
+
     @JsonIgnore
     private String password;
 
-    @OneToMany
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "user"
+    )
     private List<Role> roles;
 }

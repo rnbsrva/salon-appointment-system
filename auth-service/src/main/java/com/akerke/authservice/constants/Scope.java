@@ -8,19 +8,22 @@ import java.util.Set;
 
 @AllArgsConstructor
 @Getter
-public enum PermissionType {
+public enum Scope {
 
     SCOPE_READ("scope.read"),
     EMAIL("email"),
 
+
+
     SALON_WRITE("salon.write"),
     SALON_DELETE("salon.delete");
+
+
     private final String name;
 
-    public static Set<PermissionType> defaultSet() {
+    public static Set<Scope> defaultSet() {
         return EnumSet.of(
-                PermissionType.EMAIL,
-                PermissionType.SCOPE_READ
+                Scope.SCOPE_READ
         );
     }
 

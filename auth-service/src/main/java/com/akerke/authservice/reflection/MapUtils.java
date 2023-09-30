@@ -24,10 +24,8 @@ public class MapUtils {
      * @param obj    The object whose fields are to be converted to claims.
      * @param vararg Optional key-value pairs (as Pair objects) to include in the claims.
      * @return A map containing the claims extracted from the object's fields and key-value pairs.
-     * @throws IllegalAccessException If there is an issue accessing the fields of the object via reflection.
      */
-    public static Map<String, Object> toMap(Object obj, Pair... vararg)
-            throws IllegalAccessException {
+    public static Map<String, Object> toMap(Object obj, Pair... vararg) {
         var map = new HashMap<String, Object>();
         var objClass = obj.getClass();
 
@@ -39,16 +37,11 @@ public class MapUtils {
                 var fieldName = field.getName();
                 var fieldValue = field.get(obj);
 
-                if (isPrimitive(fieldValue.getClass())) {
-                    map.put(fieldName, fieldValue);
-                } else {
-                    map.put(fieldName, toMap(fieldValue));
-                }
+                map.put(fieldName, fieldValue);
 
                 field.setAccessible(false);
             } catch (IllegalAccessException e) {
                 log.error("error: {}", e.getMessage());
-                throw e;
             }
         }
 
@@ -58,11 +51,4 @@ public class MapUtils {
         return map;
     }
 
-    private static boolean isPrimitive(Class<?> type) {
-        return type.isPrimitive() || type == String.class || Number.class.isAssignableFrom(type)
-                || type == Boolean.class || type == Character.class
-                || type == Date.class || Enum.class.isAssignableFrom(type)
-                || type == LocalDateTime.class || type == LocalTime.class
-                || type.isArray() && isPrimitive(type.getComponentType());
-    }
 }

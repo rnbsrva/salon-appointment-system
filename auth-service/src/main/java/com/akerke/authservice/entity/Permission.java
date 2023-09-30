@@ -1,6 +1,7 @@
 package com.akerke.authservice.entity;
 
-import com.akerke.authservice.constants.PermissionType;
+import com.akerke.authservice.constants.Scope;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,16 +17,18 @@ public class Permission {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private PermissionType type;
+    private Scope type;
 
     private Long target;
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private Role role;
 
-    public Permission(PermissionType type) {
+    public Permission(Scope type,Role role) {
         this.type = type;
+        this.role = role;
     }
 }
 

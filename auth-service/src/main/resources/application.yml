@@ -1,13 +1,40 @@
 jwt:
   issuer: akerkesilaaaaaaaaaaaaaaaaaaaaaaa
-  secret: danekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahha
+  secret: danekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahhadanekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahhadanekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahhadanekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahhae
 
 spring:
+#  kafka:
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      bootstrap-servers: localhost:9092
+#      properties:
+#        spring:
+#          json:
+#            add:
+#              type:
+#                headers: false
+#    consumer:
+#      bootstrap-servers: localhost:9092
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+#      properties:
+#        spring:
+#          json:
+#            add:
+#              type:
+#                headers: false
+  jackson:
+    default-property-inclusion: non_null
   datasource:
     driver-class-name: org.postgresql.Driver
     password: postgres
     username: postgres
     url: jdbc:postgresql://localhost:5432/sas_auth
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
 
 server:
   port: 3000

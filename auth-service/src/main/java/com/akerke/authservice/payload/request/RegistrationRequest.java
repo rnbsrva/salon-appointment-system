@@ -1,4 +1,4 @@
-package com.akerke.authservice.payload;
+package com.akerke.authservice.payload.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
