@@ -4,7 +4,10 @@ import com.akerke.authservice.utils.Pair;
 import lombok.extern.slf4j.Slf4j;
 import lombok.experimental.UtilityClass;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +26,7 @@ public class MapUtils {
      * @return A map containing the claims extracted from the object's fields and key-value pairs.
      * @throws IllegalAccessException If there is an issue accessing the fields of the object via reflection.
      */
-    public static Map<String, Object> toClaims(Object obj, Pair... vararg)
+    public static Map<String, Object> toMap(Object obj, Pair... vararg)
             throws IllegalAccessException {
         var map = new HashMap<String, Object>();
         var objClass = obj.getClass();
@@ -36,7 +39,11 @@ public class MapUtils {
                 var fieldName = field.getName();
                 var fieldValue = field.get(obj);
 
-                map.put(fieldName, fieldValue);
+                if (isPrimitive(fieldValue.getClass())) {
+                    map.put(fieldName, fieldValue);
+                } else {
+                    map.put(fieldName, toMap(fieldValue));
+                }
 
                 field.setAccessible(false);
             } catch (IllegalAccessException e) {
@@ -49,5 +56,13 @@ public class MapUtils {
                 .forEach(pair -> map.put(pair.key(), pair.value()));
 
         return map;
+    }
+
+    private static boolean isPrimitive(Class<?> type) {
+        return type.isPrimitive() || type == String.class || Number.class.isAssignableFrom(type)
+                || type == Boolean.class || type == Character.class
+                || type == Date.class || Enum.class.isAssignableFrom(type)
+                || type == LocalDateTime.class || type == LocalTime.class
+                || type.isArray() && isPrimitive(type.getComponentType());
     }
 }

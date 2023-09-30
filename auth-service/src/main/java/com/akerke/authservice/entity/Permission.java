@@ -20,6 +20,10 @@ public class Permission {
 
     private Long target;
 
+    @ManyToOne
+    @JoinColumn
+    private Role role;
+
     public Permission(PermissionType type) {
         this.type = type;
     }

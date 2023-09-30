@@ -1,19 +1,28 @@
 package com.akerke.authservice.validate;
 
 import com.akerke.authservice.exception.InvalidRequestPayloadException;
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import lombok.experimental.UtilityClass;
 import org.springframework.validation.BindingResult;
-
 
 import java.util.function.Consumer;
 
-@UtilityClass
+/**
+ * A utility class for validating and handling Spring MVC binding results.
+ */
 @Slf4j
+@UtilityClass
 public class BindingValidator {
 
+    /**
+     * A consumer function that throws an exception with detailed error messages for a given binding result.
+     *
+     * @param bindingResult The Spring MVC binding result containing validation errors.
+     * @throws InvalidRequestPayloadException If the binding result has errors, an exception with error details is thrown.
+     */
     private static final Consumer<BindingResult> returnErrorToClient = bindingResult -> {
         StringBuilder sb = new StringBuilder();
+
         bindingResult.getFieldErrors()
                 .forEach(error ->
                         sb
@@ -21,13 +30,20 @@ public class BindingValidator {
                                 .append(".")
                                 .append(System.lineSeparator())
                 );
+
         throw new InvalidRequestPayloadException(sb.toString());
     };
 
-    public static void validateRequest(BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            log.error("invalid request from client");
-            returnErrorToClient.accept(bindingResult);
+    /**
+     * Validates a request's binding result and throws an exception with error details if validation fails.
+     *
+     * @param br The Spring MVC binding result to validate.
+     */
+    public static void validateRequest(BindingResult br) {
+        if (br.hasErrors()) {
+            log.error("Invalid request from client" );
+            returnErrorToClient.accept(br);
         }
     }
 }
+
