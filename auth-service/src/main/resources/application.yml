@@ -9,3 +9,9 @@ spring:
     username: postgres
     url: jdbc:postgresql://localhost:5432/sas_auth
 
+
+
+server:
+  port: 3000
+  servlet:
+    context-path: /api/v1/auth/
