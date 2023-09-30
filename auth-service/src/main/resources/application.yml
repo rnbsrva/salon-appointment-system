@@ -3,27 +3,6 @@ jwt:
   secret: danekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahhadanekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahhadanekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahhadanekerbetterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrahahahahhahahhae
 
 spring:
-#  kafka:
-#    producer:
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-#      bootstrap-servers: localhost:9092
-#      properties:
-#        spring:
-#          json:
-#            add:
-#              type:
-#                headers: false
-#    consumer:
-#      bootstrap-servers: localhost:9092
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
-#      properties:
-#        spring:
-#          json:
-#            add:
-#              type:
-#                headers: false
   jackson:
     default-property-inclusion: non_null
   datasource:
@@ -33,8 +12,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/sas_auth
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     open-in-view: false
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
 server:
   port: 3000

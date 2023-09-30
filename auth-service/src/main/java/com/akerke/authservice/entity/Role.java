@@ -1,6 +1,7 @@
 package com.akerke.authservice.entity;
 
 import com.akerke.authservice.constants.SecurityRole;
+import com.akerke.authservice.entity.audit.DateAudit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Role {
+public class Role  extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

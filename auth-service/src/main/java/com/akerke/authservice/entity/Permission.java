@@ -1,6 +1,7 @@
 package com.akerke.authservice.entity;
 
 import com.akerke.authservice.constants.Scope;
+import com.akerke.authservice.entity.audit.DateAudit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Permission {
+public class Permission  extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
