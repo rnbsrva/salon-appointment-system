@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.akerke.authservice.validate.BindingValidator.validateRequest;
@@ -26,12 +25,12 @@ public record UserController(
             BindingResult br
     ) {
         validateRequest(br);
+
         var user = userService.register(req);
 
         return ResponseEntity
                 .status(201)
                 .body(this.authService.token(user));
     }
-
 
 }

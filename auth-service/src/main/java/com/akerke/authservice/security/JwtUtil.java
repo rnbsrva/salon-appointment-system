@@ -25,8 +25,6 @@ public class JwtUtil {
     private @Value("${jwt.issuer}") String issuer;
     private @Value("${jwt.secret}") String secret;
 
-    public static final String TOKEN_TYPE_CLAIM_KEY = "token_type";
-
     public String generateToken(TokenType token, Map<String, Object> claims, String subject) {
         var expiration = Date.from(ZonedDateTime.now().plusMinutes(token.getExpirationMinute()).toInstant());
         return Jwts.builder()
@@ -40,14 +38,7 @@ public class JwtUtil {
                 .compact();
     }
 
-
-    public String extractUsername(String token, TokenType type) {
-        var claims = extractAllClaims(token);
-        var tokenClaim = claims.get(TOKEN_TYPE_CLAIM_KEY);
-        if (!tokenClaim.equals(type.name())) {
-            log.error("token type from param != token type from token");
-            return null;
-        }
+    public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 

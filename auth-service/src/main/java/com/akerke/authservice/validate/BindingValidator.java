@@ -20,10 +20,10 @@ public class BindingValidator {
      * @param bindingResult The Spring MVC binding result containing validation errors.
      * @throws InvalidRequestPayloadException If the binding result has errors, an exception with error details is thrown.
      */
-    private static final Consumer<BindingResult> returnErrorToClient = bindingResult -> {
-        StringBuilder sb = new StringBuilder();
+    private static final Consumer<BindingResult> returnErrorToClient = br -> {
+        var sb = new StringBuilder();
 
-        bindingResult.getFieldErrors()
+        br.getFieldErrors()
                 .forEach(error ->
                         sb
                                 .append(error.getDefaultMessage() == null ? error.getCode() : error.getDefaultMessage())

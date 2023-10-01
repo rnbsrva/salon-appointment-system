@@ -13,6 +13,7 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "emailVerified" , expression = "java(false)")
     User toModel(RegistrationRequest req);
 
 }

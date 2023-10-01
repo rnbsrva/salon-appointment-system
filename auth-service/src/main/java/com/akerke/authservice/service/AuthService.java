@@ -7,12 +7,9 @@ import com.akerke.authservice.payload.response.TokenResponse;
 
 public interface AuthService {
 
-    Boolean validateToken(String token, TokenType type);
+    StatusResponse validateToken(String token, TokenType type);
 
     TokenResponse token(User user);
-
-    StatusResponse confirmEmail();
-
 
 
 }
