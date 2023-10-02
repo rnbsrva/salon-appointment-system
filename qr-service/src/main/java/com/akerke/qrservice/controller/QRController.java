@@ -17,8 +17,10 @@ public class QRController {
     private final QRService qrService;
 
     @GetMapping()
-    public CompletableFuture<Void> generateQR(HttpServletResponse response,
-                                              @RequestParam String data) {
+    public CompletableFuture<Void> generateQR(
+            HttpServletResponse response,
+            @RequestParam String data
+    ) {
         return qrService.generateQRAsync(response, data);
     }
 

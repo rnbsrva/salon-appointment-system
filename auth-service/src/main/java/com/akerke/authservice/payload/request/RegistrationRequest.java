@@ -1,9 +1,6 @@
 package com.akerke.authservice.payload.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 
 /**
  * A data transfer object (DTO) used for registration information.
@@ -21,9 +18,11 @@ public record RegistrationRequest(
 
         @Pattern(
                 regexp = "^\\d{3}-\\d{3}-\\d{4}$",
-                message = "Invalid phone number format. Use ###-###-####."
+                message = "Invalid phone number format. Use ###-###-####." // todo fix regexp
         )
-        String phone
+        String phone,
+        @Size(min = 8)
+        String password
 ) {
 }
 

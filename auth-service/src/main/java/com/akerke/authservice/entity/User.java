@@ -27,7 +27,8 @@ public class User extends DateAudit {
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            mappedBy = "user"
+            mappedBy = "user",
+            fetch = FetchType.EAGER
     )
     private List<Role> roles;
 }

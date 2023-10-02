@@ -11,7 +11,6 @@ import com.akerke.authservice.utils.Pair;
 import com.akerke.authservice.utils.TokenDetails;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.stereotype.Service;
 
 import static com.akerke.authservice.reflection.MapUtils.toMap;
@@ -30,10 +29,32 @@ public class AuthServiceImpl implements AuthService {
         try {
             var claims = jwt.extractAllClaims(token);
             var sameTokenClaim = sameTokenClaims(claims, type);
-            var msg = sameTokenClaim ? null : "invalid token type and value";
 
-            return new StatusResponse(sameTokenClaim, msg);
+            if (!sameTokenClaim) {
+                return new StatusResponse(false, "invalid claims");
+            }
+
+            var email = claims.getSubject();
+            var user = userService.findByEmail(email);
+
+            switch (type) {
+                case ACCESS_TOKEN -> {
+                    return new StatusResponse(true, user);
+                }
+                case REFRESH_TOKEN -> {
+                    return new StatusResponse(true, token(user));
+                }
+                case VERIFICATION_TOKEN -> {
+                    userService.verifyEmail(user);
+                    return new StatusResponse(true, "email verified");
+                }
+                default -> {
+                    throw new IllegalArgumentException();
+                }
+            }
+
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new StatusResponse(
                     false, e.getMessage()
             );
@@ -61,4 +82,6 @@ public class AuthServiceImpl implements AuthService {
     private Boolean sameTokenClaims(Claims claims, TokenType type) {
         return claims.containsKey(TOKEN_TYPE_CLAIM_KEY) && type == TokenType.valueOf(claims.get(TOKEN_TYPE_CLAIM_KEY).toString());
     }
+
+
 }

@@ -11,6 +11,5 @@ public interface AuthService {
 
     TokenResponse token(User user);
 
-
 }
 

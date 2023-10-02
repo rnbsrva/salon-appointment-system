@@ -12,6 +12,4 @@ public class SalonController {
 
     private final SalonService salonService;
 
-
-
 }

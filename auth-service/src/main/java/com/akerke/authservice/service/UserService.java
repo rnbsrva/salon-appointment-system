@@ -7,5 +7,11 @@ public interface UserService {
 
     User register(RegistrationRequest req);
 
+    User findByEmail(String email);
 
+    void verifyEmail(User user);
+
+    void delete(Long id);
+
+    User find(Long id);
 }

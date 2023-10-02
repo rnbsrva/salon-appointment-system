@@ -1,13 +1,15 @@
 package com.akerke.authservice.payload.response;
 
 public record StatusResponse(
-        Boolean status,
-        String message
+        Boolean success,
+        Object data
 ) {
-    public StatusResponse(Boolean status) {
+    public StatusResponse(Boolean success) {
         this(
-                status,
+                success,
                 null
         );
     }
+
+
 }

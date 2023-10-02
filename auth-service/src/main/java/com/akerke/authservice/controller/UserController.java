@@ -5,11 +5,10 @@ import com.akerke.authservice.payload.request.RegistrationRequest;
 import com.akerke.authservice.service.AuthService;
 import com.akerke.authservice.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.akerke.authservice.validate.BindingValidator.validateRequest;
 
@@ -32,5 +31,22 @@ public record UserController(
                 .status(201)
                 .body(this.authService.token(user));
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(
+            @PathVariable Long id
+    ) {
+        userService.delete(id);
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<?> find(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity
+                .ok(userService.find(id));
+    }
+
 
 }

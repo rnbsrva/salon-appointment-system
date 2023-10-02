@@ -22,8 +22,8 @@ import java.util.function.Supplier;
 @Slf4j
 public class JwtUtil {
 
-    private @Value("${jwt.issuer}") String issuer;
-    private @Value("${jwt.secret}") String secret;
+    private @Value("${auth.jwt.issuer}") String issuer;
+    private @Value("${auth.jwt.secret}") String secret;
 
     public String generateToken(TokenType token, Map<String, Object> claims, String subject) {
         var expiration = Date.from(ZonedDateTime.now().plusMinutes(token.getExpirationMinute()).toInstant());
@@ -57,7 +57,6 @@ public class JwtUtil {
                 .getBody();
     }
 
-
     private Key signKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -65,4 +64,5 @@ public class JwtUtil {
 
     private final Supplier<String> randomId = () -> UUID.randomUUID().toString();
     private final Supplier<Date> currentDate = Date::new;
+
 }

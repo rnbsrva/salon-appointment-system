@@ -1,10 +1,9 @@
-jwt:
-  expiration:
-    accessToken: 60
-    refreshToken: 1440
-    verificationToken: 10
-  issuer: akerkesilaaaaaaaaaaaaaaaaaaaaaaa
-  secret: qwwqwdfnrivbincvutbewfinvfirbwnrifrwbnfonwiovfnwrionvwinvubnvwifjwiojfoewjfienviwnnwrnvkrwnkvnmweodfeqffkowqemfineinfnceqncenkcnkenckenkncdknckdnckdokepfkoekfoejmeknmfkqnmwflmqkenf
+
+auth:
+  jwt:
+    should-confirm-email: false
+    issuer: akerkesilaaaaaaaaaaaaaaaaaaaaaaa
+    secret: qwwqwdfnrivbincvutbewfinvfirbwnrifrwbnfonwiovfnwrionvwinvubnvwifjwiojfoewjfienviwnnwrnvkrwnkvnmweodfeqffkowqemfineinfnceqncenkcnkenckenkncdknckdnckdokepfkoekfoejmeknmfkqnmwflmqkenf
 
 
 spring:

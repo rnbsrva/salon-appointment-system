@@ -13,8 +13,6 @@ public enum Scope {
     SCOPE_READ("scope.read"),
     EMAIL("email"),
 
-
-
     SALON_WRITE("salon.write"),
     SALON_DELETE("salon.delete");
 

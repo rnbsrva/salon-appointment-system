@@ -19,14 +19,10 @@ public class PermissionServiceImpl implements PermissionService {
 
     private final PermissionRepository permissionRepository;
 
-    @Override
-    public void assign() {
-
-    }
 
     @Override
-    public void release() {
-
+    public Permission initialize(Role role, Scope scope) {
+        return permissionRepository.save(new Permission(scope, role));
     }
 
     @Override
@@ -42,5 +38,10 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public void update(Permission permissionToUpdate) {
         permissionRepository.save(permissionToUpdate);
+    }
+
+    @Override
+    public void delete(Long id) {
+        permissionRepository.deleteById(id);
     }
 }
