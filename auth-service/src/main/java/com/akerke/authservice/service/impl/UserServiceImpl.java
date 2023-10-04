@@ -31,13 +31,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(RegistrationRequest req) {
-        var optionalUser = userRepository.findByEmail(req.email());
+        var optionalUser = userRepository.findByEmailOrPhone(req.email(), req.phone());
 
         if (optionalUser.isPresent()) {
             throw new EmailRegisteredYetException(req.email());
         }
 
-        var user = userRepository.save(userMapper.toModel(req, passwordEncoder.encode(req.password())));
+        var mapped = userMapper.toModel(req, passwordEncoder.encode(req.password()));
+        var user = userRepository.save(mapped);
+
         var role = roleService.defaultRoles(user);
 
         var permissions = permissionService.getDefault(role);

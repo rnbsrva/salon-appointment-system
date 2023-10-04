@@ -19,6 +19,7 @@ public class User extends DateAudit {
     private String name;
     private String surname;
     private String email;
+    private String phone;
 
     private Boolean emailVerified;
 

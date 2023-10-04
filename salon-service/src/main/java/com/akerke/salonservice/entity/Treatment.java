@@ -23,6 +23,7 @@ public class Treatment extends DateAudit {
     private Long price;
     private Long minutes;
     private TreatmentType treatmentType;
+
     @OneToMany(
             mappedBy = "treatment",
             cascade = CascadeType.ALL

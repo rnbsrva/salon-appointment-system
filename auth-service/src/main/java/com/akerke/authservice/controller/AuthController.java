@@ -2,14 +2,12 @@ package com.akerke.authservice.controller;
 
 import com.akerke.authservice.constants.TokenType;
 import com.akerke.authservice.service.AuthService;
-import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@PermitAll
 public record AuthController(
         AuthService authService
 ) {
@@ -23,5 +21,12 @@ public record AuthController(
                 .ok(authService.validateToken(token, type));
     }
 
+
+    @GetMapping("reset-password")
+    ResponseEntity<?> requestToResetPassword(
+
+    ) {
+        return null;
+    }
 
 }
