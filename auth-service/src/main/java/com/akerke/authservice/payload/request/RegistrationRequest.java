@@ -1,5 +1,6 @@
 package com.akerke.authservice.payload.request;
 
+import com.akerke.authservice.annotations.PhoneNumber;
 import jakarta.validation.constraints.*;
 
 /**
@@ -15,11 +16,7 @@ public record RegistrationRequest(
         String surname,
         @Email
         String email,
-
-        @Pattern(
-                regexp = "^\\d{3}-\\d{3}-\\d{4}$",
-                message = "Invalid phone number format. Use ###-###-####." // todo fix regexp
-        )
+        @PhoneNumber
         String phone,
         @Size(min = 8)
         String password

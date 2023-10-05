@@ -1,9 +1,14 @@
 package com.akerke.authservice.service.impl;
 
+import com.akerke.authservice.constants.EmailLinkMode;
 import com.akerke.authservice.constants.TokenType;
 import com.akerke.authservice.entity.User;
+import com.akerke.authservice.kafka.KafkaEmailMessageDetails;
+import com.akerke.authservice.kafka.KafkaProducer;
+import com.akerke.authservice.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.payload.response.StatusResponse;
 import com.akerke.authservice.payload.response.TokenResponse;
+import com.akerke.authservice.security.EmailLinkHelper;
 import com.akerke.authservice.security.JwtUtil;
 import com.akerke.authservice.service.AuthService;
 import com.akerke.authservice.service.UserService;
@@ -11,16 +16,24 @@ import com.akerke.authservice.utils.Pair;
 import com.akerke.authservice.utils.TokenDetails;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.akerke.authservice.reflection.MapUtils.toMap;
 
+import static com.akerke.authservice.constants.AppConstants.*;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final JwtUtil jwt;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final KafkaProducer kafka;
+    private final EmailLinkHelper linkHelper;
 
     public static final String TOKEN_TYPE_CLAIM_KEY = "token_type";
 
@@ -39,14 +52,14 @@ public class AuthServiceImpl implements AuthService {
 
             switch (type) {
                 case ACCESS_TOKEN -> {
-                    return new StatusResponse(true, user);
+                    return StatusResponse.success(user);
                 }
                 case REFRESH_TOKEN -> {
-                    return new StatusResponse(true, token(user));
+                    return StatusResponse.success(token(user));
                 }
                 case VERIFICATION_TOKEN -> {
                     userService.verifyEmail(user);
-                    return new StatusResponse(true, "email verified");
+                    return StatusResponse.success("email verified");
                 }
                 default -> {
                     throw new IllegalArgumentException();
@@ -54,11 +67,9 @@ public class AuthServiceImpl implements AuthService {
             }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return new StatusResponse(
-                    false, e.getMessage()
-            );
+            return StatusResponse.fail(e.getMessage());
         }
+
     }
 
     @Override
@@ -78,6 +89,41 @@ public class AuthServiceImpl implements AuthService {
                 user
         );
     }
+
+    @Override
+    public StatusResponse resetPassword(
+            ResetPasswordRequest req
+    ) {
+        var user = userService.findByEmail(req.email());
+
+        var validPassword = passwordEncoder.matches(req.oldPassword(), user.getPassword());
+
+        if (!validPassword) {
+            return StatusResponse.fail("invalid password");
+        }
+
+        user.setPassword(passwordEncoder.encode(req.newPassword()));
+        userService.update(user);
+        return StatusResponse.success();
+    }
+
+    @Override
+    public StatusResponse forgotPassword(String email) {
+        var user = userService.findByEmail(email);
+        log.info("user {} forgot password", user.getId());
+
+        var msg = KafkaEmailMessageDetails
+                .builder()
+                .subject("Forgot password action")
+                .recipient(email)
+                .msgBody(linkHelper.link(EmailLinkMode.FORGOT_PASSWORD_LINK, email))
+                .build();
+
+        kafka.produce(KAFKA_PASSWORD_FORGOT_TOPIC, msg);
+
+        return StatusResponse.success();
+    }
+
 
     private Boolean sameTokenClaims(Claims claims, TokenType type) {
         return claims.containsKey(TOKEN_TYPE_CLAIM_KEY) && type == TokenType.valueOf(claims.get(TOKEN_TYPE_CLAIM_KEY).toString());

@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+  application:
+    name: api-gateway
+  auth-service:
+    url: http://url # todo
+
+
+server:
+  port: 4317

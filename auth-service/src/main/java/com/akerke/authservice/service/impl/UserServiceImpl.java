@@ -80,4 +80,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(User.class));
     }
+
+    @Override
+    public void update(User user) {
+        userRepository.save(user);
+    }
 }

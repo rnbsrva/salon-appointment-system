@@ -38,10 +38,10 @@ public class EmailListener {
             autoCreateTopics = "false",
             topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE
     )
-    @KafkaListener(topics = "reset_password", groupId = "0")
-    Mono<Void> listerResetPassword(EmailDetails emailDetails) {
+    @KafkaListener(topics = "forgot_password", groupId = "0")
+    Mono<Void> listenForgotPassword(EmailDetails emailDetails) {
         log.info("new reset password request");
-        return emailService.sendSimpleMail(emailDetails, MessageType.RESET_PASSWORD);
+        return emailService.sendSimpleMail(emailDetails, MessageType.FORGOT_PASSWORD);
     }
 
     @DltHandler

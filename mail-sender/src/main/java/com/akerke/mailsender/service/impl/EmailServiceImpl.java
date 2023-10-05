@@ -34,7 +34,10 @@ public class EmailServiceImpl implements EmailService {
     private String sender;
 
     @Override
-    public Mono<Void> sendSimpleMail(EmailDetails details, MessageType messageType) {
+    public Mono<Void> sendSimpleMail(
+            EmailDetails details,
+            MessageType messageType
+    ) {
         var msg = javaMailSender.createMimeMessage();
         try {
             var helper = new MimeMessageHelper(
@@ -54,9 +57,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setFrom(sender);
             helper.setSubject(details.subject());
 
-            System.out.println("a");
             javaMailSender.send(msg);
-            System.out.println("b");
 
             log.info("Mail Sent Successfully");
         } catch (Exception e) {
