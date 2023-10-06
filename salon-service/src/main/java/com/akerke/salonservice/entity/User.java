@@ -28,16 +28,17 @@ public class User extends DateAudit {
     private Long tgId;
 
     @OneToMany(
-            mappedBy = "users",
-            cascade = CascadeType.ALL
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<Appointment> appointments;
 
-    public User(String name, String surname, String phone, Gender gender, String email) {
-        this.name = name;
-        this.surname = surname;
-        this.phone = phone;
-        this.gender = gender;
-        this.email = email;
-    }
+    @OneToMany(
+            mappedBy = "owner",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Salon> salons;
+
 }

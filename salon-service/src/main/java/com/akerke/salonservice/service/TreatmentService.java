@@ -4,11 +4,10 @@ import com.akerke.salonservice.dto.TreatmentDTO;
 import com.akerke.salonservice.entity.Treatment;
 
 import java.util.List;
-import java.util.concurrent.TransferQueue;
 
 public interface TreatmentService {
 
-    void save (TreatmentDTO treatmentDTO);
+    Treatment save (TreatmentDTO treatmentDTO);
 
     void update (TreatmentDTO treatmentDTO, Long id);
 

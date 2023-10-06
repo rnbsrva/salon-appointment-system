@@ -1,7 +1,6 @@
 package com.akerke.salonservice.service.impl;
 
 import com.akerke.salonservice.dto.FeedbackDTO;
-import com.akerke.salonservice.entity.Appointment;
 import com.akerke.salonservice.entity.Feedback;
 import com.akerke.salonservice.exception.EntityNotFoundException;
 import com.akerke.salonservice.mapper.FeedbackMapper;
@@ -9,7 +8,6 @@ import com.akerke.salonservice.repository.FeedbackRepository;
 import com.akerke.salonservice.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -22,18 +20,20 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 
     @Override
-    public void save(FeedbackDTO feedbackDTO) {
-
+    public Feedback save(FeedbackDTO feedbackDTO) {
+        return feedbackRepository.save(feedbackMapper.toModel(feedbackDTO));
     }
 
     @Override
     public void update(FeedbackDTO feedbackDTO, Long id) {
-
+        var feedback = this.getById(id);
+        feedbackMapper.update(feedbackDTO, feedback);
+        feedbackRepository.save(feedback);
     }
 
     @Override
     public void delete(Long id) {
-
+        feedbackRepository.delete(this.getById(id));
     }
 
     @Override

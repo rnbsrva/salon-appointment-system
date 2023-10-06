@@ -15,9 +15,9 @@ public interface SalonMapper {
     @Mapping(target = "masters", expression = "java(new ArrayList<Master>())")
     @Mapping(target = "treatments", expression = "java(new ArrayList<Treatment>())")
     @Mapping(target = "workDays", expression = "java(new ArrayList<WorkDay>())")
-    @Mapping(target = "feedbacks", expression = "java(new ArrayList<Feedback>())")
     Salon toModel(SalonDTO salonDTO);
 
+    @Mapping(target = "ownerId", expression = "java(salon.getOwner().getId())")
     SalonDTO toDTO (Salon salon);
 
     @Mapping(target = "id", ignore = true)

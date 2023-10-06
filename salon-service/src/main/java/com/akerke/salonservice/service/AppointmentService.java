@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    void save (AppointmentDTO appointmentDTO);
+    Appointment save (AppointmentDTO appointmentDTO);
 
     void update (AppointmentDTO appointmentDTO, Long id);
 

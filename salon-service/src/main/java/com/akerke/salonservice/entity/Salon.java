@@ -1,6 +1,8 @@
 package com.akerke.salonservice.entity;
 
 import com.akerke.salonservice.entity.audit.DateAudit;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +20,16 @@ public class Salon extends DateAudit {
     private String name;
     private String phone;
     private String email;
-    private String address;
 
-    @Column(name = "description", length = 1000)
+    @OneToOne
+    private Address address;
+
+    @Column( length = 1000)
     private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonProperty("ownerId")
+    private User owner;
 
 
     @OneToMany(
@@ -32,20 +40,23 @@ public class Salon extends DateAudit {
 
     @OneToMany(
             mappedBy = "salon",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+
     )
     private List<Treatment> treatments;
 
     @OneToMany(
             mappedBy = "salon",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+
     )
     private List<WorkDay> workDays;
 
-    @OneToMany(
-            mappedBy = "salon",
-            cascade = CascadeType.ALL
-    )
-    private List<Feedback> feedbacks;
+    @JsonGetter("ownerId")
+    public Long getUserId(){
+        return owner.getId();
+    }
 
 }

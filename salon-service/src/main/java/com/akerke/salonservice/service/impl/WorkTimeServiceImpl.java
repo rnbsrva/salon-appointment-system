@@ -1,7 +1,6 @@
 package com.akerke.salonservice.service.impl;
 
 import com.akerke.salonservice.dto.WorkTimeDTO;
-import com.akerke.salonservice.entity.Appointment;
 import com.akerke.salonservice.entity.WorkTime;
 import com.akerke.salonservice.exception.EntityNotFoundException;
 import com.akerke.salonservice.mapper.WorkTimeMapper;
@@ -20,13 +19,13 @@ public class WorkTimeServiceImpl implements WorkTimeService {
     private final WorkTimeMapper workTimeMapper;
 
     @Override
-    public void save(WorkTimeDTO workTimeDTO) {
-
+    public WorkTime save(WorkTimeDTO workTimeDTO) {
+        return workTimeRepository.save(workTimeMapper.toModel(workTimeDTO));
     }
 
     @Override
     public void delete(Long id) {
-
+        workTimeRepository.delete(this.getById(id));
     }
 
     @Override
@@ -41,6 +40,8 @@ public class WorkTimeServiceImpl implements WorkTimeService {
 
     @Override
     public void update(WorkTimeDTO workTimeDTO, Long id) {
-
+        var workTime = this.getById(id);
+        workTimeMapper.update(workTimeDTO, workTime);
+        workTimeRepository.save(workTime);
     }
 }

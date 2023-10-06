@@ -20,18 +20,20 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
     @Override
-    public void save(AppointmentDTO appointmentDTO) {
-
+    public Appointment save(AppointmentDTO appointmentDTO) {
+        return appointmentRepository.save(appointmentMapper.toModel(appointmentDTO));
     }
 
     @Override
     public void update(AppointmentDTO appointmentDTO, Long id) {
-
+        var appointment = this.getById(id);
+        appointmentMapper.update(appointmentDTO, appointment);
+        appointmentRepository.save(appointment);
     }
 
     @Override
     public void delete(Long id) {
-
+        appointmentRepository.delete(this.getById(id));
     }
 
     @Override

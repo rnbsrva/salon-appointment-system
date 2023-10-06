@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface WorkTimeService {
 
-    void save(WorkTimeDTO workTimeDTO);
+    WorkTime save(WorkTimeDTO workTimeDTO);
 
     void delete(Long id);
 

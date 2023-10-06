@@ -20,19 +20,25 @@ public class Treatment extends DateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private Salon salon;
+
     private Long price;
     private Long minutes;
     private TreatmentType treatmentType;
 
     @OneToMany(
             mappedBy = "treatment",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<Appointment> appointments;
 
-    public Treatment(Long price, Long minutes,  TreatmentType treatmentType) {
-        this.price = price;
-        this.minutes = minutes;
-        this.treatmentType = treatmentType;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "master_treatments",
+            joinColumns = @JoinColumn(name = "treatment_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "master_id", referencedColumnName = "id")
+    )
+    private List<Master> masters;
 }

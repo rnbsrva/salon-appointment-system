@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MasterService {
 
-    void save (MasterDTO masterDTO);
+    Master save (MasterDTO masterDTO);
 
     void delete (Long id);
 

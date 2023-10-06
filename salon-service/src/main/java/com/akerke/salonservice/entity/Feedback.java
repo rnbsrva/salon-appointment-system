@@ -19,6 +19,9 @@ public class Feedback {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Master master;
+
     private Integer rating;
 
     @ManyToOne

@@ -11,7 +11,7 @@ public interface SalonService {
 
     List<Salon> getAll ();
 
-    void save(SalonDTO salonDTO);
+    Salon save(SalonDTO salonDTO);
 
     void update(SalonDTO salonDTO, Long id);
 

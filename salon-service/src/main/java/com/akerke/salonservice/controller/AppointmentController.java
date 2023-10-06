@@ -1,47 +1,46 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.dto.SalonDTO;
-import com.akerke.salonservice.entity.Salon;
-import com.akerke.salonservice.service.SalonService;
+import com.akerke.salonservice.dto.AppointmentDTO;
+import com.akerke.salonservice.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("salon")
+@RequestMapping("appointment")
 @RequiredArgsConstructor
-public class SalonController {
+@RestController
+public class AppointmentController {
 
-    private final SalonService salonService;
+    private final AppointmentService appointmentService;
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody SalonDTO salonDTO
-            ){
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(salonService.save(salonDTO));
+            @RequestBody AppointmentDTO appointmentDTO
+    ){
+        return  ResponseEntity.status(HttpStatus.CREATED)
+                .body(appointmentService.save(appointmentDTO));
     }
+
 
     @GetMapping("{id}")
     ResponseEntity<?> getById (
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(salonService.getById(id));
+        return ResponseEntity.ok(appointmentService.getById(id));
     }
 
     @GetMapping()
     ResponseEntity<?> getAll (){
-        return  ResponseEntity.ok(salonService.getAll());
+        return  ResponseEntity.ok(appointmentService.getAll());
     }
 
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
     ResponseEntity<?> update (
-            @RequestBody SalonDTO salonDTO,
+            @RequestBody AppointmentDTO appointmentDTO,
             @PathVariable Long id
     ) {
-        salonService.update(salonDTO, id);
+        appointmentService.update(appointmentDTO, id);
         return ResponseEntity.accepted().build();
     }
 
@@ -49,7 +48,7 @@ public class SalonController {
     ResponseEntity<?> delete (
             @PathVariable Long id
     ){
-        salonService.delete(id);
+        appointmentService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

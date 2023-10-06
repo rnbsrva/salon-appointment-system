@@ -1,47 +1,46 @@
 package com.akerke.salonservice.controller;
 
+import com.akerke.salonservice.dto.MasterDTO;
 import com.akerke.salonservice.dto.SalonDTO;
-import com.akerke.salonservice.entity.Salon;
-import com.akerke.salonservice.service.SalonService;
+import com.akerke.salonservice.service.MasterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("salon")
+@RestController
+@RequestMapping("master")
 @RequiredArgsConstructor
-public class SalonController {
+public class MasterController {
 
-    private final SalonService salonService;
+    private final MasterService masterService;
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody SalonDTO salonDTO
-            ){
+            @RequestBody MasterDTO masterDTO
+    ){
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(salonService.save(salonDTO));
+                .body(masterService.save(masterDTO));
     }
 
     @GetMapping("{id}")
     ResponseEntity<?> getById (
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(salonService.getById(id));
+        return ResponseEntity.ok(masterService.getById(id));
     }
 
     @GetMapping()
     ResponseEntity<?> getAll (){
-        return  ResponseEntity.ok(salonService.getAll());
+        return  ResponseEntity.ok(masterService.getAll());
     }
 
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
     ResponseEntity<?> update (
-            @RequestBody SalonDTO salonDTO,
+            @RequestBody MasterDTO masterDTO,
             @PathVariable Long id
     ) {
-        salonService.update(salonDTO, id);
+        masterService.update(masterDTO, id);
         return ResponseEntity.accepted().build();
     }
 
@@ -49,7 +48,8 @@ public class SalonController {
     ResponseEntity<?> delete (
             @PathVariable Long id
     ){
-        salonService.delete(id);
+        masterService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
 }

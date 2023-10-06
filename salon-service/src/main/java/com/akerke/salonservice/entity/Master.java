@@ -16,6 +16,7 @@ import java.util.List;
 public class Master extends DateAudit {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
@@ -30,22 +31,34 @@ public class Master extends DateAudit {
     @ManyToOne
     private Salon salon;
 
-    @OneToMany(
-            mappedBy ="master",
-            cascade = CascadeType.ALL
+    @ManyToMany
+    @JoinTable(
+            name = "master_treatments",
+            joinColumns = @JoinColumn(name = "master_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "treatment_id", referencedColumnName = "id")
     )
     private List<Treatment> treatments;
 
     @OneToMany(
             mappedBy ="master",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<Appointment> appointments;
 
     @OneToMany(
             mappedBy = "master",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<WorkTime> workTimes;
+
+
+    @OneToMany(
+            mappedBy = "master",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Feedback> feedbacks;
 
 }

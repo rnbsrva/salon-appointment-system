@@ -1,47 +1,46 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.dto.SalonDTO;
-import com.akerke.salonservice.entity.Salon;
-import com.akerke.salonservice.service.SalonService;
+import com.akerke.salonservice.dto.WorkDayDTO;
+import com.akerke.salonservice.service.WorkDayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("salon")
+@RestController
 @RequiredArgsConstructor
-public class SalonController {
+@RequestMapping("workday")
+public class WorkDayController {
 
-    private final SalonService salonService;
+    private final WorkDayService workDayService;
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody SalonDTO salonDTO
-            ){
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(salonService.save(salonDTO));
+            @RequestBody WorkDayDTO workDayDTO
+    ){
+        return  ResponseEntity.status(HttpStatus.CREATED)
+                .body(workDayService.save(workDayDTO));
     }
+
 
     @GetMapping("{id}")
     ResponseEntity<?> getById (
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(salonService.getById(id));
+        return ResponseEntity.ok(workDayService.getById(id));
     }
 
     @GetMapping()
     ResponseEntity<?> getAll (){
-        return  ResponseEntity.ok(salonService.getAll());
+        return  ResponseEntity.ok(workDayService.getAll());
     }
 
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
     ResponseEntity<?> update (
-            @RequestBody SalonDTO salonDTO,
+            @RequestBody WorkDayDTO workDayDTO,
             @PathVariable Long id
     ) {
-        salonService.update(salonDTO, id);
+        workDayService.update(workDayDTO, id);
         return ResponseEntity.accepted().build();
     }
 
@@ -49,7 +48,7 @@ public class SalonController {
     ResponseEntity<?> delete (
             @PathVariable Long id
     ){
-        salonService.delete(id);
+        workDayService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

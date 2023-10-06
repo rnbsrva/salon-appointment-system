@@ -25,10 +25,14 @@ public class WorkDay extends DateAudit {
     private Date workStartTime;
     private Date workEndTime;
     private Boolean isHoliday;
+    @ManyToOne
+    private Salon salon;
 
     @OneToMany(
-            mappedBy = "work_day",
-            cascade = CascadeType.ALL
+            mappedBy = "workDay",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+
     )
     private List<WorkTime> workTimes;
 

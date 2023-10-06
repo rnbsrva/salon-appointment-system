@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FeedbackService {
 
-    void save (FeedbackDTO feedbackDTO);
+    Feedback save (FeedbackDTO feedbackDTO);
 
     void update (FeedbackDTO feedbackDTO, Long id);
 

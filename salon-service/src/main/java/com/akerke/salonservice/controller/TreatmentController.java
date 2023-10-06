@@ -1,47 +1,47 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.dto.SalonDTO;
-import com.akerke.salonservice.entity.Salon;
-import com.akerke.salonservice.service.SalonService;
+import com.akerke.salonservice.dto.MasterDTO;
+import com.akerke.salonservice.dto.TreatmentDTO;
+import com.akerke.salonservice.service.TreatmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("salon")
+@RestController
+@RequestMapping("treatment")
 @RequiredArgsConstructor
-public class SalonController {
+public class TreatmentController {
 
-    private final SalonService salonService;
+    private final TreatmentService treatmentService;
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody SalonDTO salonDTO
+            @RequestBody TreatmentDTO treatmentDTO
             ){
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(salonService.save(salonDTO));
+        return  ResponseEntity.status(HttpStatus.CREATED)
+                .body(treatmentService.save(treatmentDTO));
     }
+
 
     @GetMapping("{id}")
     ResponseEntity<?> getById (
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(salonService.getById(id));
+        return ResponseEntity.ok(treatmentService.getById(id));
     }
 
     @GetMapping()
     ResponseEntity<?> getAll (){
-        return  ResponseEntity.ok(salonService.getAll());
+        return  ResponseEntity.ok(treatmentService.getAll());
     }
 
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
     ResponseEntity<?> update (
-            @RequestBody SalonDTO salonDTO,
+            @RequestBody TreatmentDTO treatmentDTO,
             @PathVariable Long id
     ) {
-        salonService.update(salonDTO, id);
+        treatmentService.update(treatmentDTO, id);
         return ResponseEntity.accepted().build();
     }
 
@@ -49,7 +49,8 @@ public class SalonController {
     ResponseEntity<?> delete (
             @PathVariable Long id
     ){
-        salonService.delete(id);
+        treatmentService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
 }
