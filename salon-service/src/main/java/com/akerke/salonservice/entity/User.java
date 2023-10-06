@@ -25,6 +25,7 @@ public class User extends DateAudit {
     private String phone;
     private Gender gender;
     private String email;
+    private Long tgId;
 
     @OneToMany(
             mappedBy = "users",

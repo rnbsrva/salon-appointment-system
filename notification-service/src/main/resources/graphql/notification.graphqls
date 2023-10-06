@@ -1,0 +1,21 @@
+type Notification{
+    id: ID!
+    recipientId: Int!
+    title: String!
+    message: String!
+    phoneNumber: String!
+    type: String!
+    time: String!
+    recipientTgId:Int!
+}
+
+type Query{
+    getNotifications(recipientId:ID!):[Notification]
+    getNotificationById(id:ID!):Notification!
+}
+
+enum NotificationType{
+    todo
+}
+
+

@@ -1,12 +1,15 @@
 package com.akerke.notificationservice.tb.bot;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import static com.akerke.notificationservice.tb.helper.KeyboardHelper.greetingReplyKeyboardMarkup;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +24,7 @@ public class NotificationBot extends TelegramLongPollingBot {
 
 
     @Override
-    public String getBotUsername() {
+    public String getBotUsername(){
         return this.botUsername;
     }
 
@@ -34,6 +37,17 @@ public class NotificationBot extends TelegramLongPollingBot {
     public void onUpdateReceived(
             Update update
     ) {
-
+        if ("/start".equals(update.getMessage().getText())){
+            try {
+                var m = new SendMessage();
+                m.setChatId(String.valueOf(update.getMessage().getChatId()));
+                m.setReplyMarkup(greetingReplyKeyboardMarkup());
+                m.setText("choose");
+                execute(m);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
+
 }

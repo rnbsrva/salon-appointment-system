@@ -11,3 +11,9 @@ spring:
       token: 6659190171:AAG5V_m00IZwkuVw63oVXYUA1XlhM4mtdAU
   datasource:
     url: jdbc:postgresql://localhost:5432/salon
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
