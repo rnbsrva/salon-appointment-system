@@ -40,6 +40,12 @@ public enum TokenType implements Expirable { // todo read expiration minute from
         }
     },
 
+    FORGOT_PASSWORD_TOKEN(HS384, "forgot_password_token"){
+        @Override
+        public Integer getExpirationMinute() {
+            return 10;
+        }
+    },
 
     /**
      * Represents a verification token.
@@ -47,7 +53,7 @@ public enum TokenType implements Expirable { // todo read expiration minute from
      * They have a short expiration time to ensure timely email verification.
      * Verification tokens help verify the authenticity of the email address provided during registration.
      */
-    VERIFICATION_TOKEN(HS256, "verification_token") {
+    EMAIL_VERIFICATION_TOKEN(HS256, "verification_token") {
         @Override
         public Integer getExpirationMinute() {
             return 10;
@@ -57,6 +63,8 @@ public enum TokenType implements Expirable { // todo read expiration minute from
     /**
      * The signature algorithm used for signing tokens of this type.
      */
+
+
     private final SignatureAlgorithm algorithm;
     private final String name;
 

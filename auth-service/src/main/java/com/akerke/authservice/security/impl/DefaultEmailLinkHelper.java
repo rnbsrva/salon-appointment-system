@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static com.akerke.authservice.service.impl.AuthServiceImpl.TOKEN_TYPE_CLAIM_KEY;
+import static com.akerke.authservice.security.validate.TokenValidator.TOKEN_TYPE_CLAIM_KEY;
 
 
 @Component
@@ -28,10 +28,11 @@ public class DefaultEmailLinkHelper implements EmailLinkHelper {
             String email
     ) {
 
+        var tokenType = mode == EmailLinkMode.FORGOT_PASSWORD_LINK ? TokenType.FORGOT_PASSWORD_TOKEN : TokenType.EMAIL_VERIFICATION_TOKEN;
         var token = jwt.generateToken(
-                TokenType.VERIFICATION_TOKEN,
+                tokenType,
                 Map.of(
-                        TOKEN_TYPE_CLAIM_KEY, TokenType.VERIFICATION_TOKEN
+                        TOKEN_TYPE_CLAIM_KEY, tokenType.getName()
                 ),
                 email
         );

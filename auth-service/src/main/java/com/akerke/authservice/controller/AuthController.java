@@ -1,6 +1,5 @@
 package com.akerke.authservice.controller;
 
-import com.akerke.authservice.constants.EmailLinkMode;
 import com.akerke.authservice.constants.TokenType;
 import com.akerke.authservice.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.service.AuthService;
@@ -42,7 +41,7 @@ public record AuthController(
     ResponseEntity<?> forgotPassword(
             @RequestParam("verification_token") String verificationToken
     ) {
-return null;// TODO: 10/5/2023
+        return null;// TODO: 10/5/2023
     }
 
 
@@ -50,7 +49,7 @@ return null;// TODO: 10/5/2023
     ResponseEntity<?> emailConfirmation(
             @RequestParam("verification_token") String verificationToken
     ) {
-        var response = authService.validateToken(verificationToken, TokenType.VERIFICATION_TOKEN);
+        var response = authService.validateToken(verificationToken, TokenType.EMAIL_VERIFICATION_TOKEN);
         return ResponseEntity
                 .ok(response);
     }

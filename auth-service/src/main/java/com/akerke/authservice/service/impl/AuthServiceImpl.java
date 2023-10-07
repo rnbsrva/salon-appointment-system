@@ -10,22 +10,22 @@ import com.akerke.authservice.payload.response.StatusResponse;
 import com.akerke.authservice.payload.response.TokenResponse;
 import com.akerke.authservice.security.EmailLinkHelper;
 import com.akerke.authservice.security.JwtUtil;
+import com.akerke.authservice.security.validate.TokenValidator;
 import com.akerke.authservice.service.AuthService;
 import com.akerke.authservice.service.UserService;
-import com.akerke.authservice.utils.Pair;
-import com.akerke.authservice.utils.TokenDetails;
-import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static com.akerke.authservice.reflection.MapUtils.toMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 
 import static com.akerke.authservice.constants.AppConstants.*;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class AuthServiceImpl implements AuthService {
 
@@ -34,60 +34,29 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final KafkaProducer kafka;
     private final EmailLinkHelper linkHelper;
+    private final Map<TokenType, TokenValidator> tokenValidator;
 
-    public static final String TOKEN_TYPE_CLAIM_KEY = "token_type";
+
+    public AuthServiceImpl(JwtUtil jwt, UserService userService, PasswordEncoder passwordEncoder,
+                           KafkaProducer kafka, EmailLinkHelper linkHelper, List<TokenValidator> tokenValidators
+    ) {
+        this.jwt = jwt;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.kafka = kafka;
+        this.linkHelper = linkHelper;
+        this.tokenValidator = tokenValidators.stream().collect(Collectors.toMap(TokenValidator::getType, Function.identity()));
+    }
 
     @Override
     public StatusResponse validateToken(String token, TokenType type) {
-        try {
-            var claims = jwt.extractAllClaims(token);
-            var sameTokenClaim = sameTokenClaims(claims, type);
-
-            if (!sameTokenClaim) {
-                return new StatusResponse(false, "invalid claims");
-            }
-
-            var email = claims.getSubject();
-            var user = userService.findByEmail(email);
-
-            switch (type) {
-                case ACCESS_TOKEN -> {
-                    return StatusResponse.success(user);
-                }
-                case REFRESH_TOKEN -> {
-                    return StatusResponse.success(token(user));
-                }
-                case VERIFICATION_TOKEN -> {
-                    userService.verifyEmail(user);
-                    return StatusResponse.success("email verified");
-                }
-                default -> {
-                    throw new IllegalArgumentException();
-                }
-            }
-
-        } catch (Exception e) {
-            return StatusResponse.fail(e.getMessage());
-        }
-
+        var validator = tokenValidator.get(type);
+        return validator.validate(token);
     }
 
     @Override
     public TokenResponse token(User user) {
-        var accessTokenClaims = toMap(user, new Pair(TOKEN_TYPE_CLAIM_KEY, TokenType.ACCESS_TOKEN));
-        var refreshTokenClaims = toMap(user, new Pair(TOKEN_TYPE_CLAIM_KEY, TokenType.REFRESH_TOKEN));
-
-        return new TokenResponse(
-                new TokenDetails(
-                        TokenType.ACCESS_TOKEN,
-                        jwt.generateToken(TokenType.ACCESS_TOKEN, accessTokenClaims, user.getEmail())
-                ),
-                new TokenDetails(
-                        TokenType.REFRESH_TOKEN,
-                        jwt.generateToken(TokenType.REFRESH_TOKEN, refreshTokenClaims, user.getEmail())
-                ),
-                user
-        );
+        return jwt.generateTokenResponse(user);
     }
 
     @Override
@@ -122,11 +91,6 @@ public class AuthServiceImpl implements AuthService {
         kafka.produce(KAFKA_PASSWORD_FORGOT_TOPIC, msg);
 
         return StatusResponse.success();
-    }
-
-
-    private Boolean sameTokenClaims(Claims claims, TokenType type) {
-        return claims.containsKey(TOKEN_TYPE_CLAIM_KEY) && type == TokenType.valueOf(claims.get(TOKEN_TYPE_CLAIM_KEY).toString());
     }
 
 

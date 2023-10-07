@@ -1,6 +1,10 @@
 package com.akerke.authservice.security;
 
 import com.akerke.authservice.constants.TokenType;
+import com.akerke.authservice.entity.User;
+import com.akerke.authservice.payload.response.TokenResponse;
+import com.akerke.authservice.utils.Pair;
+import com.akerke.authservice.utils.TokenDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -18,12 +22,32 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.akerke.authservice.reflection.MapUtils.toMap;
+import static com.akerke.authservice.security.validate.TokenValidator.TOKEN_TYPE_CLAIM_KEY;
+
 @Component
 @Slf4j
 public class JwtUtil {
 
     private @Value("${auth.jwt.issuer}") String issuer;
     private @Value("${auth.jwt.secret}") String secret;
+
+    public TokenResponse generateTokenResponse(User user) {
+        var accessTokenClaims = toMap(user, new Pair(TOKEN_TYPE_CLAIM_KEY, TokenType.ACCESS_TOKEN));
+        var refreshTokenClaims = toMap(user, new Pair(TOKEN_TYPE_CLAIM_KEY, TokenType.REFRESH_TOKEN));
+
+        return new TokenResponse(
+                new TokenDetails(
+                        TokenType.ACCESS_TOKEN,
+                        generateToken(TokenType.ACCESS_TOKEN, accessTokenClaims, user.getEmail())
+                ),
+                new TokenDetails(
+                        TokenType.REFRESH_TOKEN,
+                        generateToken(TokenType.REFRESH_TOKEN, refreshTokenClaims, user.getEmail())
+                ),
+                user
+        );
+    }
 
     public String generateToken(TokenType token, Map<String, Object> claims, String subject) {
         var expiration = Date.from(ZonedDateTime.now().plusMinutes(token.getExpirationMinute()).toInstant());

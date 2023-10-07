@@ -20,7 +20,7 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
   application:
     name: auth-service
-    root-url: ${server.schema}:${server.host}:${server.port}${server.servlet.context-path:}
+    root-url: ${server.schema}:${server.host}:${server.port}${server.servlet.context-path}
 
 server:
   schema: http
