@@ -24,6 +24,8 @@ public class WorkTime {
     private Boolean isBreak;
     @ManyToOne
     private WorkDay workDay;
+    @ManyToOne
+    private Master master;
 
     public WorkTime(Date startTime, Date endTime, Boolean isBreak, WorkDay workDay) {
         this.startTime = startTime;

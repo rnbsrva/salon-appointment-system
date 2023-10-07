@@ -16,9 +16,14 @@ import java.util.ArrayList;
         )
 public interface MasterMapper {
 
-    @Mapping(target = "feedbacks", expression = "java(new ArrayList<Feedback>())")
+    @Mapping(target = "feedbacks", expression = "java(new ArrayList<>())")
+    @Mapping(target = "workTimes", expression = "java(new ArrayList<>())")
+    @Mapping(target = "appointments", expression = "java(new ArrayList<>())")
+    @Mapping(target = "treatments", expression = "java(new ArrayList<>())")
     Master toModel (MasterDTO masterDTO);
 
+    @Mapping(target = "userId", expression = "java(master.getUser().getId())")
+    @Mapping(target = "salonId", expression = "java(master.getSalon().getId())")
     MasterDTO toDTO (Master master);
 
     @Mapping(target = "id", ignore = true)

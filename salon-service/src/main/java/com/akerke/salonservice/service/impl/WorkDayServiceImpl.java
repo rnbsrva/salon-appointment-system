@@ -1,7 +1,6 @@
 package com.akerke.salonservice.service.impl;
 
 import com.akerke.salonservice.dto.WorkDayDTO;
-import com.akerke.salonservice.entity.Appointment;
 import com.akerke.salonservice.entity.WorkDay;
 import com.akerke.salonservice.exception.EntityNotFoundException;
 import com.akerke.salonservice.mapper.WorkDayMapper;
@@ -20,18 +19,20 @@ public class WorkDayServiceImpl implements WorkDayService {
     private final WorkDayMapper workDayMapper;
 
     @Override
-    public void save(WorkDayDTO workDayDTO) {
-
+    public WorkDay save(WorkDayDTO workDayDTO) {
+        return workDayRepository.save(workDayMapper.toModel(workDayDTO));
     }
 
     @Override
     public void update(WorkDayDTO workDayDTO, Long id) {
-
+        var workDay = this.getById(id);
+        workDayMapper.update(workDayDTO, workDay);
+        workDayRepository.save(workDay);
     }
 
     @Override
     public void delete(Long id) {
-
+        workDayRepository.delete(this.getById(id));
     }
 
     @Override

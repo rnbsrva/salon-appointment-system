@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface WorkDayService {
 
-    void save(WorkDayDTO workDayDTO);
+    WorkDay save(WorkDayDTO workDayDTO);
 
     void update (WorkDayDTO workDayDTO, Long id);
 

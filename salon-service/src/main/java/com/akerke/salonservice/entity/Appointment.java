@@ -17,7 +17,7 @@ public class Appointment extends DateAudit {
 
     @ManyToOne
     private Treatment treatment;
-    @OneToOne
+    @ManyToOne
     private User user;
     @ManyToOne
     private Master master;

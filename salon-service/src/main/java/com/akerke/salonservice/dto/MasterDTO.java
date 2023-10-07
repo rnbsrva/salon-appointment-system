@@ -4,7 +4,7 @@ import java.util.Date;
 
 public record MasterDTO (
         Long userId,
-        Long masterId,
+        Long salonId,
         String position,
         Date experienceDate,
         String about
