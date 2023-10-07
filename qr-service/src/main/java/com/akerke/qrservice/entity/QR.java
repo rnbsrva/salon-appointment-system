@@ -15,7 +15,7 @@ public class QR {
     private String link;
     private String base64Data;
 
-    public  QR (String link, String base64Data){
+    public QR(String link, String base64Data) {
         this.link = link;
         this.base64Data = base64Data;
     }
