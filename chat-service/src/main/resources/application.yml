@@ -1,1 +1,14 @@
-
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  application:
+    name: chat-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/salon_chat
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}

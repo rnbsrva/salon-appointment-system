@@ -1,4 +1,4 @@
-package com.akerke.chatservice.interceptor;
+package com.akerke.chatservice.websocket;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
