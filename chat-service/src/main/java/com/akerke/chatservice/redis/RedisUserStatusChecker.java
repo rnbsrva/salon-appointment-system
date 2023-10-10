@@ -23,12 +23,12 @@ public class RedisUserStatusChecker {
                 .retainAll(userIdList);
     }
 
-    public void online(Long userId) {
-        redisCommands.sadd(USER_ONLINE_SET, String.valueOf(userId));
+    public void online(String userId) {
+        redisCommands.sadd(USER_ONLINE_SET, userId);
     }
 
-    public void offline(Long userId) {
-        redisCommands.srem(USER_ONLINE_SET, String.valueOf(userId));
+    public void offline(String userId) {
+        redisCommands.srem(USER_ONLINE_SET, userId);
     }
 
 }

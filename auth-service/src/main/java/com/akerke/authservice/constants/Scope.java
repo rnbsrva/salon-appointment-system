@@ -16,7 +16,6 @@ public enum Scope {
     SALON_WRITE("salon.write"),
     SALON_DELETE("salon.delete");
 
-
     private final String name;
 
     public static Set<Scope> defaultSet() {
@@ -24,5 +23,4 @@ public enum Scope {
                 Scope.SCOPE_READ
         );
     }
-
 }

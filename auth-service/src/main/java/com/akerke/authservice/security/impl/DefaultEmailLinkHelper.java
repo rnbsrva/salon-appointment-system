@@ -28,7 +28,7 @@ public class DefaultEmailLinkHelper implements EmailLinkHelper {
             String email
     ) {
 
-        var tokenType = mode == EmailLinkMode.FORGOT_PASSWORD_LINK ? TokenType.FORGOT_PASSWORD_TOKEN : TokenType.EMAIL_VERIFICATION_TOKEN;
+        var tokenType = tokenType(mode);
         var token = jwt.generateToken(
                 tokenType,
                 Map.of(
@@ -38,6 +38,10 @@ public class DefaultEmailLinkHelper implements EmailLinkHelper {
         );
 
         return finalUrl(mode, token);
+    }
+
+    private TokenType tokenType(EmailLinkMode mode) {
+        return mode == EmailLinkMode.FORGOT_PASSWORD_LINK ? TokenType.FORGOT_PASSWORD_TOKEN : TokenType.EMAIL_VERIFICATION_TOKEN;
     }
 
     private String finalUrl(EmailLinkMode mode, String token) {

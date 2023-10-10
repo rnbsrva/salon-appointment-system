@@ -2,12 +2,17 @@ package com.akerke.authservice.security.validate;
 
 import com.akerke.authservice.constants.TokenType;
 import com.akerke.authservice.payload.response.StatusResponse;
+import com.akerke.authservice.repository.UserRepository;
+import com.akerke.authservice.security.JwtUtil;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ForgotPasswordTokenValidator implements TokenValidator {
+public class ForgotPasswordTokenValidator extends TokenValidator {
 
-    @Override
+    public ForgotPasswordTokenValidator(JwtUtil jwt, UserRepository userRepository) {
+        super(jwt, userRepository);
+    }
+
     public StatusResponse validate(String token) {
         return null;
     }

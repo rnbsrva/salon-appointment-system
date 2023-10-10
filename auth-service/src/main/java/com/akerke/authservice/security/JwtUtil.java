@@ -71,7 +71,6 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
 
-
     public Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()

@@ -15,6 +15,7 @@ services:
       MINIO_CONSOLE_ADDRESS: ':9090'
     command: minio server /data
   zookeeper:
+    container_name: kafka
     image: confluentinc/cp-zookeeper:latest
     networks:
       - broker-kafka
@@ -22,6 +23,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
   kafka:
+    container_name: kafka
     image: confluentinc/cp-kafka:latest
     networks:
       - broker-kafka
@@ -37,6 +39,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
   kafdrop:
+    container_name: kafka-ui
     image: obsidiandynamics/kafdrop:latest
     networks:
       - broker-kafka
@@ -46,9 +49,34 @@ services:
       - "19000:9000"
     environment:
       KAFKA_BROKERCONNECT: kafka:29092
+  postgres:
+    container_name: postgres
+    image: postgres:15.1
+    environment:
+      POSTGRES_USER: akerke
+      POSTGRES_PASSWORD: werytcjvcykblccjdbsbcjds
+      POSTGRES_DB: salon
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  discovery:
+    image: rnbsrva/discovery
+    container_name: discovery
+    ports:
+      - "8761:8761"
+    environment:
+      'eureka.client.serviceUrl.defaultZone': 'http://server-akerke.fibo.cloud:8761/eureka'
+  redis:
+    image: redis
+    container_name: redis
+    command: redis-server --appendonly yes --requirepass qwerfvp.o654ijnQWE.RFVP654O.IJN --replica-read-only no
+    ports:
+      - "6379:6379"
 
 volumes:
-  minio_storage: {}
+  postgres_data: { }
+  minio_storage: { }
 networks:
   broker-kafka:
     driver: bridge

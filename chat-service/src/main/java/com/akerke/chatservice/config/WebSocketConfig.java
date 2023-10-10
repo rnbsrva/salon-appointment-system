@@ -1,49 +1,33 @@
 package com.akerke.chatservice.config;
 
-import org.springframework.context.annotation.Bean;
+import com.akerke.chatservice.websocket.WebSocketSessionHandshakeInterceptor;
+import com.akerke.chatservice.websocket.WebSocketTextHandler;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.server.ServerHttpRequest;
-import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.server.HandshakeInterceptor;
-
-import java.util.Map;
-
 
 @Configuration
 @EnableWebSocket
+@RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketConfigurer {
 
+    private final WebSocketTextHandler webSocketTextHandler;
+    private final WebSocketSessionHandshakeInterceptor webSocketSessionHandshakeInterceptor;
+
+    @Value("${spring.ws.allowed-origins}")
+    private String wsAllowedOrigins;
+
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    public void registerWebSocketHandlers(
+            @NonNull WebSocketHandlerRegistry registry
+    ) {
+        registry.addHandler(webSocketTextHandler)
+                .addInterceptors(webSocketSessionHandshakeInterceptor)
+                .setAllowedOrigins(wsAllowedOrigins);
     }
 
-    @Bean
-    public HandshakeInterceptor getParametersInterceptors() {
-        return new HandshakeInterceptor() {
-
-            @Override
-            public boolean beforeHandshake(
-                    ServerHttpRequest request,
-                    ServerHttpResponse response,
-                    WebSocketHandler wsHandler,
-                    Map<String, Object> attributes
-            ) throws Exception {
-                return true; //todo
-            }
-
-            @Override
-            public void afterHandshake(
-                    ServerHttpRequest request,
-                    ServerHttpResponse response,
-                    WebSocketHandler wsHandler,
-                    Exception exception
-            ) {
-            }
-
-        };
-    }
 }

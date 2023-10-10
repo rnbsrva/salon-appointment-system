@@ -37,15 +37,22 @@ public class AuthServiceImpl implements AuthService {
     private final Map<TokenType, TokenValidator> tokenValidator;
 
 
-    public AuthServiceImpl(JwtUtil jwt, UserService userService, PasswordEncoder passwordEncoder,
-                           KafkaProducer kafka, EmailLinkHelper linkHelper, List<TokenValidator> tokenValidators
+    public AuthServiceImpl(
+            JwtUtil jwt,
+            UserService userService,
+            PasswordEncoder passwordEncoder,
+            KafkaProducer kafka,
+            EmailLinkHelper linkHelper,
+            List<TokenValidator> tokenValidators
     ) {
         this.jwt = jwt;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.kafka = kafka;
         this.linkHelper = linkHelper;
-        this.tokenValidator = tokenValidators.stream().collect(Collectors.toMap(TokenValidator::getType, Function.identity()));
+        this.tokenValidator = tokenValidators
+                .stream()
+                .collect(Collectors.toMap(TokenValidator::getType, Function.identity()));
     }
 
     @Override
@@ -73,12 +80,14 @@ public class AuthServiceImpl implements AuthService {
 
         user.setPassword(passwordEncoder.encode(req.newPassword()));
         userService.update(user);
+
         return StatusResponse.success();
     }
 
     @Override
     public StatusResponse forgotPassword(String email) {
         var user = userService.findByEmail(email);
+
         log.info("user {} forgot password", user.getId());
 
         var msg = KafkaEmailMessageDetails

@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Role  extends DateAudit {
+public class Role extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +39,5 @@ public class Role  extends DateAudit {
         this.role = role;
         this.user = user;
     }
+
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.4</version>
+        <version>3.0.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.akerke</groupId>
@@ -50,6 +50,27 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:17.0.4.1_1-jre</image>
+                        <auth>
+                            <username>orynbasarovaakerke88@gmail.com</username>
+                            <password>Rspdi6#kchA^_ZV</password>
+                        </auth>
+                    </from>
+                    <to>
+                        <image>registry.hub.docker.com/rnbsrva/discovery</image>
+                        <auth>
+                            <username>orynbasarovaakerke88@gmail.com</username>
+                            <password>Rspdi6#kchA^_ZV</password>
+                        </auth>
+                    </to>
+                </configuration>
             </plugin>
         </plugins>
     </build>

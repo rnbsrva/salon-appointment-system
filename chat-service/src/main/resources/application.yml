@@ -1,4 +1,6 @@
 spring:
+  ws:
+    allowed-origins: '*'
   jackson:
     default-property-inclusion: non_null
   application:
