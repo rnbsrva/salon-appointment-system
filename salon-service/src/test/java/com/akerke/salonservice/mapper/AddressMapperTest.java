@@ -9,14 +9,14 @@ import org.mapstruct.factory.Mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AddressMapperTest {
+class AddressMapperTest {
 
     private AddressMapper addressMapper;
     private AddressDTO addressDTO;
     private Address address;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         addressMapper = Mappers.getMapper(AddressMapper.class);
 
         this.addressDTO = new AddressDTO(123L, "Street", "City", "State");
@@ -29,7 +29,7 @@ public class AddressMapperTest {
     }
 
     @Test
-    public void update_whenValidDTOAndEntity_thenUpdateEntity() {
+    void update_whenValidDTOAndEntity_thenUpdateEntity() {
         addressMapper.update(addressDTO, address);
 
         assertThat(address.getHouseNumber()).isEqualTo(addressDTO.houseNumber());
@@ -39,7 +39,7 @@ public class AddressMapperTest {
     }
 
     @Test
-    public void update_WhenNullDTOAndNonNullEntity_thenNoUpdate() {
+    void update_WhenNullDTOAndNonNullEntity_thenNoUpdate() {
         addressDTO = null;
 
         addressMapper.update(addressDTO, address);
@@ -52,7 +52,7 @@ public class AddressMapperTest {
 
 
     @Test
-    public void toDTO_whenAddressEntityGiven_thenAddressDTOReturned() {
+    void toDTO_whenAddressEntityGiven_thenAddressDTOReturned() {
         var addressDTO = addressMapper.toDTO(address);
 
         assertNotNull(addressDTO);
@@ -63,7 +63,7 @@ public class AddressMapperTest {
     }
 
     @Test
-    public void toDTO_whenNullAddressEntityGiven_thenNullAddressDTOReturned() {
+    void toDTO_whenNullAddressEntityGiven_thenNullAddressDTOReturned() {
         address = null;
 
         var addressDTO = addressMapper.toDTO(address);
@@ -72,7 +72,7 @@ public class AddressMapperTest {
     }
 
     @Test
-    public void toModel_whenValidAddressDTO_thenReturnAddress() {
+    void toModel_whenValidAddressDTO_thenReturnAddress() {
         var address = addressMapper.toModel(addressDTO);
 
         assertNotNull(address);
@@ -83,7 +83,7 @@ public class AddressMapperTest {
     }
 
     @Test
-    public void toModel_whenNullAddressDTO_thenReturnNull() {
+    void toModel_whenNullAddressDTO_thenReturnNull() {
         var address = addressMapper.toModel(null);
 
         assertNull(address);

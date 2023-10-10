@@ -7,11 +7,12 @@ import org.mapstruct.*;
 
 @Mapper(imports = Status.class,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
 public interface AppointmentMapper {
 
     @Mapping(target = "status", expression = "java(Status.PENDING)")
-    Appointment toModel (AppointmentDTO appointmentDTO);
+    Appointment toModel(AppointmentDTO appointmentDTO);
 
     @Mapping(target = "userId", expression = "java(appointment.getUser().getId())")
     @Mapping(target = "masterId", expression = "java(appointment.getMaster().getId())")
@@ -20,6 +21,6 @@ public interface AppointmentMapper {
     AppointmentDTO toDTO(Appointment appointment);
 
     @Mapping(target = "id", ignore = true)
-    void update (AppointmentDTO appointmentDTO, @MappingTarget Appointment appointment);
+    void update(AppointmentDTO appointmentDTO, @MappingTarget Appointment appointment);
 
 }

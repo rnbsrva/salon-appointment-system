@@ -7,17 +7,22 @@ import org.mapstruct.*;
 
 import java.util.ArrayList;
 
-@Mapper(imports = {ArrayList.class, Appointment.class},
+@Mapper(
+        imports = {
+                ArrayList.class,
+                Appointment.class
+        },
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
 public interface TreatmentMapper {
 
-    @Mapping(target = "appointments", expression = "java(new ArrayList<Appointment>())")
-    Treatment toModel (TreatmentDTO treatmentDTO);
+    @Mapping(target = "appointments", expression = "java(new ArrayList<>())")
+    Treatment toModel(TreatmentDTO treatmentDTO);
 
-    TreatmentDTO toDTO (Treatment treatment);
+    TreatmentDTO toDTO(Treatment treatment);
 
     @Mapping(target = "id", ignore = true)
-    void update (TreatmentDTO treatmentDTO, @MappingTarget Treatment treatment);
+    void update(TreatmentDTO treatmentDTO, @MappingTarget Treatment treatment);
 
 }
