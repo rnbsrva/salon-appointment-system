@@ -55,7 +55,7 @@ public class AddressMapperTest {
     public void toDTO_whenAddressEntityGiven_thenAddressDTOReturned() {
         var addressDTO = addressMapper.toDTO(address);
 
-        assertThat(addressDTO).isNotNull();
+        assertNotNull(addressDTO);
         assertThat(addressDTO.houseNumber()).isEqualTo(address.getHouseNumber());
         assertThat(addressDTO.street()).isEqualTo(address.getStreet());
         assertThat(addressDTO.city()).isEqualTo(address.getCity());
@@ -68,7 +68,7 @@ public class AddressMapperTest {
 
         var addressDTO = addressMapper.toDTO(address);
 
-        assertThat(addressDTO).isNull();
+        assertNull(addressDTO);
     }
 
     @Test
