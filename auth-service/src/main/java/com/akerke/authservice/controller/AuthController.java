@@ -20,11 +20,10 @@ public record AuthController(
 
     @GetMapping("validate-token")
     ResponseEntity<?> validateToken(
-            @RequestParam("token_type") TokenType type,
             @RequestParam String token
     ) {
         return ResponseEntity
-                .ok(authService.validateToken(token, type));
+                .ok(authService.validateToken(token, TokenType.ACCESS_TOKEN));
     }
 
 

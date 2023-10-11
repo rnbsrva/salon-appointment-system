@@ -1,5 +1,6 @@
 package com.akerke.authservice.payload.request;
 
+import com.akerke.authservice.annotations.Password;
 import com.akerke.authservice.annotations.PhoneNumber;
 import jakarta.validation.constraints.*;
 
@@ -18,7 +19,7 @@ public record RegistrationRequest(
         String email,
         @PhoneNumber
         String phone,
-        @Size(min = 8)
+        @Password
         String password
 ) {
 }
