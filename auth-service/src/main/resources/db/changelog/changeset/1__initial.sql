@@ -5,6 +5,7 @@ CREATE TABLE users
     last_modified_time TIMESTAMP WITHOUT TIME ZONE,
     name               VARCHAR(255),
     surname            VARCHAR(255),
+    phone              VARCHAR(255),
     email              VARCHAR(255),
     email_verified     BOOLEAN,
     password           VARCHAR(255),

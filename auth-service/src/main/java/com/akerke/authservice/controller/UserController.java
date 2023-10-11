@@ -1,10 +1,12 @@
 package com.akerke.authservice.controller;
 
 
+import com.akerke.authservice.AuthServiceApplication;
 import com.akerke.authservice.payload.request.RegistrationRequest;
 import com.akerke.authservice.service.AuthService;
 import com.akerke.authservice.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,10 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import static com.akerke.authservice.validate.BindingValidator.validateRequest;
 
 @RestController
-public record UserController(
-        UserService userService,
-        AuthService authService
-) {
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+    private final AuthService authService;
 
     @PostMapping("register")
     ResponseEntity<?> register(

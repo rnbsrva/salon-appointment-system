@@ -17,9 +17,11 @@ public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, St
             return false;
         }
 
+        var cleanedPhoneNumber = phoneNumber.replaceAll("[^0-9]+", "");
+
         final var PHONE_NUMBER_PATTERN = "^[0-9]{11}$";
 
-        return Pattern.matches(PHONE_NUMBER_PATTERN, phoneNumber);
+        return Pattern.matches(PHONE_NUMBER_PATTERN, cleanedPhoneNumber);
     }
 
 }
