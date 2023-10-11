@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordValidator.class)
 public @interface Password {
+
     String message() default "Invalid password";
 
     int minLength() default 8;
@@ -28,5 +29,6 @@ public @interface Password {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
 }
 

@@ -5,6 +5,7 @@ import com.akerke.authservice.constants.TokenType;
 import com.akerke.authservice.entity.User;
 import com.akerke.authservice.kafka.KafkaEmailMessageDetails;
 import com.akerke.authservice.kafka.KafkaProducer;
+import com.akerke.authservice.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.payload.response.StatusResponse;
 import com.akerke.authservice.payload.response.TokenResponse;
@@ -78,7 +79,12 @@ public class AuthServiceImpl implements AuthService {
             return StatusResponse.fail("invalid password");
         }
 
+        if (!req.newPassword().equals(req.newPasswordConfirmation())) {
+            return StatusResponse.fail("new password and password confirmation not match. try again");
+        }
+
         user.setPassword(passwordEncoder.encode(req.newPassword()));
+
         userService.update(user);
 
         return StatusResponse.success();
@@ -99,6 +105,29 @@ public class AuthServiceImpl implements AuthService {
 
         kafka.produce(KAFKA_PASSWORD_FORGOT_TOPIC, msg);
 
+        return StatusResponse.success();
+    }
+
+    @Override
+    public StatusResponse confirmForgotPassword(
+            ForgotPasswordRequest req, String token
+    ) {
+        var response = validateToken(token, TokenType.FORGOT_PASSWORD_TOKEN);
+        if (!response.getSuccess()) {
+            return response;
+        }
+
+        if (!req.newPassword().equals(req.newPasswordConfirmation())) {
+            return StatusResponse.fail("password and password confirmation not match");
+        }
+
+        var claims = jwt.extractAllClaims(token);
+        var email = claims.getSubject();
+        var user = userService.findByEmail(email);
+
+        user.setPassword(passwordEncoder.encode(req.newPassword()));
+
+        userService.update(user);
         return StatusResponse.success();
     }
 

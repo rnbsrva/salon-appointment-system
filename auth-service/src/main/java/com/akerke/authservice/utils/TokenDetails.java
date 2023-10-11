@@ -4,7 +4,7 @@ import com.akerke.authservice.constants.TokenType;
 
 public record TokenDetails(
         Integer expiration,
-        String token
+        String value
 ) {
     public TokenDetails(TokenType type, String token) {
         this(

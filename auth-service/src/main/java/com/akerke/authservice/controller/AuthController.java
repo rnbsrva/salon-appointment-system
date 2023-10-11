@@ -1,15 +1,13 @@
 package com.akerke.authservice.controller;
 
 import com.akerke.authservice.constants.TokenType;
+import com.akerke.authservice.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.akerke.authservice.validate.BindingValidator.validateRequest;
 
@@ -20,12 +18,11 @@ public record AuthController(
 
     @GetMapping("validate-token")
     ResponseEntity<?> validateToken(
-            @RequestParam String token
+            @RequestParam("access_token") String token
     ) {
         return ResponseEntity
                 .ok(authService.validateToken(token, TokenType.ACCESS_TOKEN));
     }
-
 
     @GetMapping("reset-password")
     ResponseEntity<?> requestToResetPassword(
@@ -33,14 +30,25 @@ public record AuthController(
             BindingResult br
     ) {
         validateRequest(br);
+
         return ResponseEntity.ok(authService.resetPassword(req));
     }
 
-    @GetMapping("forgot-password")
-    ResponseEntity<?> forgotPassword(
-            @RequestParam("verification_token") String verificationToken
+    @GetMapping("request-forgot-password")
+    ResponseEntity<?> requestForgotPassword(
+            @RequestParam String email
     ) {
-        return null;// TODO: 10/5/2023
+        return ResponseEntity
+                .ok(authService.forgotPassword(email));
+    }
+
+    @PostMapping("confirm-forgot-password")
+    ResponseEntity<?> confirmForgotPassword(
+            @RequestBody @Valid ForgotPasswordRequest req,
+            @RequestParam("verification_token") String token
+    ) {
+        return ResponseEntity
+                .ok(authService.confirmForgotPassword(req,token));
     }
 
 
@@ -48,10 +56,8 @@ public record AuthController(
     ResponseEntity<?> emailConfirmation(
             @RequestParam("verification_token") String verificationToken
     ) {
-        var response = authService.validateToken(verificationToken, TokenType.EMAIL_VERIFICATION_TOKEN);
         return ResponseEntity
-                .ok(response);
+                .ok(authService.validateToken(verificationToken, TokenType.EMAIL_VERIFICATION_TOKEN));
     }
-
 
 }

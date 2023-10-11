@@ -21,9 +21,9 @@ public abstract class TokenValidator {
     protected final JwtUtil jwt;
     protected final UserRepository userRepository;
 
-    abstract TokenType getType();
+    public abstract TokenType getType();
 
-    abstract StatusResponse validate(String token);
+    public abstract StatusResponse validate(String token);
 
     public StatusResponse validate(String token, TokenType type) {
         Claims claims;
