@@ -15,7 +15,7 @@ public class EmailVerificationTokenValidator extends TokenValidator {
     }
 
     public StatusResponse validate(String token) {
-        return null;
+        return super.validate(token, getType());
     }
 
     @Override

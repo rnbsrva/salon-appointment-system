@@ -18,8 +18,8 @@ public abstract class TokenValidator {
 
     public final static String TOKEN_TYPE_CLAIM_KEY = "token_type";
 
-    private final JwtUtil jwt;
-    private final UserRepository userRepository;
+    protected final JwtUtil jwt;
+    protected final UserRepository userRepository;
 
     abstract TokenType getType();
 
@@ -49,7 +49,7 @@ public abstract class TokenValidator {
 
         log.info("success authentication, email: {}, id: {}", user.getEmail(), user.getId());
 
-        return StatusResponse.success();
+        return StatusResponse.success(user);
     }
 
     static Boolean sameTokenClaims(Claims claims, TokenType type) {
