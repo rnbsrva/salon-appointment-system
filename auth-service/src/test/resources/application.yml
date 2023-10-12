@@ -1,0 +1,9 @@
+spring:
+  test:
+    database:
+      replace: none
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:15.1:///spring_boot_testcontainers
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

@@ -1,13 +1,13 @@
 package com.akerke.authservice.repository;
 
 import com.akerke.authservice.entity.User;
+import com.akerke.authservice.tc.PostgresTestContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Optional;
 
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
-public class UserRepositoryTest {
+public class UserRepositoryTest extends PostgresTestContainer {
 
     @Autowired
     private UserRepository userRepository;
@@ -74,5 +74,29 @@ public class UserRepositoryTest {
 
         assertFalse(foundUser.isPresent());
         verify(userRepository, times(1)).findByEmailOrPhone(nonExistEmail, nonExistPhone);
+    }
+
+    @Test
+    public void testFindByEmailOrPhoneWhenEmailExistsButPhoneDoesNotExistThenReturnUser() {
+        var nonExistPhone = "0987654321";
+        when(userRepository.findByEmailOrPhone(user.getEmail(), nonExistPhone)).thenReturn(Optional.of(user));
+
+        Optional<User> foundUser = userRepository.findByEmailOrPhone(user.getEmail(), nonExistPhone);
+
+        assertTrue(foundUser.isPresent());
+        assertEquals(user.getEmail(), foundUser.get().getEmail());
+        verify(userRepository, times(1)).findByEmailOrPhone(user.getEmail(), nonExistPhone);
+    }
+
+    @Test
+    public void testFindByEmailOrPhoneWhenPhoneExistsButEmailDoesNotExistThenReturnUser() {
+        var nonExistEmail = "nonexistent@test.com";
+        when(userRepository.findByEmailOrPhone(nonExistEmail, user.getPhone())).thenReturn(Optional.of(user));
+
+        Optional<User> foundUser = userRepository.findByEmailOrPhone(nonExistEmail, user.getPhone());
+
+        assertTrue(foundUser.isPresent());
+        assertEquals(user.getPhone(), foundUser.get().getPhone());
+        verify(userRepository, times(1)).findByEmailOrPhone(nonExistEmail, user.getPhone());
     }
 }

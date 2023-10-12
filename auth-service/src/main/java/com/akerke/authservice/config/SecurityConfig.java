@@ -33,7 +33,6 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(insecureEndpoints).permitAll()
-                                .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)
                 .csrf().disable()
