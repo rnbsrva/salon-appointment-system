@@ -25,7 +25,6 @@ public class LoggingAspect {
         stopWatch.start();
         var result = pjp.proceed();
         stopWatch.stop();
-        //calculate method execution time
 
         log.info(
                 methodSignature.getDeclaringType().getSimpleName() // Class Name
