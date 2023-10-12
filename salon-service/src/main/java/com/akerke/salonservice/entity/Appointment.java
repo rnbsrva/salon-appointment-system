@@ -2,6 +2,8 @@ package com.akerke.salonservice.entity;
 
 import com.akerke.salonservice.constants.Status;
 import com.akerke.salonservice.entity.audit.DateAudit;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +15,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Appointment extends DateAudit {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
+    @JsonProperty("treatmentId")
     private Treatment treatment;
     @ManyToOne
+    @JsonProperty("userId")
     private User user;
     @ManyToOne
+    @JsonProperty("masterId")
     private Master master;
 
     @OneToOne
@@ -28,4 +34,19 @@ public class Appointment extends DateAudit {
     private Status status;
     private String note;
 
+
+    @JsonGetter("treatmentId")
+    public Long getTreatmentId(){
+        return treatment.getId();
+    }
+
+    @JsonGetter("userId")
+    public Long getUserId(){
+        return user.getId();
+    }
+
+    @JsonGetter("masterId")
+    public Long getMasterId(){
+        return master.getId();
+    }
 }

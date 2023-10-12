@@ -1,6 +1,8 @@
 package com.akerke.salonservice.entity;
 
 import com.akerke.salonservice.entity.audit.DateAudit;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -20,6 +23,7 @@ public class Master extends DateAudit {
     private Long id;
 
     @OneToOne
+    @JsonProperty("userId")
     private User user;
 
     private String position;
@@ -29,6 +33,7 @@ public class Master extends DateAudit {
     private String about;
 
     @ManyToOne
+    @JsonProperty("salonId")
     private Salon salon;
 
     @ManyToMany
@@ -37,6 +42,7 @@ public class Master extends DateAudit {
             joinColumns = @JoinColumn(name = "master_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "treatment_id", referencedColumnName = "id")
     )
+    @JsonProperty("treatmentsId")
     private List<Treatment> treatments;
 
     @OneToMany(
@@ -47,7 +53,6 @@ public class Master extends DateAudit {
     private List<Appointment> appointments;
 
     @OneToMany(
-            mappedBy = "master",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
@@ -60,5 +65,21 @@ public class Master extends DateAudit {
             orphanRemoval = true
     )
     private List<Feedback> feedbacks;
+
+
+    @JsonGetter("salonId")
+    public Long getSalonId(){
+        return salon.getId();
+    }
+
+    @JsonGetter("userId")
+    public Long getUserId(){
+        return user.getId();
+    }
+
+    @JsonGetter("treatmentsId")
+    public List<Long> getTreatmentsId() {
+        return treatments.stream().map(Treatment::getId).collect(Collectors.toList());
+    }
 
 }

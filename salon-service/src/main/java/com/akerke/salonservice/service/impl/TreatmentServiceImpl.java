@@ -1,10 +1,12 @@
 package com.akerke.salonservice.service.impl;
 
 import com.akerke.salonservice.dto.TreatmentDTO;
+import com.akerke.salonservice.entity.Salon;
 import com.akerke.salonservice.entity.Treatment;
 import com.akerke.salonservice.exception.EntityNotFoundException;
 import com.akerke.salonservice.mapper.TreatmentMapper;
 import com.akerke.salonservice.repository.TreatmentRepository;
+import com.akerke.salonservice.service.SalonService;
 import com.akerke.salonservice.service.TreatmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,15 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     private final TreatmentRepository treatmentRepository;
     private final TreatmentMapper treatmentMapper;
+    private final SalonService salonService;
 
 
     @Override
     public Treatment save(TreatmentDTO treatmentDTO) {
-        return treatmentRepository.save(treatmentMapper.toModel(treatmentDTO));
+        var treatment = treatmentMapper.toModel(treatmentDTO);
+        var salon = salonService.getById(treatmentDTO.salonId());
+        treatment.setSalon(salon);
+        return treatmentRepository.save(treatment);
     }
 
     @Override
@@ -44,5 +50,10 @@ public class TreatmentServiceImpl implements TreatmentService {
     @Override
     public List<Treatment> getAll() {
         return treatmentRepository.findAll();
+    }
+
+    @Override
+    public List<Treatment> getAll(List<Long> ids) {
+        return treatmentRepository.findTreatmentsByIdIn(ids);
     }
 }

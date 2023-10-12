@@ -1,6 +1,10 @@
 package com.akerke.salonservice.constants;
 
+import org.springframework.context.annotation.DependsOn;
+
 public enum WeekDay {
+    @Deprecated
+    EMPTY, // to shift ordinal value for each week day
     MONDAY,
     TUESDAY,
     WEDNESDAY,

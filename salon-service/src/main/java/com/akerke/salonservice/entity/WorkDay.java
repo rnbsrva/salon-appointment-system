@@ -2,6 +2,8 @@ package com.akerke.salonservice.entity;
 
 import com.akerke.salonservice.constants.WeekDay;
 import com.akerke.salonservice.entity.audit.DateAudit;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +28,12 @@ public class WorkDay extends DateAudit {
     private Date workEndTime;
     private Boolean isHoliday;
     @ManyToOne
+    @JsonProperty("salonId")
     private Salon salon;
+
+    @ManyToOne
+    @JsonProperty("masterId")
+    private Master master;
 
     @OneToMany(
             mappedBy = "workDay",
@@ -36,4 +43,15 @@ public class WorkDay extends DateAudit {
     )
     private List<WorkTime> workTimes;
 
+    @JsonGetter("salonId")
+    public Long getSalonId(){
+        return salon.getId();
+    }
+
+    @JsonGetter("masterId")
+    public Long getMasterId(){
+        return master.getId();
+    }
+
 }
+

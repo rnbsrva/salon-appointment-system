@@ -5,6 +5,7 @@ import com.akerke.salonservice.entity.WorkTime;
 import com.akerke.salonservice.exception.EntityNotFoundException;
 import com.akerke.salonservice.mapper.WorkTimeMapper;
 import com.akerke.salonservice.repository.WorkTimeRepository;
+import com.akerke.salonservice.service.WorkDayService;
 import com.akerke.salonservice.service.WorkTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,13 @@ public class WorkTimeServiceImpl implements WorkTimeService {
 
     private final WorkTimeRepository workTimeRepository;
     private final WorkTimeMapper workTimeMapper;
+    private final WorkDayService workDayService;
 
     @Override
     public WorkTime save(WorkTimeDTO workTimeDTO) {
-        return workTimeRepository.save(workTimeMapper.toModel(workTimeDTO));
+        var workTime = workTimeMapper.toModel(workTimeDTO);
+        workTime.setWorkDay(workDayService.getById(workTimeDTO.workDayId()));
+        return workTimeRepository.save(workTime);
     }
 
     @Override

@@ -15,6 +15,8 @@ public interface MasterService {
 
     Master getById(Long id);
 
+    void addTreatment(Long id, List<Long> treatmentIds);
+
     List<Master> getAll();
 
 }

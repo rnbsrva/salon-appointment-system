@@ -3,11 +3,15 @@ package com.akerke.salonservice.controller;
 import com.akerke.salonservice.dto.SalonDTO;
 import com.akerke.salonservice.entity.Salon;
 import com.akerke.salonservice.service.SalonService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import static com.akerke.salonservice.validatе.Validator.validate;
 
 @Controller
 @RequestMapping("salon")
@@ -18,8 +22,11 @@ public class SalonController {
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody SalonDTO salonDTO
+            @Valid
+            @RequestBody SalonDTO salonDTO,
+            BindingResult bindingResult
             ){
+        validate(bindingResult);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(salonService.save(salonDTO));
     }

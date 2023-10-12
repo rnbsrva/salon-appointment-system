@@ -3,10 +3,14 @@ package com.akerke.salonservice.controller;
 import com.akerke.salonservice.dto.MasterDTO;
 import com.akerke.salonservice.dto.TreatmentDTO;
 import com.akerke.salonservice.service.TreatmentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import static com.akerke.salonservice.validatе.Validator.validate;
 
 @RestController
 @RequestMapping("treatment")
@@ -17,8 +21,11 @@ public class TreatmentController {
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody TreatmentDTO treatmentDTO
+            @Valid
+            @RequestBody TreatmentDTO treatmentDTO,
+            BindingResult bindingResult
             ){
+        validate(bindingResult);
         return  ResponseEntity.status(HttpStatus.CREATED)
                 .body(treatmentService.save(treatmentDTO));
     }

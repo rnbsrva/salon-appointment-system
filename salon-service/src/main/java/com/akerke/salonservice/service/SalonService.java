@@ -15,6 +15,7 @@ public interface SalonService {
 
     void update(SalonDTO salonDTO, Long id);
 
+
     void delete(Long id);
 
 }

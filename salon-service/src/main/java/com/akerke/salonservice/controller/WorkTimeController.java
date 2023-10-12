@@ -4,10 +4,14 @@ import com.akerke.salonservice.dto.WorkDayDTO;
 import com.akerke.salonservice.dto.WorkTimeDTO;
 import com.akerke.salonservice.entity.WorkTime;
 import com.akerke.salonservice.service.WorkTimeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import static com.akerke.salonservice.validatе.Validator.validate;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,8 +22,11 @@ public class WorkTimeController {
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody WorkTimeDTO workTimeDTO
+            @Valid
+            @RequestBody WorkTimeDTO workTimeDTO,
+            BindingResult bindingResult
     ){
+        validate(bindingResult);
         return  ResponseEntity.status(HttpStatus.CREATED)
                 .body(workTimeService.save(workTimeDTO));
     }

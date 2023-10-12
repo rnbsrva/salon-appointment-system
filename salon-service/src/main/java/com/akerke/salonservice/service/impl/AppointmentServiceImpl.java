@@ -5,7 +5,7 @@ import com.akerke.salonservice.entity.Appointment;
 import com.akerke.salonservice.exception.EntityNotFoundException;
 import com.akerke.salonservice.mapper.AppointmentMapper;
 import com.akerke.salonservice.repository.AppointmentRepository;
-import com.akerke.salonservice.service.AppointmentService;
+import com.akerke.salonservice.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,20 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper appointmentMapper;
+    private final UserService userService;
+    private final MasterService masterService;
+    private final TreatmentService treatmentService;
+    private final WorkTimeService workTimeService;
 
 
     @Override
     public Appointment save(AppointmentDTO appointmentDTO) {
-        return appointmentRepository.save(appointmentMapper.toModel(appointmentDTO));
+        var appointment = appointmentMapper.toModel(appointmentDTO);
+        appointment.setUser(userService.getById(appointmentDTO.userId()));
+        appointment.setMaster(masterService.getById(appointmentDTO.masterId()));
+        appointment.setTreatment(treatmentService.getById(appointmentDTO.treatmentId()));
+        appointment.setWorkTime(workTimeService.getById(appointmentDTO.workTimeId()) );
+        return appointmentRepository.save(appointment);
     }
 
     @Override

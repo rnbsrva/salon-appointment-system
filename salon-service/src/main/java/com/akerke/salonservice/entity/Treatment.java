@@ -2,6 +2,8 @@ package com.akerke.salonservice.entity;
 
 import com.akerke.salonservice.constants.TreatmentType;
 import com.akerke.salonservice.entity.audit.DateAudit;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,10 @@ public class Treatment extends DateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     @ManyToOne
+    @JsonProperty("salonId")
     private Salon salon;
 
     private Long price;
@@ -41,4 +46,9 @@ public class Treatment extends DateAudit {
             inverseJoinColumns = @JoinColumn(name = "master_id", referencedColumnName = "id")
     )
     private List<Master> masters;
+
+    @JsonGetter("salonId")
+    public Long getSalonId(){
+        return salon.getId();
+    }
 }

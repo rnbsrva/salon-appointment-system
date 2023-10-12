@@ -16,4 +16,6 @@ public interface TreatmentService {
     Treatment getById(Long id);
 
     List<Treatment> getAll();
+
+    List<Treatment> getAll(List<Long> ids);
 }

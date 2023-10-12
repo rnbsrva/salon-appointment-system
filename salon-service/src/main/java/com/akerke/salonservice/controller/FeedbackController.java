@@ -2,10 +2,14 @@ package com.akerke.salonservice.controller;
 
 import com.akerke.salonservice.dto.FeedbackDTO;
 import com.akerke.salonservice.service.FeedbackService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import static com.akerke.salonservice.validatе.Validator.validate;
 
 @RestController
 @RequestMapping
@@ -16,8 +20,11 @@ public class FeedbackController {
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody FeedbackDTO feedbackDTO
+            @Valid
+            @RequestBody FeedbackDTO feedbackDTO,
+            BindingResult bindingResult
     ){
+        validate(bindingResult);
         return  ResponseEntity.status(HttpStatus.CREATED)
                 .body(feedbackService.save(feedbackDTO));
     }

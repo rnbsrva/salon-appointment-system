@@ -3,10 +3,16 @@ package com.akerke.salonservice.controller;
 import com.akerke.salonservice.dto.MasterDTO;
 import com.akerke.salonservice.dto.SalonDTO;
 import com.akerke.salonservice.service.MasterService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.akerke.salonservice.validatе.Validator.validate;
 
 @RestController
 @RequestMapping("master")
@@ -17,8 +23,11 @@ public class MasterController {
 
     @PostMapping()
     ResponseEntity<?> save (
-            @RequestBody MasterDTO masterDTO
+            @Valid
+            @RequestBody MasterDTO masterDTO,
+            BindingResult bindingResult
     ){
+        validate(bindingResult);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(masterService.save(masterDTO));
     }
@@ -50,6 +59,16 @@ public class MasterController {
     ){
         masterService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{id}/add")
+    ResponseEntity<?> addTreatment(
+            @RequestBody List<Long> treatmentIds,
+            @PathVariable Long id
+            ){
+        masterService.addTreatment(id,  treatmentIds);
+        return ResponseEntity.accepted().build();
+
     }
 
 }

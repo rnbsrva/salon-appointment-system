@@ -7,6 +7,7 @@ import com.akerke.salonservice.mapper.MasterMapper;
 import com.akerke.salonservice.repository.MasterRepository;
 import com.akerke.salonservice.service.MasterService;
 import com.akerke.salonservice.service.SalonService;
+import com.akerke.salonservice.service.TreatmentService;
 import com.akerke.salonservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class MasterServiceImpl implements MasterService {
     private final MasterRepository masterRepository;
     private final MasterMapper masterMapper;
     private final UserService userService;
+    private final TreatmentService treatmentService;
     private final SalonService salonService;
 
     @Override
@@ -45,6 +47,14 @@ public class MasterServiceImpl implements MasterService {
     @Override
     public Master getById(Long id) {
         return masterRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(Master.class, id));
+    }
+
+    @Override
+    public void addTreatment(Long id, List<Long> treatmentIds) {
+        var master = this.getById(id);
+        var treatments = treatmentService.getAll(treatmentIds);
+        master.getTreatments().addAll(treatments);
+        masterRepository.save(master);
     }
 
     @Override
