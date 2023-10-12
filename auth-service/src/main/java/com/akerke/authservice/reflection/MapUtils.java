@@ -30,6 +30,7 @@ public class MapUtils {
         var objClass = obj.getClass();
 
         var fields = objClass.getDeclaredFields();
+
         for (var field : fields) {
             try {
                 field.setAccessible(true);

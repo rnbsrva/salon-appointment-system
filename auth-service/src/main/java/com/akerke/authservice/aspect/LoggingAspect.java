@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LoggingAspect {
 
-
     @Around("execution(* com.akerke.authservice.controller..*(..))")
     public Object logMethodExecutionTime(ProceedingJoinPoint pjp) throws Throwable {
         var methodSignature = (MethodSignature) pjp.getSignature();
@@ -27,9 +26,11 @@ public class LoggingAspect {
         stopWatch.stop();
 
         log.info(
-                methodSignature.getDeclaringType().getSimpleName() // Class Name
-                        + "." + methodSignature.getName() + " " // Method Name
-                        + ":: " + stopWatch.getTime(TimeUnit.MILLISECONDS) + " ms"
+                "%s.%s :: %d ms".formatted(
+                        methodSignature.getDeclaringType().getSimpleName(), // Class Name
+                        methodSignature.getName(), // Method Name
+                        stopWatch.getTime(TimeUnit.MILLISECONDS) // execution time in milliseconds
+                )
         );
 
         return result;
