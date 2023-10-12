@@ -24,7 +24,10 @@ public class PasswordValidator implements ConstraintValidator<Password,String> {
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(
+            String value,
+            ConstraintValidatorContext constraintValidatorContext
+    ) {
         if (value == null) {
             return false;
         }

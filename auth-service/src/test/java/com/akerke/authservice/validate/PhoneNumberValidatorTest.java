@@ -35,7 +35,7 @@ class PhoneNumberValidatorTest {
     }
 
     @Test
-    void iIsValid_whenNullPhoneNumber_thenReturnFalse() {
+    void isValid_whenNullPhoneNumber_thenReturnFalse() {
         String nullPhoneNumber = null;
         assertFalse(phoneNumberValidator.isValid(nullPhoneNumber, context),
                 "Expected isValid to return false for null phone number");
