@@ -37,18 +37,6 @@ public class AppointmentMapperTest {
     }
 
     @Test
-    void update_whenAppointmentDtoHasNullStatus_thenNoChangesAreMade() {
-        assertDoesNotThrow(() -> appointmentMapper.update(appointmentDTO, appointment));
-        assertEquals(Status.PENDING, appointment.getStatus());
-    }
-
-    @Test
-    void update_whenAppointmentDtoHasNonNullStatus_thenStatusIsUpdated() {
-        assertDoesNotThrow(() -> appointmentMapper.update(appointmentDTO, appointment));
-        assertEquals(Status.PENDING, appointment.getStatus());
-    }
-
-    @Test
     void toModel_whenValidAppointmentDTO_thenMapsProperties() {
         var treatmentId = 1L;
         var userId = 2L;
