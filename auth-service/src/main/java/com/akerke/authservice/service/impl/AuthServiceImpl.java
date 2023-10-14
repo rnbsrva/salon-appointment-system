@@ -1,9 +1,11 @@
 package com.akerke.authservice.service.impl;
 
 import com.akerke.authservice.constants.EmailLinkMode;
+import com.akerke.authservice.constants.SecurityRole;
 import com.akerke.authservice.constants.TokenType;
 import com.akerke.authservice.entity.User;
 import com.akerke.authservice.kafka.KafkaEmailMessageDetails;
+import com.akerke.authservice.kafka.KafkaManageRoleRequest;
 import com.akerke.authservice.kafka.KafkaProducer;
 import com.akerke.authservice.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.payload.request.ResetPasswordRequest;
@@ -54,6 +56,14 @@ public class AuthServiceImpl implements AuthService {
         this.tokenValidator = tokenValidators
                 .stream()
                 .collect(Collectors.toMap(TokenValidator::getType, Function.identity()));
+    }
+
+    @Override
+    public void manageRole(
+            KafkaManageRoleRequest kafkaManageRoleRequest,
+            SecurityRole securityRole
+    ) {
+        // TODO: 10/14/2023      
     }
 
     @Override

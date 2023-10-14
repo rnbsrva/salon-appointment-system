@@ -7,6 +7,7 @@ CREATE TABLE users
     surname            VARCHAR(255),
     phone              VARCHAR(255),
     email              VARCHAR(255),
+    gender             VARCHAR(255),
     email_verified     BOOLEAN,
     password           VARCHAR(255),
     CONSTRAINT pk_users PRIMARY KEY (id)

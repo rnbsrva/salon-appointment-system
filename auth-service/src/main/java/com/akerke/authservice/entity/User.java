@@ -1,5 +1,6 @@
 package com.akerke.authservice.entity;
 
+import com.akerke.authservice.constants.Gender;
 import com.akerke.authservice.entity.audit.DateAudit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -20,8 +21,10 @@ public class User extends DateAudit {
     private String surname;
     private String email;
     private String phone;
-
     private Boolean emailVerified;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @JsonIgnore
     private String password;

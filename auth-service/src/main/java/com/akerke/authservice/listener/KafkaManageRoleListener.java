@@ -14,7 +14,8 @@ public class KafkaManageRoleListener {
     private final AuthService authService;
 
     @KafkaListener(
-            topics = "manage_role_admin"
+            topics = "manage_role_admin",
+            groupId = "0"
     )
     void listenManageRoleAdmin(
         KafkaManageRoleRequest kafkaManageRoleRequest
@@ -24,7 +25,8 @@ public class KafkaManageRoleListener {
 
 
     @KafkaListener(
-            topics = "manage_role_manager"
+            topics = "manage_role_manager",
+            groupId = "0"
     )
     void listenManageRoleManager(
             KafkaManageRoleRequest kafkaManageRoleRequest
