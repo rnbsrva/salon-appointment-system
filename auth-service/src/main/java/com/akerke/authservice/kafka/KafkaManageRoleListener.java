@@ -1,4 +1,4 @@
-package com.akerke.authservice.listener;
+package com.akerke.authservice.kafka;
 
 import com.akerke.authservice.constants.SecurityRole;
 import com.akerke.authservice.kafka.KafkaManageRoleRequest;

@@ -14,4 +14,6 @@ public interface RoleService {
     Role defaultRoles(User user);
 
     void update(Role roleToUpdate);
+
+    void delete(Long id);
 }

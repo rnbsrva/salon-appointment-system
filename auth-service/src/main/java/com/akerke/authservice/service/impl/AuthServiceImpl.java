@@ -3,6 +3,7 @@ package com.akerke.authservice.service.impl;
 import com.akerke.authservice.constants.EmailLinkMode;
 import com.akerke.authservice.constants.SecurityRole;
 import com.akerke.authservice.constants.TokenType;
+import com.akerke.authservice.entity.Role;
 import com.akerke.authservice.entity.User;
 import com.akerke.authservice.kafka.KafkaEmailMessageDetails;
 import com.akerke.authservice.kafka.KafkaManageRoleRequest;
@@ -15,6 +16,7 @@ import com.akerke.authservice.security.EmailLinkHelper;
 import com.akerke.authservice.security.JwtUtil;
 import com.akerke.authservice.security.validate.TokenValidator;
 import com.akerke.authservice.service.AuthService;
+import com.akerke.authservice.service.RoleService;
 import com.akerke.authservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final KafkaProducer kafka;
     private final EmailLinkHelper linkHelper;
+    private final RoleService roleService;
     private final Map<TokenType, TokenValidator> tokenValidator;
 
 
@@ -46,6 +49,7 @@ public class AuthServiceImpl implements AuthService {
             PasswordEncoder passwordEncoder,
             KafkaProducer kafka,
             EmailLinkHelper linkHelper,
+            RoleService roleService,
             List<TokenValidator> tokenValidators
     ) {
         this.jwt = jwt;
@@ -53,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
         this.kafka = kafka;
         this.linkHelper = linkHelper;
+        this.roleService = roleService;
         this.tokenValidator = tokenValidators
                 .stream()
                 .collect(Collectors.toMap(TokenValidator::getType, Function.identity()));
@@ -63,7 +68,27 @@ public class AuthServiceImpl implements AuthService {
             KafkaManageRoleRequest kafkaManageRoleRequest,
             SecurityRole securityRole
     ) {
-        // TODO: 10/14/2023      
+        var user = userService.findByEmail(kafkaManageRoleRequest.email());
+
+        if (kafkaManageRoleRequest.add()) {
+            var role = new Role(securityRole, user);
+            roleService.update(role);
+            userService.update(user);
+            log.info("assigned new role user:[email:{}], role: {}", user.getEmail(), securityRole);
+        } else {
+            var optionalRole = user.getRoles().stream()
+                    .filter(role -> role.getRole() == securityRole)
+                    .findFirst();
+
+            if (optionalRole.isEmpty()) {
+                log.error("role[{}] to delete not found from user[email:{}]", securityRole, kafkaManageRoleRequest.email());
+                return;
+            }
+
+            var role = optionalRole.get();
+
+            roleService.delete(role.getId());
+        }
     }
 
     @Override

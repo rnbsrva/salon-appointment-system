@@ -2,6 +2,7 @@ package com.akerke.authservice.service.impl;
 
 import com.akerke.authservice.constants.Scope;
 import com.akerke.authservice.constants.SecurityRole;
+import com.akerke.authservice.dao.UserDao;
 import com.akerke.authservice.entity.User;
 import com.akerke.authservice.exception.EmailRegisteredYetException;
 import com.akerke.authservice.exception.EntityNotFoundException;
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final UserDao userDao;
+
     @Override
     public User register(RegistrationRequest req) {
         var optionalUser = userRepository.findByEmailOrPhone(req.email(), req.phone());
@@ -48,6 +51,7 @@ public class UserServiceImpl implements UserService {
 
         user.setRoles(List.of(role));
 
+        userDao.insert(user);
         return userRepository.save(user);
     }
 
@@ -72,7 +76,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
+        var user = find(id);
         userRepository.deleteById(id);
+        userDao.delete(user.getEmail());
     }
 
     @Override
