@@ -9,10 +9,11 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user_entity")
 @Getter
 @Setter
 public class User extends DateAudit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
