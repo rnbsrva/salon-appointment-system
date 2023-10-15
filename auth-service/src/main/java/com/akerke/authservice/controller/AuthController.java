@@ -26,7 +26,7 @@ public class AuthController{
                 .ok(authService.validateToken(token, TokenType.ACCESS_TOKEN));
     }
 
-    @GetMapping("reset-password")
+    @PatchMapping("reset-password")
     ResponseEntity<?> requestToResetPassword(
             @RequestBody @Valid ResetPasswordRequest req,
             BindingResult br

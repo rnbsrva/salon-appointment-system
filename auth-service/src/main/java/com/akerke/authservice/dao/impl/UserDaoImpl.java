@@ -30,14 +30,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void insert(User user) {
-        var result = jdbc.update(
-                "insert into users(name,surname,gender,phone,email) values (?,?,?,?,?);"
-                , user.getName()
-                , user.getSurname()
-                , user.getGender(),
-                user.getPhone(),
-                user.getEmail()
-        );
+//        var result = jdbc.update(
+//                "insert into users(name,surname,gender,phone,email) values (?,?,?,?,?);"
+//                , user.getName()
+//                , user.getSurname()
+//                , user.getGender().name(),
+//                user.getPhone(),
+//                user.getEmail()
+//        ); todo
     }
 
     @Override

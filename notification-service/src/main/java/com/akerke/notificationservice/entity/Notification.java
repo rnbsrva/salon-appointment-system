@@ -27,4 +27,5 @@ public class Notification {
     private String message;
     private NotificationType type;
     private Long recipientTgId;
+
 }

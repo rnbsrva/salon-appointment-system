@@ -24,7 +24,7 @@ CREATE TABLE role
 );
 
 ALTER TABLE role
-    ADD CONSTRAINT FK_ROLE_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);
+    ADD CONSTRAINT FK_ROLE_ON_USER FOREIGN KEY (user_id) REFERENCES user_entity (id);
 
 CREATE TABLE permission
 (

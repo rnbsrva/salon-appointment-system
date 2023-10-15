@@ -34,7 +34,7 @@ public abstract class TokenValidator {
             return StatusResponse.fail("invalid credentials");
         }
 
-        if (sameTokenClaims(claims, type)) {
+        if (!sameTokenClaims(claims, type)) {
             return StatusResponse.fail("invalid token claims");
         }
 
