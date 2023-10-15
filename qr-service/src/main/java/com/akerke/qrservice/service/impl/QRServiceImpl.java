@@ -6,18 +6,15 @@ import com.akerke.qrservice.service.QRService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,27 +27,23 @@ public class QRServiceImpl implements QRService {
 
     private final QRRepository qrRepository;
 
+    private static final String ATTACHMENT_SOURCE = "qr-image";
+
     @Value("${qr.charset}")
     private String charset;
 
     @Async("asyncExecutor")
     @Override
-    public CompletableFuture<Void> generateQRAsync(HttpServletResponse response, String data) {
+    public CompletableFuture<Void> generateQRAsync(HttpServletResponse response, String link) throws IOException {
 
-        var optionalQR = qrRepository.findByLink(data);
+        var optionalQR = qrRepository.findByLink(link);
         if (optionalQR.isPresent()) {
 
             var qr = optionalQR.get();
-            byte[] bytes = Base64.decodeBase64(qr.getBase64Data());
-
-            response.setContentType("application/octet-stream");
-            response.setContentLength(bytes.length);
-            response.setHeader("Content-Disposition", "attachment; filename=\"downloaded_file.bin\"");
 
             return CompletableFuture.runAsync(() -> {
                 try {
-                    log.info("return existing qr code");
-                    response.getOutputStream().write(bytes);
+                    response.sendRedirect(createLinkToDownload(qr.getId(), qr.getId()));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -59,9 +52,12 @@ public class QRServiceImpl implements QRService {
         } else {
             return CompletableFuture.runAsync(() -> {
                 try {
-                    var base64Data = generateQR(response, data);
-                    var qr = new QR(data, base64Data);
+                    var bytes = generateQR(response, link);
+
+                    var qr = new QR(link);
                     qrRepository.save(qr);
+
+                    response.sendRedirect(createLinkToUpload(qr.getId(), qr.getId()));
                     log.info("generate qr code");
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -72,7 +68,7 @@ public class QRServiceImpl implements QRService {
 
     @Override
     @SneakyThrows
-    public String generateQR(
+    public CompletableFuture<byte[]> generateQR(
             HttpServletResponse response,
             String qrURL
     ) {
@@ -87,7 +83,7 @@ public class QRServiceImpl implements QRService {
         response.setContentType("image/png");
         response.setHeader("Content-Disposition", "inline; filename=qr-code.png");
 
-        OutputStream outputStream = response.getOutputStream();
+        var outputStream = response.getOutputStream();
 
         var byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -95,11 +91,18 @@ public class QRServiceImpl implements QRService {
         byteArrayOutputStream.writeTo(outputStream);
 
         var byteArray = byteArrayOutputStream.toByteArray();
-        var base64Image = Base64.encodeBase64String(byteArray);
 
         outputStream.flush();
         outputStream.close();
 
-        return base64Image;
+        return CompletableFuture.completedFuture(byteArray);
+    }
+
+    private String createLinkToDownload(String name, String target) {
+        return "http://localhost:8080/storage/download?name=" + name + "&target=" + target + "&source=" + ATTACHMENT_SOURCE;
+    }
+
+    private String createLinkToUpload(String name, String target) {
+        return "http://localhost:8080/storage/upload?name=" + name + "&target=" + target + "&source=" + ATTACHMENT_SOURCE;
     }
 }

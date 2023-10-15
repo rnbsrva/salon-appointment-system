@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum AttachmentSource {
     SALON_IMAGE("salon-image"),
 
-    MASTER_IMAGE("master-image");
+    MASTER_IMAGE("master-image"),
+    QR_IMAGE("qr-image");
 
     private final String name;
 }

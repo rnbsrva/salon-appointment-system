@@ -64,10 +64,6 @@ public class MinIOController {
         minIOService.removeObject(dto);
     }
 
-    @ExceptionHandler(FileOperationException.class)
-    ProblemDetail handle(FileOperationException e) {
-        return ProblemDetail
-                .forStatusAndDetail(HttpStatusCode.valueOf(500), e.getMessage());
-    }
+
 
 }
