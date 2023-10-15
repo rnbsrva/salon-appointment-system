@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.akerke.salonservice.validatе.Validator.validate;
 
 @RestController
-@RequestMapping
+@RequestMapping("feedback")
 @RequiredArgsConstructor
 public class FeedbackController {
 

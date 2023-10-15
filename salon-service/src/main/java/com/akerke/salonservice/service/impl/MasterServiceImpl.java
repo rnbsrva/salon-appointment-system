@@ -1,8 +1,11 @@
 package com.akerke.salonservice.service.impl;
 
+import com.akerke.salonservice.constants.AppConstants;
 import com.akerke.salonservice.dto.MasterDTO;
 import com.akerke.salonservice.entity.Master;
 import com.akerke.salonservice.exception.EntityNotFoundException;
+import com.akerke.salonservice.kafka.KafkaManageRoleRequest;
+import com.akerke.salonservice.kafka.KafkaProducer;
 import com.akerke.salonservice.mapper.MasterMapper;
 import com.akerke.salonservice.repository.MasterRepository;
 import com.akerke.salonservice.service.MasterService;
@@ -23,18 +26,33 @@ public class MasterServiceImpl implements MasterService {
     private final UserService userService;
     private final TreatmentService treatmentService;
     private final SalonService salonService;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public Master save(MasterDTO masterDTO) {
-        Master master = masterMapper.toModel(masterDTO);
+        var master = masterMapper.toModel(masterDTO);
         master.setUser(userService.getById(masterDTO.userId()));
         master.setSalon(salonService.getById(masterDTO.salonId()));
-        return masterRepository.save(master);
+
+        var savedMaster = masterRepository.save(master);
+        kafkaProducer.produce(
+                AppConstants.MASTER_TOPIC_NAME,
+                new KafkaManageRoleRequest(savedMaster.getSalonId(), savedMaster.getUser().getEmail(), true)
+        );
+
+        return savedMaster;
     }
 
     @Override
     public void delete(Long id) {
-        masterRepository.delete(this.getById(id));
+        var master = this.getById(id);
+
+        kafkaProducer.produce(
+                AppConstants.MASTER_TOPIC_NAME,
+                new KafkaManageRoleRequest(master.getSalonId(), master.getUser().getEmail(), false)
+        );
+
+        masterRepository.delete(master);
     }
 
     @Override
