@@ -16,7 +16,7 @@ public class QRController {
 
     private final QRService qrService;
 
-    @GetMapping()
+    @GetMapping("generate")
     public CompletableFuture<Void> generateQR(
             HttpServletResponse response,
             @RequestParam String data

@@ -3,10 +3,13 @@ qr:
 spring:
   application:
     name: qr-service
+  data:
+    mongodb:
+      uri: ${MONGO_DB_URI}
 eureka:
   client:
     service-url:
-      defaultZone: https://server-akerke.fibo.cloud:8761/eureka
+      defaultZone: ${EUREKA}
 server:
   port: 9999
   servlet:

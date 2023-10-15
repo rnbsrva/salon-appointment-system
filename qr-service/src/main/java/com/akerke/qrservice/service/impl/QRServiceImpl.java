@@ -60,7 +60,7 @@ public class QRServiceImpl implements QRService {
             return CompletableFuture.runAsync(() -> {
                 try {
                     var base64Data = generateQR(response, data);
-                    var qr = new QR(data,base64Data);
+                    var qr = new QR(data, base64Data);
                     qrRepository.save(qr);
                     log.info("generate qr code");
                 } catch (Exception e) {
@@ -72,27 +72,34 @@ public class QRServiceImpl implements QRService {
 
     @Override
     @SneakyThrows
-    public String generateQR(HttpServletResponse response, String qrURL) {
-        BitMatrix matrix = new MultiFormatWriter().encode(
-                new String(qrURL.getBytes(charset), charset),
-                BarcodeFormat.QR_CODE, 600, 600);
+    public String generateQR(
+            HttpServletResponse response,
+            String qrURL
+    ) {
+        var matrix = new MultiFormatWriter()
+                .encode(
+                        new String(qrURL.getBytes(charset), charset),
+                        BarcodeFormat.QR_CODE, 600, 600
+                );
 
-        BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(matrix);
+        var bufferedImage = MatrixToImageWriter.toBufferedImage(matrix);
 
         response.setContentType("image/png");
         response.setHeader("Content-Disposition", "inline; filename=qr-code.png");
 
         OutputStream outputStream = response.getOutputStream();
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        var byteArrayOutputStream = new ByteArrayOutputStream();
+
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
         byteArrayOutputStream.writeTo(outputStream);
 
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        String base64Image = Base64.encodeBase64String(byteArray);
+        var byteArray = byteArrayOutputStream.toByteArray();
+        var base64Image = Base64.encodeBase64String(byteArray);
 
         outputStream.flush();
         outputStream.close();
+
         return base64Image;
     }
 }
