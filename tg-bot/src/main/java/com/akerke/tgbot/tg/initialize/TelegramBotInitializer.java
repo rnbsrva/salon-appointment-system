@@ -1,6 +1,6 @@
-package com.akerke.notificationservice.config;
+package com.akerke.tgbot.tg.initialize;
 
-import com.akerke.notificationservice.tb.bot.NotificationBot;
+import com.akerke.tgbot.tg.bot.NotificationBot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

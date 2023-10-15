@@ -1,4 +1,4 @@
-package com.akerke.notificationservice.tb.helper;
+package com.akerke.tgbot.tg.helper;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
