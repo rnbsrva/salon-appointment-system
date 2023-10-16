@@ -19,4 +19,5 @@ public interface MinIOService {
     void getObjects(Long target, AttachmentSource source, HttpServletResponse response);
 
     void removeObjects(Long target, AttachmentSource source);
+
 }

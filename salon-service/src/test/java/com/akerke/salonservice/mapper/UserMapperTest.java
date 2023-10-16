@@ -30,5 +30,4 @@ public class UserMapperTest {
         assertThrows(NullPointerException.class, ()->userMapper.update(userDTO, null));
     }
 
-    @Test
 }

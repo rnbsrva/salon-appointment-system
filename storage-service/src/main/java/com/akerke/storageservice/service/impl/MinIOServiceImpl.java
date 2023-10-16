@@ -44,7 +44,8 @@ public class MinIOServiceImpl implements MinIOService {
                         PutObjectArgs.builder()
                                 .bucket(dto.source().getName())
                                 .object(dto.target().toString().concat("/").concat(objectName))
-                                .stream(in, -1, 10485760).build());
+                                .stream(in, -1, 10485760).build()
+                );
             } catch (Exception e) {
                 throw new FileOperationException(e.getMessage());
             }
@@ -74,11 +75,14 @@ public class MinIOServiceImpl implements MinIOService {
                     var inputStream = minioInputStream;
                     var outputStream = response.getOutputStream()
             ) {
+
                 var buffer = new byte[10240];
                 int bytesRead;
+
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, bytesRead);
                 }
+
             } catch (Exception e) {
                 throw new RuntimeException();
             }
@@ -139,12 +143,13 @@ public class MinIOServiceImpl implements MinIOService {
                                 response.setContentType("text/html");
                                 response.getWriter().println("<html><body>");
 
-                                for (Result<Item> result : minioInputStream) {
+                                for (var result : minioInputStream) {
                                     var objectName = result.get().objectName();
                                     String originalName = objectName.replaceFirst("\\d+/", "");
                                     String downloadLink = toDownloadLink(source.getName(), target.toString(), originalName);
                                     response.getWriter().println("<a href='" + downloadLink + "'>" + originalName + "</a><br>");
                                 }
+
                                 response.getWriter().println("</body></html>");
                             } catch (Exception e) {
                                 throw new FileOperationException(e.getMessage());
@@ -166,7 +171,7 @@ public class MinIOServiceImpl implements MinIOService {
                                 .build()
                 );
 
-                for (Result<Item> result : objects) {
+                for (var result : objects) {
                     minioClient.removeObject(
                             RemoveObjectArgs.builder()
                                     .bucket(source.getName())
@@ -174,6 +179,7 @@ public class MinIOServiceImpl implements MinIOService {
                                     .build()
                     );
                 }
+
             } catch (Exception e) {
                 throw new FileOperationException(e.getMessage());
             }
