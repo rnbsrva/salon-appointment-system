@@ -5,14 +5,15 @@ spring:
     openfeign:
       client:
         config:
-          storage_service:
-            url: http://localhost:7777/api/v1/storage/
+          storage-service:
+            url: http://localhost:8080/storage/
   application:
     name: qr-service
 eureka:
   client:
     service-url:
       defaultZone: https://server-akerke.fibo.cloud:8761/eureka
+    enabled: false
 server:
   port: 9999
   servlet:
