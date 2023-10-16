@@ -1,12 +1,14 @@
 package com.akerke.storageservice.config;
 
 import com.akerke.storageservice.constants.AttachmentSource;
+import com.akerke.storageservice.exception.BucketInitializerException;
 import com.akerke.storageservice.exception.FileOperationException;
 import com.akerke.storageservice.service.MinIOService;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.errors.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 @Configuration
+@Slf4j
 public class MinIOConfig {
 
     @Value("${spring.minio.access-key}")
@@ -38,27 +41,34 @@ public class MinIOConfig {
     }
 
     @Bean
-    public CommandLineRunner runner(
+    public CommandLineRunner bucketListInitializer(
             MinioClient minio
     ) {
         return args -> {
             Arrays
                     .stream(AttachmentSource.values())
-                    .forEach(attachmentSource -> {
+                    .filter(
+                            attachmentSource -> {
                                 try {
-                                    if (minio.bucketExists(
+                                    return minio.bucketExists(
                                             BucketExistsArgs.builder()
                                                     .bucket(attachmentSource.getName())
                                                     .build()
-                                    )) {
-                                        minio.makeBucket(
-                                                MakeBucketArgs.builder()
-                                                        .bucket(attachmentSource.getName())
-                                                        .build()
-                                        );
-                                    }
+                                    );
                                 } catch (Exception e) {
-                                    throw new FileOperationException(e);
+                                    throw new BucketInitializerException(e.getMessage());
+                                }
+                            }
+                    )
+                    .forEach(attachmentSource -> {
+                                try {
+                                    minio.makeBucket(
+                                            MakeBucketArgs.builder()
+                                                    .bucket(attachmentSource.getName())
+                                                    .build()
+                                    );
+                                } catch (Exception e) {
+                                    throw new BucketInitializerException(e.getMessage());
                                 }
                             }
                     );

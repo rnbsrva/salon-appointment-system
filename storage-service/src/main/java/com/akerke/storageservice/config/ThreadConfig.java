@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
         havingValue = "virtual"
 )
 public class ThreadConfig {
+
     @Bean
     public AsyncTaskExecutor applicationTaskExecutor() {
         return new TaskExecutorAdapter(Executors.newVirtualThreadPerTaskExecutor());
