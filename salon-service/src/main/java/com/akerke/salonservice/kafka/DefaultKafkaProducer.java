@@ -16,12 +16,7 @@ public class DefaultKafkaProducer implements KafkaProducer {
 
     private final KafkaTemplate<String, Object> kafka;
 
-    /**
-     * Produce a message to the specified Kafka topic.
-     *
-     * @param topic The name of the Kafka topic.
-     * @param data  The data to be sent to the Kafka topic.
-     */
+
     @Override
     public <T> void produce(String topic, T data) {
         kafka.send(topic, data)

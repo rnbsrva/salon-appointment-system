@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <springProperty name="yourVar" source="."/>
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_HOST}:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <loggerName />
+                <pattern>
+                    <pattern>
+                        {
+                        "timestamp_loger":"%date{dd MMM yyyy;HH:mm:ss.SSS}",
+                        "app": "auth-service",
+                        "level":"%level",
+                        "message":"%msg",
+                        "thread": "%thread",
+                        "context_name":"%cn",
+                        "user":"%X{user}",
+                        "http_status":"%X{HttpStatus}",
+                        "event":"%X{event}",
+                        "body": "%X{body}",
+                        "exception":"%ex{full}",
+                        "url":"%X{url}",
+                        "method":"%X{method}"
+                        }
+                    </pattern>
+                </pattern>
+
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="logstash" />
+    </root>
+
+</configuration>

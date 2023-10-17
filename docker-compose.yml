@@ -14,6 +14,7 @@ services:
       MINIO_ADDRESS: ':9000'
       MINIO_CONSOLE_ADDRESS: ':9090'
     command: minio server /data
+
   zookeeper:
     container_name: kafka
     image: confluentinc/cp-zookeeper:latest
@@ -22,6 +23,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+
   kafka:
     container_name: kafka
     image: confluentinc/cp-kafka:latest
@@ -60,6 +62,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
   discovery:
     image: rnbsrva/discovery
     container_name: discovery
@@ -67,6 +70,8 @@ services:
       - "8761:8761"
     environment:
       'eureka.client.serviceUrl.defaultZone': 'http://server-akerke.fibo.cloud:8761/eureka'
+
+
   redis:
     image: redis
     container_name: redis
@@ -74,7 +79,52 @@ services:
     ports:
       - "6379:6379"
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
+    container_name: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.3.3
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.3.3
+    container_name: logstash
+    volumes:
+      - ./docker/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./docker/logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+
+    depends_on:
+      - elasticsearch
+
+
+
 volumes:
+  elasticsearch_data:
+    driver: local
   postgres_data: { }
   minio_storage: { }
 networks:
