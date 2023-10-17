@@ -4,7 +4,7 @@ type Notification{
     title: String!
     message: String!
     phoneNumber: String!
-    type: String!
+    type: NotificationType!
     time: String!
     recipientTgId:Int!
 }
@@ -14,8 +14,17 @@ type Query{
     getNotificationById(id:ID!):Notification!
 }
 
+type Mutation {
+    deleteNotification(id: ID!): Boolean
+}
+
 enum NotificationType{
-    todo
+    APPOINTMENT_CONFIRMATION,
+    APPOINTMENT_REMINDER,
+    APPOINTMENT_CANCELLATION,
+    APPOINTMENT_RESCHEDULE,
+    SPECIAL_OFFER,
+    SALON_NEWS
 }
 
 

@@ -13,7 +13,7 @@ public class KafkaNotificationListener {
             topics = "tg_notification", groupId = "0"
     )
     void listenNotifications(
-
     ) {
+
     }
 }

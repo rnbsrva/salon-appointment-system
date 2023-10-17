@@ -7,6 +7,8 @@ import com.akerke.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -16,17 +18,22 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification findById(Long id) {
-        var s = notificationRepository.findById(id);
-        s.ifPresent(System.out::println);
-        var d = new Notification();
-        d.setId(id);
-        d.setTitle("Re");
-        return d;
+        return notificationRepository.findById(id)
+                .orElseThrow(()->new NotificationNotFoundException(id));
     }
 
+    @Override
+    public List<Notification> findAllByUser(Long id){
+        return notificationRepository.findAllByRecipientId(id);
+    }
 
     @Override
     public void deleteById(Long id) {
         notificationRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByUser(Long id) {
+        notificationRepository.deleteNotificationsByRecipientId(id);
     }
 }
