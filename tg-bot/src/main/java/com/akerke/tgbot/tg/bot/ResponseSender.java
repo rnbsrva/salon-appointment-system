@@ -1,5 +1,6 @@
 package com.akerke.tgbot.tg.bot;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.bots.AbsSender;

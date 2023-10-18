@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <springProperty name="yourVar" source="."/>
     <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>${LOGSTASH_HOST}:5000</destination>
+        <destination>localhost:5000</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <loggerName />
                 <pattern>
                     <pattern>
                         {
-                        "timestamp_loger":"%date{dd MMM yyyy;HH:mm:ss.SSS}",
+                        "timestamp_logger":"%date{dd MMM yyyy;HH:mm:ss.SSS}",
                         "app": "auth-service",
-                        "level":"%level",
-                        "message":"%msg",
-                        "thread": "%thread",
-                        "context_name":"%cn",
-                        "user":"%X{user}",
-                        "http_status":"%X{HttpStatus}",
-                        "event":"%X{event}",
-                        "body": "%X{body}",
-                        "exception":"%ex{full}",
+                        "http_status":"%X{httpStatus}",
                         "url":"%X{url}",
                         "method":"%X{method}"
                         }
@@ -31,8 +22,43 @@
         </encoder>
     </appender>
 
+    <appender name="common-logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+        <providers>
+            <loggerName/>
+            <pattern>
+                <pattern>
+                    {
+                    "timestamp_logger":"%date{dd MMM yyyy;HH:mm:ss.SSS}",
+                    "app": "auth-service",
+                    "value" : "%X{value}"
+                    }
+                </pattern>
+            </pattern>
+        </providers>
+        </encoder>
+    </appender>
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
+
+
     <root level="info">
         <appender-ref ref="logstash" />
+        <appender-ref ref="Console" />
+        <appender-ref ref="common-logstash"/>
     </root>
+
+    <logger name="com.akerke.authservice" level="trace" additivity="false">
+        <appender-ref ref="logstash" />
+        <appender-ref ref="Console" />
+        <appender-ref ref="common-logstash"/>
+    </logger>
 
 </configuration>

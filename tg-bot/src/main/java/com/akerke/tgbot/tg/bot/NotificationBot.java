@@ -1,5 +1,6 @@
 package com.akerke.tgbot.tg.bot;
 
+import com.akerke.tgbot.tg.handler.StartCommandHandler;
 import com.akerke.tgbot.tg.helper.KeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +22,12 @@ public class NotificationBot extends TelegramLongPollingBot {
     @Value("${spring.telegram.bot.token}")
     private String botToken;
 
+    private final ResponseSender responseSender = new ResponseSender(this);
+    private final StartCommandHandler startCommandHandler = new StartCommandHandler(responseSender);
+
 
     @Override
-    public String getBotUsername(){
+    public String getBotUsername() {
         return this.botUsername;
     }
 
@@ -36,16 +40,8 @@ public class NotificationBot extends TelegramLongPollingBot {
     public void onUpdateReceived(
             Update update
     ) {
-        if ("/start".equals(update.getMessage().getText())){
-            try {
-                var m = new SendMessage();
-                m.setChatId(String.valueOf(update.getMessage().getChatId()));
-                m.setReplyMarkup(KeyboardHelper.greetingReplyKeyboardMarkup());
-                m.setText("choose");
-                execute(m);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
-            }
+        if ("/start".equals(update.getMessage().getText())) {
+            startCommandHandler.handle(update);
         }
     }
 
