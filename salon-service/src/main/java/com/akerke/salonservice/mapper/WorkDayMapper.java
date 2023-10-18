@@ -9,7 +9,10 @@ import org.mapstruct.*;
 import java.util.ArrayList;
 
 @Mapper(
-        imports = {ArrayList.class, WorkTime.class},
+        imports = {
+                ArrayList.class,
+                WorkTime.class
+        },
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
