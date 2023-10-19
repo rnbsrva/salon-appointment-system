@@ -1,8 +1,8 @@
 package com.akerke.salonservice.elastic;
 
 import com.akerke.salonservice.entity.Address;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToOne;
+
+import java.util.List;
 
 public class SalonWrapper {
 
@@ -12,5 +12,6 @@ public class SalonWrapper {
     private String email;
     private Address address;
     private String description;
+    private List<String> treatments;
 
 }

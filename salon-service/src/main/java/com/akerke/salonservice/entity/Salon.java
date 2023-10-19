@@ -41,8 +41,8 @@ public class Salon extends DateAudit {
     @OneToMany(
             mappedBy = "salon",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<Treatment> treatments;
 
