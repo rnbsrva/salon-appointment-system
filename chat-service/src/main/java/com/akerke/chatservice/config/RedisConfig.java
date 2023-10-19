@@ -19,26 +19,30 @@ import static com.akerke.chatservice.constants.AppConstants.ACTIVE_USER_KEY;
 @Configuration(proxyBeanMethods=false)
 public class RedisConfig {
 
-    @Bean
-    ReactiveRedisConnectionFactory reactiveRedisConnectionFactory(RedisProperties redisProperties) {
+    private String redisHost;
+    private Integer redisPort;
+
+//    @Bean
+    ReactiveRedisConnectionFactory reactiveRedisConnectionFactory() {
         var redisStandaloneConfiguration = new RedisStandaloneConfiguration(
-                redisProperties.getHost(),
-                redisProperties.getPort()
+                redisHost,
+                redisPort
         );
-        redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
+//        redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
-    @Bean
+//    @Bean
     ReactiveStringRedisTemplate reactiveStringRedisTemplate(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
         return new ReactiveStringRedisTemplate(reactiveRedisConnectionFactory);
     }
 
     // Redis Atomic Counter to store no. of Active Users.
-    @Bean
+//    @Bean
     RedisAtomicLong activeUserCounter(RedisConnectionFactory redisConnectionFactory) {
         return new RedisAtomicLong(ACTIVE_USER_KEY, redisConnectionFactory);
     }
+
 
 //    @Bean
 //    ApplicationRunner applicationRunner(

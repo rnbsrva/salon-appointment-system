@@ -15,8 +15,7 @@ public class Chat {
     @Id
     private String id;
     private LocalDateTime createdAt;
-
     private Long salonId;
-
+    private User user;
 
 }
