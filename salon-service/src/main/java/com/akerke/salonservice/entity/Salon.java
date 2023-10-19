@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 public class Salon extends DateAudit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +31,6 @@ public class Salon extends DateAudit {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonProperty("ownerId")
     private User owner;
-
 
     @OneToMany(
             mappedBy = "salon",

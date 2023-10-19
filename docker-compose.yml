@@ -51,17 +51,7 @@ services:
 #      - "19000:9000"
 #    environment:
 #      KAFKA_BROKERCONNECT: kafka:29092
-#  postgres:
-#    container_name: postgres
-#    image: postgres:15.1
-#    environment:
-#      POSTGRES_USER: akerke
-#      POSTGRES_PASSWORD: werytcjvcykblccjdbsbcjds
-#      POSTGRES_DB: salon
-#    ports:
-#      - "5432:5432"
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
+
 #
 #  discovery:
 #    image: rnbsrva/discovery
@@ -106,10 +96,8 @@ services:
 
   logstash:
     build:
-      context: ./docker/logstash  # The build context directory
+      context: ./docker/logstash
       dockerfile: Dockerfile
-    image: my-logstash
-#    image: docker.elastic.co/logstash/logstash:8.3.3
     container_name: logstash
     volumes:
       - ./docker/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
@@ -124,7 +112,18 @@ services:
 
     depends_on:
       - elasticsearch
-
+      - postgres
+  postgres:
+    container_name: postgres
+    image: postgres:15.1
+    environment:
+      POSTGRES_USER: akerke
+      POSTGRES_PASSWORD: werytcjvcykblccjdbsbcjds
+      POSTGRES_DB: salon
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 
 volumes:
