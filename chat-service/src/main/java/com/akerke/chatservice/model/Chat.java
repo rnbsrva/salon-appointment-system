@@ -1,13 +1,22 @@
 package com.akerke.chatservice.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@Document(collection = "chat_ ")
 public class Chat {
-    private Long id; // salon name
-    private String name; // salon name
-    private List<User> members;
-    private List<Message> messages;
+
+    @Id
+    private String id;
+    private LocalDateTime createdAt;
+
+    private Long salonId;
+
+
 }
