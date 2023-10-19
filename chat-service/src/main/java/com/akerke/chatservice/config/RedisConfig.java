@@ -1,5 +1,6 @@
 package com.akerke.chatservice.config;
 
+import com.akerke.chatservice.redis.RedisSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,7 @@ import static com.akerke.chatservice.constants.AppConstants.ACTIVE_USER_KEY;
 
 
 @Slf4j
-@Configuration(proxyBeanMethods=false)
+@Configuration(proxyBeanMethods = false)
 public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
@@ -42,23 +43,23 @@ public class RedisConfig {
         return new ReactiveStringRedisTemplate(fct);
     }
 
-//     Redis Atomic Counter to store no. of Active Users.
+    //     Redis Atomic Counter to store no. of Active Users.
     @Bean
     RedisAtomicLong activeUserCounter(RedisConnectionFactory fct) {
         return new RedisAtomicLong(ACTIVE_USER_KEY, fct);
     }
 
 
-//    @Bean
-//    ApplicationRunner applicationRunner(
-//            RedisChatMessageListener redisChatMessageListener
-//    ) {
-//        return args -> {
-//            redisChatMessageListener.subscribeMessageChannelAndPublishOnWebSocket()
-//                    .doOnSubscribe(subscription -> log.info("Redis Listener Started"))
-//                    .doOnError(throwable -> log.error("Error listening to Redis topic.", throwable))
-//                    .doFinally(signalType -> log.info("Stopped Listener. Signal Type: {}", signalType))
-//                    .subscribe();
-//        };
-//    }
+    @Bean
+    ApplicationRunner applicationRunner(
+            RedisSubscriber redisSubscriber
+    ) {
+        return args -> {
+            redisSubscriber.subscribeMessageChannelAndPublishOnWebSocket()
+                    .doOnSubscribe(subscription -> log.info("Redis Listener Started"))
+                    .doOnError(throwable -> log.error("Error listening to Redis topic.", throwable))
+                    .doFinally(signalType -> log.info("Stopped Listener. Signal Type: {}", signalType))
+                    .subscribe();
+        };
+    }
 }

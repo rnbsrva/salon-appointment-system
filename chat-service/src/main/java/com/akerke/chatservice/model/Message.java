@@ -15,5 +15,7 @@ public class Message {
 
     private String content;
 
+    private Boolean fromStuff;
 
+    private String chatId;
 }

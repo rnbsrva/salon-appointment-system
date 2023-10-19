@@ -1,7 +1,6 @@
 package com.akerke.chatservice.service.impl;
 
 import com.akerke.chatservice.service.UserStatusService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -21,21 +20,16 @@ public class UserStatusServiceImpl implements UserStatusService {
 
     @Override
     public Mono<Void> setOnline(Long applicationId) {
-        return Mono.fromRunnable(() -> {
-            redis.opsForSet().add(ONLINE_USER_KEY, String.valueOf(applicationId)).flatMap(l -> {
-                return Mono.just(l);
-            }); // FIXME: 10/19/2023
-        }).then();
+            return redis.opsForSet()
+                    .add(ONLINE_USER_KEY, String.valueOf(applicationId))
+                    .then();
     }
 
     @Override
     public Mono<Void> setOffline(Long applicationId) {
-        return Mono.fromRunnable(() -> {
-            redis.opsForSet().remove(ONLINE_USER_KEY, String.valueOf(applicationId))
-                    .flatMap(l -> {
-                        return Mono.just(l);
-                    });// FIXME: 10/19/2023
-        });
+        return redis.opsForSet()
+                .remove(ONLINE_USER_KEY, String.valueOf(applicationId))
+                .then();
     }
 
     @Override
@@ -43,6 +37,28 @@ public class UserStatusServiceImpl implements UserStatusService {
         return redis.opsForSet()
                 .isMember(ONLINE_USER_KEY, applicationId);
     }
+
+    @Override
+    public Mono<Void> setOnline(Long salonId, Long applicationId) {
+        return redis.opsForSet()
+                .add(onlineStaffKey.apply(salonId),String.valueOf(applicationId))
+                .then();
+    }
+
+    @Override
+    public Mono<Void> setOffline(Long salonId, Long applicationId) {
+        return redis.opsForSet()
+                .remove(onlineStaffKey.apply(salonId),String.valueOf(applicationId))
+                .then();
+    }
+
+    @Override
+    public Mono<Boolean> supportChatIsOnline(Long salonId) {
+        return redis.opsForSet()
+                .size(onlineStaffKey.apply(salonId))
+                .flatMap(size -> Mono.just(size > 0));
+    }
+
 
     private final Function<Long, String> onlineStaffKey = salonId ->
             ONLINE_STAFF_KET_PREFIX.concat(String.valueOf(salonId));
