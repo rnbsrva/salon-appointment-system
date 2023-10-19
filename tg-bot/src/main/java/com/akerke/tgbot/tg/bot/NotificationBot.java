@@ -21,6 +21,8 @@ public class NotificationBot extends TelegramLongPollingBot {
     @Value("${spring.telegram.bot.token}")
     private String botToken;
 
+    private SendMessage sendMessage=  new SendMessage();
+
 
     @Override
     public String getBotUsername(){
@@ -36,16 +38,19 @@ public class NotificationBot extends TelegramLongPollingBot {
     public void onUpdateReceived(
             Update update
     ) {
+        var msg = "send your phone number as contact to login";
         if ("/start".equals(update.getMessage().getText())){
             try {
-                var m = new SendMessage();
-                m.setChatId(String.valueOf(update.getMessage().getChatId()));
-                m.setReplyMarkup(KeyboardHelper.greetingReplyKeyboardMarkup());
-                m.setText("choose");
-                execute(m);
+                sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+                sendMessage.setReplyMarkup(KeyboardHelper.greetingReplyKeyboardMarkup());
+                sendMessage.setText(msg);
+                execute(sendMessage);
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if (sendMessage.getText().equals(msg)){
+            System.out.println(update.getMessage().getContact());
         }
     }
 

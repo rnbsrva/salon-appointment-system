@@ -30,7 +30,7 @@ public class EmailListener {
     @KafkaListener(topics = "email_verification", groupId = "0")
     Mono<Void> listenVerification(EmailDetails emailDetails) {
         log.info("new email sending {}", emailDetails.toString());
-        return emailService.sendSimpleMail(emailDetails,MessageType.CONFIRM_EMAIL);
+        return emailService.sendSimpleMail(emailDetails, MessageType.CONFIRM_EMAIL);
     }
 
     @RetryableTopic(

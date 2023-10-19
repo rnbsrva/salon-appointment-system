@@ -10,12 +10,13 @@ type Notification{
 }
 
 type Query{
-    getNotifications(recipientId:ID!):[Notification]
+    getNotificationsByUser(recipientId:ID!):[Notification]
     getNotificationById(id:ID!):Notification!
 }
 
 type Mutation {
     deleteNotification(id: ID!): Boolean
+    deleteNotificationsByUser(id: ID!): [Notification]
 }
 
 enum NotificationType{
