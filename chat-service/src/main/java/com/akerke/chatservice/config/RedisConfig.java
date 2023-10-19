@@ -1,6 +1,8 @@
 package com.akerke.chatservice.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -19,28 +21,31 @@ import static com.akerke.chatservice.constants.AppConstants.ACTIVE_USER_KEY;
 @Configuration(proxyBeanMethods=false)
 public class RedisConfig {
 
+    @Value("${spring.data.redis.host}")
     private String redisHost;
+    @Value("spring.data.redis.port")
     private Integer redisPort;
 
-//    @Bean
+    @Bean
     ReactiveRedisConnectionFactory reactiveRedisConnectionFactory() {
         var redisStandaloneConfiguration = new RedisStandaloneConfiguration(
                 redisHost,
                 redisPort
         );
-//        redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
-//    @Bean
-    ReactiveStringRedisTemplate reactiveStringRedisTemplate(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
-        return new ReactiveStringRedisTemplate(reactiveRedisConnectionFactory);
+    @Bean
+    ReactiveStringRedisTemplate reactiveStringRedisTemplate(
+            @Qualifier("reactiveRedisConnectionFactory") ReactiveRedisConnectionFactory fct
+    ) {
+        return new ReactiveStringRedisTemplate(fct);
     }
 
-    // Redis Atomic Counter to store no. of Active Users.
-//    @Bean
-    RedisAtomicLong activeUserCounter(RedisConnectionFactory redisConnectionFactory) {
-        return new RedisAtomicLong(ACTIVE_USER_KEY, redisConnectionFactory);
+//     Redis Atomic Counter to store no. of Active Users.
+    @Bean
+    RedisAtomicLong activeUserCounter(RedisConnectionFactory fct) {
+        return new RedisAtomicLong(ACTIVE_USER_KEY, fct);
     }
 
 

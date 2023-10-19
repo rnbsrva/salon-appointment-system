@@ -1,6 +1,7 @@
-package com.akerke.chatservice.scheduled;
+package com.akerke.chatservice.scheduled.impl;
 
-import com.akerke.chatservice.repository.ChatReactiveRepository;
+import com.akerke.chatservice.scheduled.ScheduledChatCleaner;
+import com.akerke.chatservice.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -12,16 +13,16 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ScheduledChatCleanerImpl implements ScheduledChatCleaner {
 
-    private final ChatReactiveRepository chatReactiveRepository;
+    private final ChatService chatService;
 
     @Scheduled(cron = "${scheduled.clean-chat.cron}")
     @Override
     public void clean() {
-        var thresholdDateTime = Mono.just(LocalDateTime.now());
+        var thresholdDateTime = Mono.just(LocalDateTime.now().minusMonths(1));
 
-        chatReactiveRepository
+        chatService
                 .findChatsByCreatedAtBefore(thresholdDateTime)
-                .flatMap(chat -> chatReactiveRepository.delete(chat))
+                .flatMap(chatService::deleteChat)
                 .subscribe();
     }
 
