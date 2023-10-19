@@ -1,9 +1,12 @@
 package com.akerke.salonservice.elastic;
 
 import com.akerke.salonservice.entity.Address;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
 public class SalonWrapper {
 
     private Long id;
