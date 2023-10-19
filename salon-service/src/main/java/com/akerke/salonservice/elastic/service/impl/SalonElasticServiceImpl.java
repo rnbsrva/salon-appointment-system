@@ -8,11 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.erhlc.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
@@ -26,9 +29,8 @@ import static com.akerke.salonservice.constants.AppConstants.SALON_INDEX;
 @RequiredArgsConstructor
 public class SalonElasticServiceImpl implements SalonElasticService {
 
-    private final static RequestOptions DEFAULT = RequestOptions.DEFAULT;
-    private final SalonMapper salonMapper;
     private final ElasticsearchOperations elastic;
+    private final SalonMapper salonMapper;
 
     @Override
     public List<SalonWrapper> search(
@@ -36,9 +38,50 @@ public class SalonElasticServiceImpl implements SalonElasticService {
             int from,
             int size
     ) {
+        var queryBuilder = QueryBuilders.boolQuery();
 
+        if (searchDetails.name() != null) {
+            queryBuilder.must(getFuzzinessQuery("name", searchDetails.name()));
+        }
 
-        return null;
+        if (searchDetails.treatmentToFind() != null) {
+            queryBuilder.must(getFuzzinessQuery("treatmentToFind", searchDetails.treatmentToFind()));
+        }
+
+        if (searchDetails.addressDetails() != null) {
+            if (searchDetails.addressDetails().state() != null) {
+                queryBuilder.must(getFuzzinessQuery("state", searchDetails.addressDetails().state()));
+            }
+            if (searchDetails.addressDetails().city() != null) {
+                queryBuilder.must(getFuzzinessQuery("city", searchDetails.addressDetails().city()));
+            }
+            if (searchDetails.addressDetails().street() != null) {
+                queryBuilder.must(getFuzzinessQuery("street", searchDetails.addressDetails().street()));
+            }
+            if (searchDetails.addressDetails().houseNumber() != null) {
+                queryBuilder.must(getFuzzinessQuery("house_number", searchDetails.addressDetails().houseNumber().toString()));
+            }
+        }
+
+        var searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(queryBuilder)
+                .withPageable(PageRequest.of(from, size))
+                .build();
+
+        SearchHits<SalonWrapper> searchHits =
+                elastic.search(
+                        searchQuery,
+                        SalonWrapper.class,
+                        IndexCoordinates.of(SALON_INDEX)
+                );
+
+        return salonMapper.toListWrapperFromHit(searchHits);
+    }
+
+    private static MatchQueryBuilder getFuzzinessQuery(String fieldName, String fieldValue) {
+        return QueryBuilders
+                .matchQuery(fieldName, fieldValue)
+                .fuzziness("AUTO");
     }
 
     @Override
@@ -57,7 +100,7 @@ public class SalonElasticServiceImpl implements SalonElasticService {
                         IndexCoordinates.of(SALON_INDEX)
                 );
 
-        List<String> suggestions = new ArrayList<>();
+        var suggestions = new ArrayList<String>();
 
         searchSuggestions.getSearchHits().forEach(searchHit -> {
             suggestions.add(searchHit.getContent().getName());
