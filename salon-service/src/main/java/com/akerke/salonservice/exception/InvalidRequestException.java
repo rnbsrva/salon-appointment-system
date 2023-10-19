@@ -1,9 +1,17 @@
 package com.akerke.salonservice.exception;
 
-public class InvalidRequestException extends RuntimeException{
-    public InvalidRequestException(Class<?> c, String error) {
-        super("Wrong request for %s. Error: %s, ".formatted(c.getSimpleName(), error));
+/**
+ * Exception thrown when a request class fails validation checks based on annotations.
+ */
+public class InvalidRequestException extends RuntimeException {
+    /**
+     * Constructs an InvalidRequestException with a message indicating the entity's class and a description of the error.
+     *
+     * @param requestClass The class that failed validation checks.
+     * @param errorDescription A description of the validation error.
+     */
+    public InvalidRequestException(Class<?> requestClass, String errorDescription) {
+        super("Invalid request for %s. Error: %s".formatted(requestClass.getSimpleName(), errorDescription));
     }
-
 }
 

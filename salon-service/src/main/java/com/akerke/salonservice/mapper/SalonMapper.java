@@ -1,10 +1,14 @@
 package com.akerke.salonservice.mapper;
 
 import com.akerke.salonservice.dto.SalonDTO;
+import com.akerke.salonservice.elastic.SalonWrapper;
 import com.akerke.salonservice.entity.*;
 import org.mapstruct.*;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(imports = {Master.class, ArrayList.class,
         Treatment.class, WorkDay.class, Feedback.class},
@@ -22,6 +26,13 @@ public interface SalonMapper {
 
     @Mapping(target = "id", ignore = true)
     void update(SalonDTO salonDTO, @MappingTarget Salon salon);
+
+    default List<SalonWrapper> toListWrapperFromHit(SearchHits<SalonWrapper> searchHits){
+        return searchHits.getSearchHits()
+                .stream()
+                .map(SearchHit::getContent)
+                .toList();
+    };
 
 
 }

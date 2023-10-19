@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 public class Salon extends DateAudit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +32,6 @@ public class Salon extends DateAudit {
     @JsonProperty("ownerId")
     private User owner;
 
-
     @OneToMany(
             mappedBy = "salon",
             cascade = CascadeType.ALL
@@ -41,8 +41,8 @@ public class Salon extends DateAudit {
     @OneToMany(
             mappedBy = "salon",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<Treatment> treatments;
 

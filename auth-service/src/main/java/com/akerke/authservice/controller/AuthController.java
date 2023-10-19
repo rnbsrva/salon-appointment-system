@@ -5,6 +5,7 @@ import com.akerke.authservice.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.service.AuthService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import static com.akerke.authservice.validate.BindingValidator.validateRequest;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthController{
 
-    @Autowired
-    private AuthService authService;
+    private  final AuthService authService;
 
     @GetMapping("validate-token")
     ResponseEntity<?> validateToken(

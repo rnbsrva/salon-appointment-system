@@ -1,7 +1,6 @@
 package com.akerke.authservice.controller;
 
 
-import com.akerke.authservice.AuthServiceApplication;
 import com.akerke.authservice.payload.request.RegistrationRequest;
 import com.akerke.authservice.service.AuthService;
 import com.akerke.authservice.service.UserService;
@@ -16,6 +15,7 @@ import static com.akerke.authservice.validate.BindingValidator.validateRequest;
 
 @RestController
 @RequiredArgsConstructor
+@ResponseBody
 public class UserController {
 
     private final UserService userService;

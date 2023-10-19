@@ -1,5 +1,6 @@
 package com.akerke.tgbot.tg.bot;
 
+import com.akerke.tgbot.tg.handler.StartCommandHandler;
 import com.akerke.tgbot.tg.helper.KeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,16 @@ public class NotificationBot extends TelegramLongPollingBot {
     @Value("${spring.telegram.bot.token}")
     private String botToken;
 
+<<<<<<< HEAD
     private SendMessage sendMessage=  new SendMessage();
+=======
+    private final ResponseSender responseSender = new ResponseSender(this);
+    private final StartCommandHandler startCommandHandler = new StartCommandHandler(responseSender);
+>>>>>>> 34211c34fa029bcafeaecda4d4496143f83bd0ce
 
 
     @Override
-    public String getBotUsername(){
+    public String getBotUsername() {
         return this.botUsername;
     }
 
@@ -38,6 +44,7 @@ public class NotificationBot extends TelegramLongPollingBot {
     public void onUpdateReceived(
             Update update
     ) {
+<<<<<<< HEAD
         var msg = "send your phone number as contact to login";
         if ("/start".equals(update.getMessage().getText())){
             try {
@@ -48,6 +55,10 @@ public class NotificationBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
+=======
+        if ("/start".equals(update.getMessage().getText())) {
+            startCommandHandler.handle(update);
+>>>>>>> 34211c34fa029bcafeaecda4d4496143f83bd0ce
         }
         if (sendMessage.getText().equals(msg)){
             System.out.println(update.getMessage().getContact());
