@@ -50,7 +50,7 @@ public class MinIOConfig {
                     .filter(
                             attachmentSource -> {
                                 try {
-                                    return minio.bucketExists(
+                                    return !minio.bucketExists(
                                             BucketExistsArgs.builder()
                                                     .bucket(attachmentSource.getName())
                                                     .build()

@@ -41,7 +41,7 @@ public class QRRepositoryTest {
 
     @Test
     public void findByLink_thenLinkExisting() {
-        var qr = new QR("example-link", "someBase64Data");
+        var qr = new QR("example-link");
         qrRepository.save(qr);
 
         var foundQR = qrRepository.findByLink("example-link");

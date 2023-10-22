@@ -2,7 +2,6 @@ package com.akerke.authservice.payload.request;
 
 import com.akerke.authservice.annotations.Password;
 import com.akerke.authservice.annotations.PhoneNumber;
-import com.akerke.authservice.constants.Gender;
 import jakarta.validation.constraints.*;
 
 /**
@@ -21,9 +20,7 @@ public record RegistrationRequest(
         @PhoneNumber
         String phone,
         @Password
-        String password,
-        @NotNull
-        Gender gender
+        String password
 ) {
 }
 

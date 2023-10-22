@@ -15,17 +15,19 @@ public interface StorageServiceFeignClient {
     @Headers("Content-Type: multipart/form-data")
     void saveToStorage(
             @RequestPart("file") MultipartFile file,
-            @RequestParam Long target,
             @RequestParam String source,
             @RequestParam String name
     );
 
     default void saveToStorage(
            MultipartFile file,
-           Long target,
            String name
     ) {
-        this.saveToStorage(file, target, "QR_IMAGE", name);
+        try {
+            this.saveToStorage(file, "QR_IMAGE", name);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 
 }

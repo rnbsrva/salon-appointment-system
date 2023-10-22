@@ -8,8 +8,6 @@ import java.util.concurrent.CompletableFuture;
 
 public interface QRService {
 
-    CompletableFuture<byte[]> generateQR(HttpServletResponse response, String data);
-
     CompletableFuture<Void> generateQRAsync(HttpServletResponse response, String data) throws IOException;
 
     CompletableFuture<MultipartFile> generateMultipartQR(HttpServletResponse response,String date);

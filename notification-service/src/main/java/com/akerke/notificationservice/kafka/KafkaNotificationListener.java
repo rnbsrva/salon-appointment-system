@@ -15,12 +15,14 @@ import org.springframework.stereotype.Component;
 public class KafkaNotificationListener {
 
     private final ChatWSServiceFeignClient feignClient;
+    private final NotificationService notificationService;
 
     @KafkaListener(
             topics = "notification", groupId = "0"
     )
     void listenNotifications(NotificationDTO notificationDTO){
         log.info("new notification sending {}", notificationDTO.toString());
+        notificationService.save(notificationDTO);
         feignClient.notify(notificationDTO);
     }
 

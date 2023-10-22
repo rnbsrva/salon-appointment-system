@@ -10,6 +10,10 @@ import java.util.concurrent.ExecutionException;
 public interface MinIOService {
     void putObject(FileOperationDTO dto, MultipartFile file);
 
+    void putQR(FileOperationDTO dto, MultipartFile file);
+
+    void getQR(FileOperationDTO dto, HttpServletResponse response);
+
     void getObject(FileOperationDTO dto, HttpServletResponse response);
 
     void removeBucket(Long target, AttachmentSource source);

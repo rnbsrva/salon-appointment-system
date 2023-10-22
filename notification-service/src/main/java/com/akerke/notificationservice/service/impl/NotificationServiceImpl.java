@@ -1,7 +1,9 @@
 package com.akerke.notificationservice.service.impl;
 
+import com.akerke.notificationservice.dto.NotificationDTO;
 import com.akerke.notificationservice.entity.Notification;
 import com.akerke.notificationservice.exception.NotificationNotFoundException;
+import com.akerke.notificationservice.mapper.NotificationMapper;
 import com.akerke.notificationservice.repository.NotificationRepository;
 import com.akerke.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,12 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final NotificationMapper mapper;
+
+    @Override
+    public void save(NotificationDTO notificationDTO) {
+        notificationRepository.save(mapper.toModel(notificationDTO));
+    }
 
     @Override
     public Notification findById(Long id) {

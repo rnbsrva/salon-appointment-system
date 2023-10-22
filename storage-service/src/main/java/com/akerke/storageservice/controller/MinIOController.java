@@ -29,6 +29,15 @@ public class MinIOController {
         minIOService.putObject(new FileOperationDTO(target, source, name), file);
     }
 
+    @PostMapping("/uploadQR")
+    void uploadFileToMinIO(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam AttachmentSource source,
+            @RequestParam String name
+    ) {
+        minIOService.putQR(new FileOperationDTO(null, source, name), file);
+    }
+
     @GetMapping("/downloadByGroup")
     void downloadFiles(
             @RequestParam Long target,
@@ -54,6 +63,15 @@ public class MinIOController {
             HttpServletResponse response
     ) {
         minIOService.getObject(new FileOperationDTO(target, source, name), response);
+    }
+
+    @GetMapping("/downloadQR")
+    void downloadFile(
+            @RequestParam String name,
+            @RequestParam AttachmentSource source,
+            HttpServletResponse response
+    ) {
+        minIOService.getQR(new FileOperationDTO(null, source, name), response);
     }
 
     @PatchMapping("delete")

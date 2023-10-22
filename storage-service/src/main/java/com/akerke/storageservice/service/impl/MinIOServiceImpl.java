@@ -12,7 +12,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -48,6 +50,63 @@ public class MinIOServiceImpl implements MinIOService {
                 );
             } catch (Exception e) {
                 throw new FileOperationException(e.getMessage());
+            }
+        }));
+    }
+
+    @Override
+    public void putQR(FileOperationDTO dto, MultipartFile file) {
+        log.info("new qr saved: "+dto.toString());
+        log.info(file.getContentType());
+        this.getFromFuture(submit(() -> {
+            try {
+                var in = new ByteArrayInputStream(file.getBytes());
+                var objectName = file.getOriginalFilename();
+                minioClient.putObject(
+                        PutObjectArgs.builder()
+                                .contentType(MediaType.IMAGE_PNG_VALUE)
+                                .bucket(dto.source().getName())
+                                .object(objectName)
+                                .stream(in, -1, 10485760).build()
+                );
+            } catch (Exception e) {
+                throw new FileOperationException(e.getMessage());
+            }
+        }));
+    }
+
+    @Override
+    public void getQR(FileOperationDTO dto, HttpServletResponse response) {
+        this.getFromFuture(submit(() -> {
+            GetObjectResponse minioInputStream;
+            try {
+                minioInputStream = minioClient.getObject(
+                        GetObjectArgs.builder()
+                                .bucket(dto.source().getName())
+                                .object(dto.name())
+                                .build()
+                );
+            } catch (Exception e) {
+                throw new FileOperationException(e.getMessage());
+            }
+
+            response.setContentType(MediaType.IMAGE_PNG_VALUE);
+            response.setHeader("Content-Disposition", "inline; filename=qr-code.png");
+
+            try (
+                    var inputStream = minioInputStream;
+                    var outputStream = response.getOutputStream()
+            ) {
+
+                var buffer = new byte[10240];
+                int bytesRead;
+
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+            } catch (Exception e) {
+                throw new RuntimeException();
             }
         }));
     }
