@@ -1,18 +1,23 @@
 package com.akerke.tgbot.tg.bot;
 
+import com.akerke.tgbot.tg.handler.ChangeLanguageCommandHandler;
 import com.akerke.tgbot.tg.handler.StartCommandHandler;
-import com.akerke.tgbot.tg.helper.KeyboardHelper;
-import lombok.RequiredArgsConstructor;
+import com.akerke.tgbot.tg.handler.TelegramCommandHandler;
+import com.akerke.tgbot.tg.helper.LocaleHelper;
+import com.akerke.tgbot.tg.utils.CommonLocale;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class NotificationBot extends TelegramLongPollingBot {
 
@@ -22,10 +27,15 @@ public class NotificationBot extends TelegramLongPollingBot {
     @Value("${spring.telegram.bot.token}")
     private String botToken;
 
-    private SendMessage sendMessage = new SendMessage();
-    private final ResponseSender responseSender = new ResponseSender(this);
-    private final StartCommandHandler startCommandHandler = new StartCommandHandler(responseSender);
+    private Map<TelegramCommand, TelegramCommandHandler> commandMap;
 
+    public NotificationBot(LocaleHelper localeHelper) {
+        final ResponseSender responseSender = new ResponseSender(this);
+        this.commandMap =new HashMap<>(){{
+            put(TelegramCommand.CHANGE_LANGUAGE, new ChangeLanguageCommandHandler(responseSender,localeHelper));
+            put(TelegramCommand.START, new StartCommandHandler(responseSender,localeHelper));
+        }};
+    }
 
     @Override
     public String getBotUsername() {
@@ -41,15 +51,10 @@ public class NotificationBot extends TelegramLongPollingBot {
     public void onUpdateReceived(
             Update update
     ) {
-        var msg = "send your phone number as contact to login";
 
         if ("/start".equals(update.getMessage().getText())) {
-            startCommandHandler.handle(update);
+            commandMap.get(TelegramCommand.START).handle(update, CommonLocale.EN);
         }
-        else if (sendMessage.getText().equals(msg)) {
-            System.out.println(update.getMessage().getContact());
-        }
-
 
     }
 }

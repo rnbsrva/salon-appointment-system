@@ -1,5 +1,6 @@
-package com.akerke.tgbot.dao;
+package com.akerke.tgbot.dao.impl;
 
+import com.akerke.tgbot.dao.UserDAO;
 import com.akerke.tgbot.exception.UserNotFoundException;
 import com.akerke.tgbot.tg.entity.User;
 import lombok.RequiredArgsConstructor;

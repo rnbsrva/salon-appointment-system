@@ -1,12 +1,21 @@
 package com.akerke.tgbot.tg.handler;
 
+import com.akerke.tgbot.tg.bot.ResponseSender;
 import com.akerke.tgbot.tg.bot.TelegramCommand;
+import com.akerke.tgbot.tg.helper.LocaleHelper;
+import com.akerke.tgbot.tg.utils.CommonLocale;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public interface TelegramCommandHandler {
+@AllArgsConstructor
+public abstract class TelegramCommandHandler {
 
-    void handle(Update update);
+    protected final ResponseSender responseSender;
+    protected final LocaleHelper localeHelper;
 
-    TelegramCommand commandType();
+    public abstract void handle(Update update, CommonLocale locale);
+
+    public abstract TelegramCommand commandType();
 
 }

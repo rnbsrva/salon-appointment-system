@@ -13,14 +13,13 @@ import java.util.List;
 
 public class KeyboardHelper {
 
+
     public final static InlineButton[] LANGUAGE_BUTTONS = {
-            new InlineButton("Қазақ", "language_btn_kz"),
-            new InlineButton("Русский", "language_btn_ru"),
-            new InlineButton("English", "language_btn_en")
+            new InlineButton("Русский", "change_language_ru"),
+            new InlineButton("English", "change_language_en")
     };
 
     public static ReplyKeyboardMarkup greetingReplyKeyboardMarkup() {
-
 
         var row1 = new KeyboardRow();
         row1.add("My account");
@@ -43,7 +42,7 @@ public class KeyboardHelper {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
 
         Arrays.stream(LANGUAGE_BUTTONS)
-                .map(inlineButton -> new ArrayList<InlineKeyboardButton>(){{
+                .map(inlineButton -> new ArrayList<InlineKeyboardButton>() {{
                     var btn = new InlineKeyboardButton();
                     btn.setText(inlineButton.command());
                     btn.setCallbackData(inlineButton.callback());

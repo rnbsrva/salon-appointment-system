@@ -12,10 +12,12 @@ import java.util.Locale;
 public class LocaleHelper {
 
     private final ResourceBundleMessageSource resourceBundle;
+    private Locale defaultLocale;
 
-    @PostConstruct()
-    private void postConstruct(){
-        this.setLocale(Locale.ENGLISH);
+    @PostConstruct
+    private void postConstruct() {
+        this.defaultLocale = Locale.ENGLISH;
+        this.setLocale(this.defaultLocale);
     }
 
     public void setLocale(Locale locale) {
@@ -24,6 +26,10 @@ public class LocaleHelper {
 
     public String get(String code, Locale locale, Object... vararg) {
         return resourceBundle.getMessage(code, vararg, locale);
+    }
+
+    public String get(String code) {
+        return resourceBundle.getMessage(code, null, this.defaultLocale);
     }
 
 
