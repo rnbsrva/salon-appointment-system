@@ -4,6 +4,7 @@ import com.akerke.authservice.constants.SecurityRole;
 import com.akerke.authservice.constants.TokenType;
 import com.akerke.authservice.entity.User;
 import com.akerke.authservice.kafka.KafkaManageRoleRequest;
+import com.akerke.authservice.payload.request.AuthRequest;
 import com.akerke.authservice.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.payload.response.StatusResponse;
@@ -22,5 +23,7 @@ public interface AuthService {
     StatusResponse forgotPassword(String email);
 
     StatusResponse confirmForgotPassword(ForgotPasswordRequest req,String token);
+
+    StatusResponse authenticate(AuthRequest authRequest);
 }
 

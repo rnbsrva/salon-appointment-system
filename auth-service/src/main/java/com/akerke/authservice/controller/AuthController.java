@@ -1,6 +1,7 @@
 package com.akerke.authservice.controller;
 
 import com.akerke.authservice.constants.TokenType;
+import com.akerke.authservice.payload.request.AuthRequest;
 import com.akerke.authservice.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.service.AuthService;
@@ -15,9 +16,9 @@ import static com.akerke.authservice.validate.BindingValidator.validateRequest;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController{
+public class AuthController {
 
-    private  final AuthService authService;
+    private final AuthService authService;
 
     @GetMapping("validate-token")
     ResponseEntity<?> validateToken(
@@ -51,7 +52,7 @@ public class AuthController{
             @RequestParam("verification_token") String token
     ) {
         return ResponseEntity
-                .ok(authService.confirmForgotPassword(req,token));
+                .ok(authService.confirmForgotPassword(req, token));
     }
 
 
@@ -63,4 +64,11 @@ public class AuthController{
                 .ok(authService.validateToken(verificationToken, TokenType.EMAIL_VERIFICATION_TOKEN));
     }
 
+    @PostMapping("authenticate")
+    ResponseEntity<?> authenticate(
+            @RequestBody @Valid AuthRequest authRequest
+    ) {
+        return ResponseEntity
+                .ok(authService.authenticate(authRequest));
+    }
 }

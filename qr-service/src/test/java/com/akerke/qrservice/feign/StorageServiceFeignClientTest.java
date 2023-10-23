@@ -10,7 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import static org.mockito.Mockito.doNothing;
 
 @SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
 public class StorageServiceFeignClientTest {
 
     @Mock

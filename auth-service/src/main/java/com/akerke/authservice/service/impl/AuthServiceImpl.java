@@ -8,6 +8,7 @@ import com.akerke.authservice.entity.User;
 import com.akerke.authservice.kafka.KafkaEmailMessageDetails;
 import com.akerke.authservice.kafka.KafkaManageRoleRequest;
 import com.akerke.authservice.kafka.KafkaProducer;
+import com.akerke.authservice.payload.request.AuthRequest;
 import com.akerke.authservice.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.payload.response.StatusResponse;
@@ -166,5 +167,17 @@ public class AuthServiceImpl implements AuthService {
         return StatusResponse.success();
     }
 
+    @Override
+    public StatusResponse authenticate(AuthRequest req){
+
+        var user = userService.findByEmail(req.email());
+
+        if (!passwordEncoder.matches(req.password(), user.getPassword())){
+            return StatusResponse.fail("invalid credentials");
+        }
+
+        return StatusResponse.success(jwt.generateTokenResponse(user));
+
+    }
 
 }
