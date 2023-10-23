@@ -7,7 +7,6 @@
     <custom-resource-bundle>
       <file value="file://$PROJECT_DIR$/tg-bot/src/main/resources/messages.properties" />
       <file value="file://$PROJECT_DIR$/tg-bot/src/main/resources/messages_en.properties" />
-      <file value="file://$PROJECT_DIR$/tg-bot/src/main/resources/messages_kz.properties" />
       <file value="file://$PROJECT_DIR$/tg-bot/src/main/resources/messages_ru.properties" />
       <base-name>messages</base-name>
     </custom-resource-bundle>

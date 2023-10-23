@@ -1,5 +1,6 @@
 package com.akerke.tgbot.tg.helper;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,11 @@ public class LocaleHelper {
 
     private final ResourceBundleMessageSource resourceBundle;
 
+    @PostConstruct()
+    private void postConstruct(){
+        this.setLocale(Locale.ENGLISH);
+    }
+
     public void setLocale(Locale locale) {
         resourceBundle.setDefaultLocale(locale);
     }
@@ -19,5 +25,6 @@ public class LocaleHelper {
     public String get(String code, Locale locale, Object... vararg) {
         return resourceBundle.getMessage(code, vararg, locale);
     }
+
 
 }

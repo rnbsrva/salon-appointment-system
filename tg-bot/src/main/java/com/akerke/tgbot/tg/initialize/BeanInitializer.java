@@ -1,4 +1,4 @@
-package com.akerke.tgbot.tg.config;
+package com.akerke.tgbot.tg.initialize;
 
 import com.akerke.tgbot.tg.bot.NotificationBot;
 import com.akerke.tgbot.tg.bot.ResponseSender;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class ComponentCreator {
+public class BeanInitializer {
 
     private final NotificationBot notificationBot;
 
@@ -16,6 +16,5 @@ public class ComponentCreator {
     public ResponseSender responseSender(){
         return new ResponseSender(notificationBot);
     }
-
 
 }
