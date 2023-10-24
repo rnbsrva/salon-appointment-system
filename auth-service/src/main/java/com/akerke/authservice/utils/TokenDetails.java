@@ -1,6 +1,6 @@
 package com.akerke.authservice.utils;
 
-import com.akerke.authservice.constants.TokenType;
+import com.akerke.authservice.common.constants.TokenType;
 
 public record TokenDetails(
         Integer expiration,

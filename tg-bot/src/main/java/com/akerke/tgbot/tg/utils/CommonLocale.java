@@ -13,5 +13,8 @@ public enum CommonLocale {
     private final String tag;
     private final Locale locale;
 
+    public static CommonLocale findByLanguageTag(String languageTag) {
+        return languageTag.equals("ru") ? CommonLocale.RU : CommonLocale.EN;
+    }
 
 }

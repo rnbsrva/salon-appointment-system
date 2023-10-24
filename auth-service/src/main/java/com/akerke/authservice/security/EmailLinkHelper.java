@@ -1,6 +1,6 @@
 package com.akerke.authservice.security;
 
-import com.akerke.authservice.constants.EmailLinkMode;
+import com.akerke.authservice.common.constants.EmailLinkMode;
 
 public interface EmailLinkHelper {
 

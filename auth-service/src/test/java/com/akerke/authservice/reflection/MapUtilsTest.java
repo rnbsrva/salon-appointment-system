@@ -1,8 +1,8 @@
 package com.akerke.authservice.reflection;
 
+import com.akerke.authservice.common.reflection.MapUtils;
 import com.akerke.authservice.utils.Pair;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

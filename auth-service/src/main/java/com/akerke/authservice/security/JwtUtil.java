@@ -1,7 +1,7 @@
 package com.akerke.authservice.security;
 
-import com.akerke.authservice.constants.TokenType;
-import com.akerke.authservice.entity.User;
+import com.akerke.authservice.common.constants.TokenType;
+import com.akerke.authservice.domain.entity.User;
 import com.akerke.authservice.payload.response.TokenResponse;
 import com.akerke.authservice.utils.Pair;
 import com.akerke.authservice.utils.TokenDetails;
@@ -22,7 +22,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.akerke.authservice.reflection.MapUtils.toMap;
+import static com.akerke.authservice.common.reflection.MapUtils.toMap;
 import static com.akerke.authservice.security.validate.TokenValidator.TOKEN_TYPE_CLAIM_KEY;
 
 @Component

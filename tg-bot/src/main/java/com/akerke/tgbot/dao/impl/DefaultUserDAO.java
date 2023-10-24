@@ -3,6 +3,7 @@ package com.akerke.tgbot.dao.impl;
 import com.akerke.tgbot.dao.UserDAO;
 import com.akerke.tgbot.exception.UserNotFoundException;
 import com.akerke.tgbot.tg.entity.User;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,7 +16,7 @@ public class DefaultUserDAO implements UserDAO {
     private final JdbcTemplate jdbc;
 
     @Override
-    public User findByEmail(String email) {
+    public User findByEmail(@NonNull String email) {
         var queryResult = jdbc.query("""
                 select * from users
                 where email=
@@ -39,7 +40,6 @@ public class DefaultUserDAO implements UserDAO {
                         """,
                 user.getTgId(), user.getLocale().name(), user.getId()
         );
-
     }
 
     @Override

@@ -1,42 +1,47 @@
 package com.akerke.tgbot.tg.helper;
 
 import com.akerke.tgbot.tg.utils.InlineButton;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
+@Component
+@RequiredArgsConstructor
 public class KeyboardHelper {
 
+    private final LocaleHelper localeHelper;
 
     public final static InlineButton[] LANGUAGE_BUTTONS = {
             new InlineButton("Русский", "change_language_ru"),
             new InlineButton("English", "change_language_en")
     };
 
-    public static ReplyKeyboardMarkup greetingReplyKeyboardMarkup() {
+    public InlineKeyboardMarkup greetingInlineKeyboardMarkup() {
 
-        var row1 = new KeyboardRow();
-        row1.add("My account");
-        var row2 = new KeyboardRow();
-        row2.add("Appointment history");
-        var row3 = new KeyboardRow();
-        row3.add("Appointment history");
+        var myAppointmentsButton = new InlineKeyboardButton();
+        myAppointmentsButton.setText(localeHelper.get("message.my-appointments"));
+        myAppointmentsButton.setCallbackData("my-appointments");
 
-        return ReplyKeyboardMarkup.builder()
-                .resizeKeyboard(true)
-                .keyboard(new ArrayList<>(List.of(row1, row2)))
-                .oneTimeKeyboard(false)
-                .build();
+        var changeLanguageButton = new InlineKeyboardButton();
+        changeLanguageButton.setText(localeHelper.get("message.change-language"));
+        changeLanguageButton.setCallbackData("change-language");
 
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        keyboard.add(Collections.singletonList(myAppointmentsButton));
+        keyboard.add(Collections.singletonList(changeLanguageButton));
+
+        return new InlineKeyboardMarkup(keyboard);
     }
 
-    public static InlineKeyboardMarkup languageModeKeyboard() {
+
+    public InlineKeyboardMarkup languageModeKeyboard() {
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();

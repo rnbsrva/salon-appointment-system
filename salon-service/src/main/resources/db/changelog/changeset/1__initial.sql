@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS users
     gender             SMALLINT,
     email              VARCHAR(255),
     tg_id              BIGINT,
-    locale             VARCHAR(255),
+    locale             VARCHAR(255) DEFAULT 'EN',
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
 

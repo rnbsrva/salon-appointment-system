@@ -1,6 +1,6 @@
 package com.akerke.authservice.validate;
 
-import com.akerke.authservice.annotations.Password;
+import com.akerke.authservice.common.annotations.Password;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

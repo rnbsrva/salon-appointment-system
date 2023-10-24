@@ -1,10 +1,8 @@
 package com.akerke.authservice.kafka;
 
-import com.akerke.authservice.constants.SecurityRole;
-import com.akerke.authservice.kafka.KafkaManageRoleRequest;
-import com.akerke.authservice.service.AuthService;
+import com.akerke.authservice.common.constants.SecurityRole;
+import com.akerke.authservice.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component

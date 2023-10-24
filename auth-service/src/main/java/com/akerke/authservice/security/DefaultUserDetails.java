@@ -1,9 +1,8 @@
 package com.akerke.authservice.security;
 
-import com.akerke.authservice.constants.Scope;
-import com.akerke.authservice.entity.Permission;
-import com.akerke.authservice.entity.Role;
-import com.akerke.authservice.entity.User;
+import com.akerke.authservice.common.constants.Scope;
+import com.akerke.authservice.domain.entity.Permission;
+import com.akerke.authservice.domain.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

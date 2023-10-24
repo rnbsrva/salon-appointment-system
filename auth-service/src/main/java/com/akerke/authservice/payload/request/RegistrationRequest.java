@@ -1,7 +1,7 @@
 package com.akerke.authservice.payload.request;
 
-import com.akerke.authservice.annotations.Password;
-import com.akerke.authservice.annotations.PhoneNumber;
+import com.akerke.authservice.common.annotations.Password;
+import com.akerke.authservice.common.annotations.PhoneNumber;
 import jakarta.validation.constraints.*;
 
 /**

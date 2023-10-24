@@ -1,7 +1,7 @@
 package com.akerke.authservice.security.impl;
 
-import com.akerke.authservice.constants.EmailLinkMode;
-import com.akerke.authservice.constants.TokenType;
+import com.akerke.authservice.common.constants.EmailLinkMode;
+import com.akerke.authservice.common.constants.TokenType;
 import com.akerke.authservice.security.EmailLinkHelper;
 import com.akerke.authservice.security.JwtUtil;
 import lombok.RequiredArgsConstructor;

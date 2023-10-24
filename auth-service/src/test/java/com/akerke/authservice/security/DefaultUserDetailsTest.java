@@ -1,9 +1,9 @@
 package com.akerke.authservice.security;
 
-import com.akerke.authservice.constants.Scope;
-import com.akerke.authservice.entity.Permission;
-import com.akerke.authservice.entity.Role;
-import com.akerke.authservice.entity.User;
+import com.akerke.authservice.common.constants.Scope;
+import com.akerke.authservice.domain.entity.Permission;
+import com.akerke.authservice.domain.entity.Role;
+import com.akerke.authservice.domain.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;

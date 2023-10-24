@@ -1,6 +1,6 @@
 package com.akerke.authservice.validate;
 
-import com.akerke.authservice.exception.InvalidRequestPayloadException;
+import com.akerke.authservice.common.exception.InvalidRequestPayloadException;
 import lombok.extern.slf4j.Slf4j;
 import lombok.experimental.UtilityClass;
 import org.springframework.validation.BindingResult;

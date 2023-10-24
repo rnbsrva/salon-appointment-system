@@ -1,7 +1,7 @@
 package com.akerke.authservice.security.impl;
 
-import com.akerke.authservice.exception.InvalidCredentialsException;
-import com.akerke.authservice.repository.UserRepository;
+import com.akerke.authservice.common.exception.InvalidCredentialsException;
+import com.akerke.authservice.domain.repository.UserRepository;
 import com.akerke.authservice.security.DefaultUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

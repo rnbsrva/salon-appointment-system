@@ -1,13 +1,12 @@
 package com.akerke.authservice.repository;
 
-import com.akerke.authservice.entity.User;
+import com.akerke.authservice.domain.entity.User;
+import com.akerke.authservice.domain.repository.UserRepository;
 import com.akerke.authservice.tc.PostgresTestContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Optional;
 

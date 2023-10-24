@@ -1,18 +1,12 @@
 package com.akerke.authservice.security.validate;
 
-import com.akerke.authservice.constants.TokenType;
-import com.akerke.authservice.entity.User;
+import com.akerke.authservice.common.constants.TokenType;
+import com.akerke.authservice.domain.entity.User;
 import com.akerke.authservice.payload.response.StatusResponse;
-import com.akerke.authservice.payload.response.TokenResponse;
-import com.akerke.authservice.repository.UserRepository;
+import com.akerke.authservice.domain.repository.UserRepository;
 import com.akerke.authservice.security.JwtUtil;
-import com.akerke.authservice.utils.Pair;
-import com.akerke.authservice.utils.TokenDetails;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import static com.akerke.authservice.reflection.MapUtils.toMap;
 
 @Component
 @Slf4j

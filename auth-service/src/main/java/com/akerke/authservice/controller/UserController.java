@@ -2,8 +2,8 @@ package com.akerke.authservice.controller;
 
 
 import com.akerke.authservice.payload.request.RegistrationRequest;
-import com.akerke.authservice.service.AuthService;
-import com.akerke.authservice.service.UserService;
+import com.akerke.authservice.domain.service.AuthService;
+import com.akerke.authservice.domain.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

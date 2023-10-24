@@ -1,9 +1,8 @@
 package com.akerke.authservice.payload.request;
 
-import com.akerke.authservice.annotations.Password;
+import com.akerke.authservice.common.annotations.Password;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 
 public record ResetPasswordRequest(
         @Email
