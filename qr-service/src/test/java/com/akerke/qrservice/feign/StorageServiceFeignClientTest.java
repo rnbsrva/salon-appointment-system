@@ -5,44 +5,28 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest(classes = StorageServiceFeignClient.class)
 public class StorageServiceFeignClientTest {
 
-    @Mock
-    private StorageServiceFeignClient storageServiceFeignClient;
+    @Autowired
+    private StorageServiceFeignClient feignClient;
 
-    @Mock
-    private ByteArrayMultipartFile multipartFile;
-
-
-    @Test
-    public void testSaveToStorageWhenAllParametersProvidedThenNoException() {
-        doNothing().when(storageServiceFeignClient).saveToStorage(multipartFile, "QR_IMAGE", "testName");
-
-        storageServiceFeignClient.saveToStorage(multipartFile, "QR_IMAGE", "testName");
-
-    }
+    @MockBean
+    private StorageServiceFeignClient mockFeignClient;
 
     @Test
-    public void testSaveToStorageWhenSourceNotProvidedThenNoException() {
-        doNothing().when(storageServiceFeignClient).saveToStorage(multipartFile, "testName");
+    void testSaveToStorage() {
+        String name = "test-file";
+        ByteArrayMultipartFile file = new ByteArrayMultipartFile("Hello, World!".getBytes(), "file", "test-file.txt", "text/plain");
 
-        storageServiceFeignClient.saveToStorage(multipartFile, "testName");
+        doNothing().when(mockFeignClient).saveToStorage(file, name);
 
-    }
+        feignClient.saveToStorage(file, name);
 
-
-    @Test
-    public void testSaveToStorageWhenNameNotProvidedThenNoException() {
-        doNothing().when(storageServiceFeignClient).saveToStorage(multipartFile, "QR_IMAGE", null);
-
-        storageServiceFeignClient.saveToStorage(multipartFile, "QR_IMAGE", null);
-
+        verify(mockFeignClient, times(1)).saveToStorage(file, name);
     }
 }

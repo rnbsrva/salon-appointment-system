@@ -1,59 +1,48 @@
 package com.akerke.qrservice.repository;
 
+
 import com.akerke.qrservice.entity.QR;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Optional;
 
-@DataMongoTest
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
 public class QRRepositoryTest {
 
     @Autowired
     private QRRepository qrRepository;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    static MongoDBContainer mongoContainer = new MongoDBContainer("mongo:4.4.2");
-
-    @DynamicPropertySource
-    static void setProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoContainer::getReplicaSetUrl);
-    }
-
-    @BeforeEach
-    public void setUp() {
-        mongoContainer.start();
-        String containerIpAddress = mongoContainer.getHost();
-        Integer containerPort = mongoContainer.getMappedPort(27017);
-
-
+    @AfterEach
+    void tearDown(){
+        qrRepository.deleteAll();
     }
 
     @Test
-    public void findByLink_thenLinkExisting() {
-        var qr = new QR("example-link");
+    void testFindByLinkWhenLinkExists() {
+
+        QR qr = new QR("test-link");
+
         qrRepository.save(qr);
 
-        var foundQR = qrRepository.findByLink("example-link");
+        Optional<QR> optionalQR = qrRepository.findByLink("test-link");
 
-        assertTrue(foundQR.isPresent());
-        assertEquals("example-link", foundQR.get().getLink());
+        assertTrue(optionalQR.isPresent());
+
+        assertEquals("test-link", optionalQR.get().getLink());
     }
 
     @Test
-    public void findByLink_thenLinkNonExisting() {
-        var foundQR = qrRepository.findByLink("non-existent-link");
+    void testFindByLinkWhenLinkDoesNotExist() {
+        Optional<QR> optionalQR = qrRepository.findByLink("non-existing-link");
 
-        assertThat(foundQR).isEmpty();
+        assertFalse(optionalQR.isPresent());
     }
+
+
 }

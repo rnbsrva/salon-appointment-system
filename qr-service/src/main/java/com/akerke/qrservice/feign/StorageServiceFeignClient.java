@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @FeignClient(name = "storage-service")
 public interface StorageServiceFeignClient {
 
-    @PostMapping(value = "upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "uploadQR", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Headers("Content-Type: multipart/form-data")
     void saveToStorage(
             @RequestPart("file") MultipartFile file,

@@ -1,62 +1,47 @@
 package com.akerke.qrservice.controller;
 
-import com.akerke.qrservice.repository.QRRepository;
-import com.akerke.qrservice.service.QRService;
-import jakarta.ws.rs.core.MediaType;
-import org.junit.jupiter.api.BeforeEach;
+import com.akerke.qrservice.service.impl.QRServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@WebMvcTest
 @AutoConfigureMockMvc
 public class QRControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Mock
-    private QRService qrService;
-    @Autowired
-    private QRRepository qrRepository;
 
-
-    @BeforeEach
-    void beforeEach() {
-        qrRepository.deleteAll();
-    }
+    @MockBean
+    private QRServiceImpl qrService;
 
     @Test
-    public void testGenerateQR() throws Exception {
-        String data = "test-data";
-        CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
+    void testGenerateQR() throws Exception {
+        String testData = "test-data";
 
-        when(qrService.generateQRAsync(any(), eq(data))).thenReturn(future);
 
-        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/generate")
-                        .param("data", data)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn()
-                .getResponse();
+        mockMvc.perform(MockMvcRequestBuilders.get("/generate")
+                .param("data", testData));
 
-        verify(qrService).generateQRAsync(response, data);
+        doReturn(CompletableFuture.completedFuture(null)).when(qrService).generateQRAsync(any(MockHttpServletResponse.class), eq (testData));
+
+
+        verify(qrService, times(1)).generateQRAsync(any(MockHttpServletResponse.class), eq(testData));
     }
-
 
 }

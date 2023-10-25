@@ -68,7 +68,6 @@ public class QRServiceImpl implements QRService {
                                     throw new QRGenerationException(link);
                                 } else {
                                     log.info("send req to storage service");
-                                    log.info(multipartFile.getContentType());
                                     this.feignClient.saveToStorage(
                                             multipartFile,
                                             link
