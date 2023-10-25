@@ -1,4 +1,4 @@
-package com.akerke.qrservice.config;
+package com.akerke.notificationservice.config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;

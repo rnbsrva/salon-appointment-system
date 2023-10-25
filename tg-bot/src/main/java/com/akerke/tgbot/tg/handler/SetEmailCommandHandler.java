@@ -27,8 +27,10 @@ public class SetEmailCommandHandler extends TelegramCommandHandler {
             Update update,
             CommonLocale locale
     ) {
+        var email = update.getMessage().getText();
 
     }
+
 
     @Override
     public TelegramCommand commandType() {
