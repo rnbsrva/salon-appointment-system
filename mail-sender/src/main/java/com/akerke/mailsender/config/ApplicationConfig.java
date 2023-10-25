@@ -12,4 +12,5 @@ public class ApplicationConfig {
     public JsonMessageConverter jsonMessageConverter(){
         return new ByteArrayJsonMessageConverter();
     }
+
 }

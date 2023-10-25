@@ -6,5 +6,4 @@ public record EmailDetails(
         String subject,
         String attachment
 ) {
-
 }

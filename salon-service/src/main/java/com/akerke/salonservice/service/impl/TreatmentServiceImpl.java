@@ -54,6 +54,6 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     @Override
     public List<Treatment> getAll(List<Long> ids) {
-        return treatmentRepository.findTreatmentsByIdIn(ids);
+        return treatmentRepository.findAllById(ids);
     }
 }

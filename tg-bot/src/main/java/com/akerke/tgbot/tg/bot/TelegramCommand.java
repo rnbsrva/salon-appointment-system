@@ -1,9 +1,7 @@
 package com.akerke.tgbot.tg.bot;
 
-import com.akerke.tgbot.tg.handler.TelegramCommandHandler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.lang.Nullable;
 
 @Getter
 @AllArgsConstructor

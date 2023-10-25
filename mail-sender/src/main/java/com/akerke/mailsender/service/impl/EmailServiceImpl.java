@@ -38,58 +38,60 @@ public class EmailServiceImpl implements EmailService {
             EmailDetails details,
             MessageType messageType
     ) {
-        var msg = javaMailSender.createMimeMessage();
-        try {
-            var helper = new MimeMessageHelper(
-                    msg,
-                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                    StandardCharsets.UTF_8.name()
-            );
+        return Mono.fromRunnable(() -> {
+            var msg = javaMailSender.createMimeMessage();
+            try {
+                var helper = new MimeMessageHelper(
+                        msg,
+                        MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                        StandardCharsets.UTF_8.name()
+                );
 
-            var template = ftl.getTemplate(messageType.getTemplate());
+                var template = ftl.getTemplate(messageType.getTemplate());
 
-            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, Map.of(
-                    "link", details.msgBody()
-            ));
+                String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, Map.of(
+                        "link", details.msgBody()
+                ));
 
-            helper.setText(html, true);
-            helper.setTo(details.recipient());
-            helper.setFrom(sender);
-            helper.setSubject(details.subject());
+                helper.setText(html, true);
+                helper.setTo(details.recipient());
+                helper.setFrom(sender);
+                helper.setSubject(details.subject());
 
-            javaMailSender.send(msg);
+                javaMailSender.send(msg);
 
-            log.info("Mail Sent Successfully");
-        } catch (Exception e) {
-            log.error("Error while Sending Mail, msg {}", e.getMessage());
-        }
-        return Mono.empty();
+                log.info("Mail Sent Successfully");
+            } catch (Exception e) {
+                log.error("Error while Sending Mail, msg {}", e.getMessage());
+            }
+        });
     }
 
 
     @Override
     public Mono<Void> sendMailWithAttachment(EmailDetails details) {
+        return Mono.fromRunnable(() -> {
 
-        var mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper;
+            var mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper;
 
-        try {
-            mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setFrom(sender);
-            mimeMessageHelper.setTo(details.recipient());
-            mimeMessageHelper.setText(details.msgBody());
-            mimeMessageHelper.setSubject(details.subject());
+            try {
+                mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+                mimeMessageHelper.setFrom(sender);
+                mimeMessageHelper.setTo(details.recipient());
+                mimeMessageHelper.setText(details.msgBody());
+                mimeMessageHelper.setSubject(details.subject());
 
-            FileSystemResource file = new FileSystemResource(new File(details.attachment()));
+                FileSystemResource file = new FileSystemResource(new File(details.attachment()));
 
-            mimeMessageHelper.addAttachment(file.getFilename(), file);
+                mimeMessageHelper.addAttachment(file.getFilename(), file);
 
-            javaMailSender.send(mimeMessage);
-            log.info("Mail Sent Successfully");
-        } catch (MessagingException e) {
-            log.error("Error while Sending Mail: msg {}", e.getMessage());
-        }
-        return Mono.empty();
+                javaMailSender.send(mimeMessage);
+                log.info("Mail Sent Successfully");
+            } catch (MessagingException e) {
+                log.error("Error while Sending Mail: msg {}", e.getMessage());
+            }
+        });
     }
 }
 

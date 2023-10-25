@@ -109,7 +109,7 @@ public class QRServiceImpl implements QRService {
         return CompletableFuture.completedFuture(new ByteArrayMultipartFile(byteArrayOutputStream.toByteArray(), data, data, MediaType.MULTIPART_FORM_DATA));
     }
 
-    private String createLinkToDownload(String name) {
+    public String createLinkToDownload(String name) {
         return storageUrl+"downloadQR?name=" + name + "&source=" + ATTACHMENT_SOURCE;
     }
 
