@@ -35,7 +35,7 @@ public class AuthFilter implements GatewayFilter {
         var request = exchange.getRequest();
 
         if (this.authHeaderMissing.test(request)) {
-            return onError(exchange);
+            return onAuthError(exchange);
         }
 
         final var token = request.getHeaders().getOrEmpty("Authorization").get(0);
@@ -45,10 +45,7 @@ public class AuthFilter implements GatewayFilter {
                 .retrieve()
                 .bodyToMono(StatusResponse.class);
 
-        return res.flatMap(statusResponse -> {
-                    return statusResponse.success() ? chain.filter(exchange) : onError(exchange);
-                }
-        );
+        return res.flatMap(statusResponse -> statusResponse.success() ? chain.filter(exchange) : onAuthError(exchange));
 
     }
 
@@ -60,7 +57,7 @@ public class AuthFilter implements GatewayFilter {
                         .build();
     }
 
-    private Mono<Void> onError(ServerWebExchange exchange) {
+    private Mono<Void> onAuthError(ServerWebExchange exchange) {
         var response = exchange.getResponse();
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         return response.setComplete();

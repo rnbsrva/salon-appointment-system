@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discovery
+spec:
+  selector:
+    matchLabels:
+      app: discovery
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: discovery
+    spec:
+      containers:
+        - name: discovery
+          image: rnbsrva/discovery
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8761

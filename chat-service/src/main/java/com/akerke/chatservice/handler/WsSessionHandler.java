@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.akerke.chatservice.handler.WsMessageHandler.chatMessagesKey;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -15,12 +17,23 @@ public class WsSessionHandler {
 
     private final UserStatusService statusService;
     private final MessageService messageService;
+    private final WsMessageHandler wsMessageHandler;
 
     @MessageMapping("/on_user_session_started")
     void onUserSessionStarted(
             SessionRequest req
     ) {
         log.info("user [id: {}]session started", req.userId());
+
+        req.salons().forEach(salonId -> {
+            var messages = messageService.get(chatMessagesKey(salonId, req.userId()));
+            if (!messages.isEmpty()) {
+                messages.forEach(message -> {
+                    wsMessageHandler.sendToUser(message, req.userId());
+                });
+            }
+        });
+
         statusService.setOnline(req.userId());
     }
 
