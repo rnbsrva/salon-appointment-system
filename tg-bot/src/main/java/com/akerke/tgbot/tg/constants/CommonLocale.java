@@ -1,4 +1,4 @@
-package com.akerke.tgbot.tg.utils;
+package com.akerke.tgbot.tg.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.akerke.tgbot.tg.entity;
 
 
-import com.akerke.tgbot.tg.utils.CommonLocale;
+import com.akerke.tgbot.tg.constants.CommonLocale;
 import lombok.Getter;
 import lombok.Setter;
 

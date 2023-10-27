@@ -1,4 +1,4 @@
-package com.akerke.tgbot.tg.utils;
+package com.akerke.tgbot.tg.common;
 
 public record InlineButton(
         String command,

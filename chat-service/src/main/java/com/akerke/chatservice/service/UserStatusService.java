@@ -1,19 +1,18 @@
 package com.akerke.chatservice.service;
 
-import reactor.core.publisher.Mono;
 
 public interface UserStatusService {
 
-    Mono<Void> setOnline(Long applicationId);
+    void setOnline(Long applicationId);
 
-    Mono<Void> setOffline(Long applicationId);
+    void setOffline(Long applicationId);
 
-    Mono<Boolean> isOnline(Long applicationId);
+    Boolean isOnline(Long applicationId);
 
-    Mono<Void> setOnline(Long salonId, Long applicationId);
+    void setOnline(Long salonId, Long applicationId);
 
-    Mono<Void> setOffline(Long salonId, Long applicationId);
+    void setOffline(Long salonId, Long applicationId);
 
-    Mono<Boolean> supportChatIsOnline(Long salonId);
+    Boolean supportChatIsOnline(Long salonId);
 
 }

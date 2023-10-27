@@ -5,7 +5,7 @@ import com.akerke.tgbot.tg.bot.ResponseSender;
 import com.akerke.tgbot.tg.bot.TelegramCommand;
 import com.akerke.tgbot.tg.helper.KeyboardHelper;
 import com.akerke.tgbot.tg.helper.LocaleHelper;
-import com.akerke.tgbot.tg.utils.CommonLocale;
+import com.akerke.tgbot.tg.constants.CommonLocale;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class SetEmailCommandHandler extends TelegramCommandHandler {

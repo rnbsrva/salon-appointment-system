@@ -6,17 +6,10 @@ import com.akerke.tgbot.tg.bot.ResponseSender;
 import com.akerke.tgbot.tg.bot.TelegramCommand;
 import com.akerke.tgbot.tg.helper.KeyboardHelper;
 import com.akerke.tgbot.tg.helper.LocaleHelper;
-import com.akerke.tgbot.tg.utils.CommonLocale;
-import lombok.RequiredArgsConstructor;
+import com.akerke.tgbot.tg.constants.CommonLocale;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class StartCommandHandler extends TelegramCommandHandler {

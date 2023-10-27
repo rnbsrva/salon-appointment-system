@@ -4,10 +4,8 @@ import com.akerke.tgbot.tg.bot.ResponseSender;
 import com.akerke.tgbot.tg.bot.TelegramCommand;
 import com.akerke.tgbot.tg.helper.KeyboardHelper;
 import com.akerke.tgbot.tg.helper.LocaleHelper;
-import com.akerke.tgbot.tg.utils.CommonLocale;
+import com.akerke.tgbot.tg.constants.CommonLocale;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.checkerframework.common.value.qual.StringVal;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @AllArgsConstructor

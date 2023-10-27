@@ -7,7 +7,7 @@ import com.akerke.tgbot.tg.handler.StartCommandHandler;
 import com.akerke.tgbot.tg.handler.TelegramCommandHandler;
 import com.akerke.tgbot.tg.helper.KeyboardHelper;
 import com.akerke.tgbot.tg.helper.LocaleHelper;
-import com.akerke.tgbot.tg.utils.CommonLocale;
+import com.akerke.tgbot.tg.constants.CommonLocale;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

@@ -1,21 +1,15 @@
 package com.akerke.chatservice.config;
 
-import com.akerke.chatservice.redis.RedisSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
-import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
-import org.springframework.data.redis.support.atomic.RedisAtomicLong;
-
-import static com.akerke.chatservice.constants.AppConstants.ACTIVE_USER_KEY;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
 
 @Slf4j
@@ -28,7 +22,7 @@ public class RedisConfig {
     private Integer redisPort;
 
     @Bean
-    ReactiveRedisConnectionFactory reactiveRedisConnectionFactory() {
+    RedisConnectionFactory redisConnectionFactory() {
         var redisStandaloneConfiguration = new RedisStandaloneConfiguration(
                 redisHost,
                 redisPort
@@ -37,29 +31,15 @@ public class RedisConfig {
     }
 
     @Bean
-    ReactiveStringRedisTemplate reactiveStringRedisTemplate(
-            @Qualifier("reactiveRedisConnectionFactory") ReactiveRedisConnectionFactory fct
+    <K, V> RedisTemplate<K, V> reactiveStringRedisTemplate(
+            @Qualifier("redisConnectionFactory") RedisConnectionFactory fct
     ) {
-        return new ReactiveStringRedisTemplate(fct);
+        var template = new RedisTemplate<K,V>();
+
+        template.setConnectionFactory(fct);
+        template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
+
+        return template;
     }
 
-    //     Redis Atomic Counter to store no. of Active Users.
-    @Bean
-    RedisAtomicLong activeUserCounter(RedisConnectionFactory fct) {
-        return new RedisAtomicLong(ACTIVE_USER_KEY, fct);
-    }
-
-
-    @Bean
-    ApplicationRunner applicationRunner(
-            RedisSubscriber redisSubscriber
-    ) {
-        return args -> {
-            redisSubscriber.subscribeMessageChannelAndPublishOnWebSocket()
-                    .doOnSubscribe(subscription -> log.info("Redis Listener Started"))
-                    .doOnError(throwable -> log.error("Error listening to Redis topic.", throwable))
-                    .doFinally(signalType -> log.info("Stopped Listener. Signal Type: {}", signalType))
-                    .subscribe();
-        };
-    }
 }
