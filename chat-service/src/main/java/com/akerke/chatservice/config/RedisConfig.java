@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 
 @Slf4j
@@ -18,7 +19,7 @@ public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
     private String redisHost;
-    @Value("spring.data.redis.port")
+    @Value("${spring.data.redis.port}")
     private Integer redisPort;
 
     @Bean
@@ -37,7 +38,8 @@ public class RedisConfig {
         var template = new RedisTemplate<K,V>();
 
         template.setConnectionFactory(fct);
-        template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
 
         return template;
     }

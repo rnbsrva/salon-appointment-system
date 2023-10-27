@@ -8,7 +8,7 @@ public interface MessageService {
 
     void save(Message message, String key);
 
-    List<Message> get(String salonId);
+    List<Message> get(String key);
 
     void clean(String key);
 

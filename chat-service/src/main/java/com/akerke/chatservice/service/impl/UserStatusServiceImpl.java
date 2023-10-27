@@ -32,7 +32,7 @@ public class UserStatusServiceImpl implements UserStatusService {
     @Override
     public Boolean isOnline(Long applicationId) {
         return redis.opsForSet()
-                .isMember(ONLINE_USER_KEY, applicationId);
+                .isMember(ONLINE_USER_KEY, String.valueOf(applicationId));
     }
 
     @Override

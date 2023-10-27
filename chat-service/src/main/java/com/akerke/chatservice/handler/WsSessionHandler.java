@@ -6,17 +6,17 @@ import com.akerke.chatservice.service.UserStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@Component
+@RestController
 @RequiredArgsConstructor
 public class WsSessionHandler {
 
     private final UserStatusService statusService;
     private final MessageService messageService;
 
-    @MessageMapping("on_user_session_started")
+    @MessageMapping("/on_user_session_started")
     void onUserSessionStarted(
             SessionRequest req
     ) {
@@ -24,7 +24,7 @@ public class WsSessionHandler {
         statusService.setOnline(req.userId());
     }
 
-    @MessageMapping("on_staff_session_started")
+    @MessageMapping("/on_staff_session_started")
     void onStaffSessionStarted(
             SessionRequest req
     ) {
@@ -32,7 +32,7 @@ public class WsSessionHandler {
         req.salons().forEach(salonId -> statusService.setOnline(salonId, req.userId()));
     }
 
-    @MessageMapping("on_user_session_closed")
+    @MessageMapping("/on_user_session_closed")
     void onUserSessionClosed(
             SessionRequest req
     ) {
@@ -40,7 +40,7 @@ public class WsSessionHandler {
         statusService.setOffline(req.userId());
     }
 
-    @MessageMapping("on_staff_session_closed")
+    @MessageMapping("/on_staff_session_closed")
     void onStaffSessionClosed(
             SessionRequest req
     ) {

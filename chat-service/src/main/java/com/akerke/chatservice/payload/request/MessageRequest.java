@@ -6,6 +6,7 @@ public record MessageRequest(
         String content,
         Boolean fromStuff,
         List<Long> fileIdList,
-        String chatId
+        Long userId,
+        Long salonId
 ) {
 }

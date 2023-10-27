@@ -17,7 +17,7 @@ public class StatusController {
 
     private final UserStatusService userStatusService;
 
-    @GetMapping("{id}")
+    @GetMapping("user/{id}")
     ResponseEntity<?> userIsOnline(
             @PathVariable Long id
     ) {
@@ -25,7 +25,7 @@ public class StatusController {
                 .ok(CompletableFuture.supplyAsync(() -> userStatusService.isOnline(id)));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("salon/{id}")
     ResponseEntity<?> supportChatIsOnline(
             @PathVariable Long id
     ) {

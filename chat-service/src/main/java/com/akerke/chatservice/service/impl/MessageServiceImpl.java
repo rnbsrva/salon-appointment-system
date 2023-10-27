@@ -43,11 +43,5 @@ public class MessageServiceImpl implements MessageService {
         redis.delete(key);
     }
 
-    private final BiFunction<Long, Long, String> chatMessagesKey = (salonId, userId) ->
-            MESSAGE_TOPIC
-                    .concat(":" + salonId)
-                    .concat(":" + userId);
-
-
 }
 
