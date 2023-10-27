@@ -1,7 +1,7 @@
 package com.akerke.chatservice.handler;
 
-import com.akerke.chatservice.payload.request.StaffSessionStartRequest;
-import com.akerke.chatservice.payload.request.UserSessionStartRequest;
+import com.akerke.chatservice.payload.request.SessionRequest;
+import com.akerke.chatservice.service.MessageService;
 import com.akerke.chatservice.service.UserStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +14,11 @@ import org.springframework.stereotype.Component;
 public class WsSessionHandler {
 
     private final UserStatusService statusService;
+    private final MessageService messageService;
 
     @MessageMapping("on_user_session_started")
     void onUserSessionStarted(
-            UserSessionStartRequest req
+            SessionRequest req
     ) {
         log.info("user [id: {}]session started", req.userId());
         statusService.setOnline(req.userId());
@@ -25,7 +26,7 @@ public class WsSessionHandler {
 
     @MessageMapping("on_staff_session_started")
     void onStaffSessionStarted(
-            StaffSessionStartRequest req
+            SessionRequest req
     ) {
         log.info("staff [{}]session started", req);
         req.salons().forEach(salonId -> statusService.setOnline(salonId, req.userId()));
@@ -33,7 +34,7 @@ public class WsSessionHandler {
 
     @MessageMapping("on_user_session_closed")
     void onUserSessionClosed(
-            UserSessionStartRequest req
+            SessionRequest req
     ) {
         log.info("user [id: {}]session closed", req.userId());
         statusService.setOffline(req.userId());
@@ -41,7 +42,7 @@ public class WsSessionHandler {
 
     @MessageMapping("on_staff_session_closed")
     void onStaffSessionClosed(
-            StaffSessionStartRequest req
+            SessionRequest req
     ) {
         log.info("staff [{}]session closed", req);
         req.salons().forEach(salonId -> statusService.setOffline(salonId, req.userId()));

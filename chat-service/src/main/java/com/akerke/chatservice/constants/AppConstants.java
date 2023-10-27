@@ -11,7 +11,7 @@ public class AppConstants {
 
     public static final String ACTIVE_USER_KEY = "ACTIVE_USER_COUNT";
 
-    public static final String MESSAGE_TOPIC = "MESSAGE";
+    public static final String MESSAGE_TOPIC = "MESSAGE"; // MESSAGE:salon_id:user_id
 
 
 }

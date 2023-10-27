@@ -18,4 +18,6 @@ public class Message {
     private Boolean fromStuff;
 
     private String chatId;
+
+    private Boolean received;
 }
