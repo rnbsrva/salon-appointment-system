@@ -14,7 +14,8 @@
     <name>mail-sender</name>
     <description>mail-sender</description>
     <properties>
-        <java.version>19</java.version>
+        <spring.cloud.versoin>2022.0.1</spring.cloud.versoin>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -55,7 +56,23 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${spring.cloud.versoin}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

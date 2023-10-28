@@ -14,9 +14,14 @@
     <name>salon-service</name>
     <description>salon-service</description>
     <properties>
+        <spring.cloud.versoin>2022.0.1</spring.cloud.versoin>
         <java.version>17</java.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -70,7 +75,17 @@
         </dependency>
 
     </dependencies>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${spring.cloud.versoin}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
