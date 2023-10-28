@@ -2,7 +2,7 @@ package com.akerke.authservice.domain.dao.impl;
 
 import com.akerke.authservice.domain.dao.UserDao;
 import com.akerke.authservice.domain.entity.User;
-import com.akerke.authservice.utils.Pair;
+import com.akerke.authservice.common.utils.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;

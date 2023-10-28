@@ -11,8 +11,8 @@ import com.akerke.authservice.common.exception.PhoneNumberRegisteredYetException
 import com.akerke.authservice.kafka.KafkaEmailMessageDetails;
 import com.akerke.authservice.kafka.KafkaProducer;
 import com.akerke.authservice.domain.mapper.UserMapper;
-import com.akerke.authservice.payload.request.RegistrationRequest;
-import com.akerke.authservice.payload.response.StatusResponse;
+import com.akerke.authservice.domain.payload.request.RegistrationRequest;
+import com.akerke.authservice.domain.payload.response.StatusResponse;
 import com.akerke.authservice.domain.repository.UserRepository;
 import com.akerke.authservice.security.EmailLinkHelper;
 import com.akerke.authservice.domain.service.PermissionService;

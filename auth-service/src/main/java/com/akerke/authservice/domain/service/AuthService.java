@@ -4,11 +4,11 @@ import com.akerke.authservice.common.constants.SecurityRole;
 import com.akerke.authservice.common.constants.TokenType;
 import com.akerke.authservice.domain.entity.User;
 import com.akerke.authservice.kafka.KafkaManageRoleRequest;
-import com.akerke.authservice.payload.request.AuthRequest;
-import com.akerke.authservice.payload.request.ForgotPasswordRequest;
-import com.akerke.authservice.payload.request.ResetPasswordRequest;
-import com.akerke.authservice.payload.response.StatusResponse;
-import com.akerke.authservice.payload.response.TokenResponse;
+import com.akerke.authservice.domain.payload.request.AuthRequest;
+import com.akerke.authservice.domain.payload.request.ForgotPasswordRequest;
+import com.akerke.authservice.domain.payload.request.ResetPasswordRequest;
+import com.akerke.authservice.domain.payload.response.StatusResponse;
+import com.akerke.authservice.domain.payload.response.TokenResponse;
 
 public interface AuthService {
 

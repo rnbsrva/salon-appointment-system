@@ -1,6 +1,7 @@
 package com.akerke.authservice.validate;
 
 import com.akerke.authservice.common.annotations.Password;
+import com.akerke.authservice.common.validate.PasswordValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

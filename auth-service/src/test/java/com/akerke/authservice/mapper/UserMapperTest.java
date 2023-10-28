@@ -1,7 +1,7 @@
 package com.akerke.authservice.mapper;
 
 import com.akerke.authservice.domain.mapper.UserMapper;
-import com.akerke.authservice.payload.request.RegistrationRequest;
+import com.akerke.authservice.domain.payload.request.RegistrationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

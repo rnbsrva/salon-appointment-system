@@ -1,6 +1,6 @@
-package com.akerke.authservice.validate.impl;
+package com.akerke.authservice.common.validate.impl;
 
-import com.akerke.authservice.validate.RouteValidator;
+import com.akerke.authservice.common.validate.RouteValidator;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 

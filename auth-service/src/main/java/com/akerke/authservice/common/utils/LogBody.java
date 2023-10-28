@@ -1,4 +1,4 @@
-package com.akerke.authservice.utils;
+package com.akerke.authservice.common.utils;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;

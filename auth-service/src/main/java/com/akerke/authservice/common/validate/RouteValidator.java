@@ -1,4 +1,4 @@
-package com.akerke.authservice.validate;
+package com.akerke.authservice.common.validate;
 
 import org.springframework.http.HttpMethod;
 

@@ -2,9 +2,9 @@ package com.akerke.authservice.security;
 
 import com.akerke.authservice.common.constants.TokenType;
 import com.akerke.authservice.domain.entity.User;
-import com.akerke.authservice.payload.response.TokenResponse;
-import com.akerke.authservice.utils.Pair;
-import com.akerke.authservice.utils.TokenDetails;
+import com.akerke.authservice.domain.payload.response.TokenResponse;
+import com.akerke.authservice.common.utils.Pair;
+import com.akerke.authservice.common.utils.TokenDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

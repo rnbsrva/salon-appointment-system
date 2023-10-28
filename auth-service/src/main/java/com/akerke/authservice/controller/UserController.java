@@ -1,7 +1,7 @@
 package com.akerke.authservice.controller;
 
 
-import com.akerke.authservice.payload.request.RegistrationRequest;
+import com.akerke.authservice.domain.payload.request.RegistrationRequest;
 import com.akerke.authservice.domain.service.AuthService;
 import com.akerke.authservice.domain.service.UserService;
 import jakarta.validation.Valid;
@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static com.akerke.authservice.validate.BindingValidator.validateRequest;
+import static com.akerke.authservice.common.validate.BindingValidator.validateRequest;
 
 @RestController
 @RequiredArgsConstructor

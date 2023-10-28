@@ -1,4 +1,4 @@
-package com.akerke.authservice.validate;
+package com.akerke.authservice.common.validate;
 
 import com.akerke.authservice.common.exception.InvalidRequestPayloadException;
 import lombok.extern.slf4j.Slf4j;

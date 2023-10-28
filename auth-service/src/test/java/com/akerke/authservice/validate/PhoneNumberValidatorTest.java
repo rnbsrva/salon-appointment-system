@@ -1,10 +1,10 @@
 package com.akerke.authservice.validate;
 
+import com.akerke.authservice.common.validate.PhoneNumberValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

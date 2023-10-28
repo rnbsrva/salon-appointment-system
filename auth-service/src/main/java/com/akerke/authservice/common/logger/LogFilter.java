@@ -1,6 +1,6 @@
-package com.akerke.authservice.logger;
+package com.akerke.authservice.common.logger;
 
-import com.akerke.authservice.utils.LogBody;
+import com.akerke.authservice.common.utils.LogBody;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

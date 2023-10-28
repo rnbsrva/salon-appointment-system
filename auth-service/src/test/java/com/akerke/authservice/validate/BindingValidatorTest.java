@@ -1,6 +1,7 @@
 package com.akerke.authservice.validate;
 
 import com.akerke.authservice.common.exception.InvalidRequestPayloadException;
+import com.akerke.authservice.common.validate.BindingValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.BindingResult;

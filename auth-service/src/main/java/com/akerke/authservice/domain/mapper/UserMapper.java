@@ -2,7 +2,7 @@ package com.akerke.authservice.domain.mapper;
 
 import com.akerke.authservice.common.constants.Scope;
 import com.akerke.authservice.domain.entity.User;
-import com.akerke.authservice.payload.request.RegistrationRequest;
+import com.akerke.authservice.domain.payload.request.RegistrationRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;

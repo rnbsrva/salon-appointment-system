@@ -1,7 +1,7 @@
 package com.akerke.authservice.domain.dao;
 
 import com.akerke.authservice.domain.entity.User;
-import com.akerke.authservice.utils.Pair;
+import com.akerke.authservice.common.utils.Pair;
 
 public interface UserDao {
 

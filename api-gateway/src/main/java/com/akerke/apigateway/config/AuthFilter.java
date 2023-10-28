@@ -32,9 +32,10 @@ public class AuthFilter implements GatewayFilter {
     private final Predicate<ServerHttpRequest> authHeaderMissing = r -> !r.getHeaders().containsKey("Authorization");
 
     @PostConstruct
-    void test(){
+    void test() {
         System.out.println("hi");
     }
+
     @Override
     public Mono<Void> filter(
             ServerWebExchange exchange,
@@ -42,12 +43,12 @@ public class AuthFilter implements GatewayFilter {
     ) {
         var request = exchange.getRequest();
 
-       request.getHeaders().entrySet()
-                       .forEach(System.out::println);
+        request.getHeaders().entrySet()
+                .forEach(System.out::println);
         System.out.println("new request " + request.getURI());
         if (this.authHeaderMissing.test(request)) {
             logger.info("auth missing " + request.getURI());
-            return onAuthError(exchange);
+            return onAuthError(exchange, AuthErrorType.MISSING_BEARER_TOKEN);
         }
 
         final var token = request.getHeaders().getOrEmpty("Authorization").get(0);
@@ -57,7 +58,10 @@ public class AuthFilter implements GatewayFilter {
                 .retrieve()
                 .bodyToMono(StatusResponse.class);
 
-        return res.flatMap(statusResponse -> statusResponse.success() ? chain.filter(exchange) : onAuthError(exchange));
+        return res.flatMap(statusResponse -> statusResponse.success() ?
+                chain.filter(exchange) :
+                onAuthError(exchange, AuthErrorType.INVALID_BEARER_TOKEN)
+        );
 
     }
 
@@ -68,10 +72,15 @@ public class AuthFilter implements GatewayFilter {
                         .build();
     }
 
-    private Mono<Void> onAuthError(ServerWebExchange exchange) {
+    private Mono<Void> onAuthError(ServerWebExchange exchange, AuthErrorType errorType) {
         var response = exchange.getResponse();
+        response.getHeaders().add("X-Auth-Error", errorType.name().toLowerCase());
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         return response.setComplete();
     }
 
+    enum AuthErrorType {
+        INVALID_BEARER_TOKEN,
+        MISSING_BEARER_TOKEN
+    }
 }

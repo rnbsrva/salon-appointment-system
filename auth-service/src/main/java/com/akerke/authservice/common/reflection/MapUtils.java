@@ -1,15 +1,10 @@
 package com.akerke.authservice.common.reflection;
 
-import com.akerke.authservice.utils.Pair;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.akerke.authservice.common.utils.Pair;
 import lombok.extern.slf4j.Slf4j;
 import lombok.experimental.UtilityClass;
-import org.springframework.util.ReflectionUtils;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

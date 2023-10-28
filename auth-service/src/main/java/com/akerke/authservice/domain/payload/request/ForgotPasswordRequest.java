@@ -1,4 +1,4 @@
-package com.akerke.authservice.payload.request;
+package com.akerke.authservice.domain.payload.request;
 
 import com.akerke.authservice.common.annotations.Password;
 

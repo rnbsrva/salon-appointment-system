@@ -1,4 +1,4 @@
-package com.akerke.authservice.validate;
+package com.akerke.authservice.common.validate;
 
 import com.akerke.authservice.common.annotations.PhoneNumber;
 import jakarta.validation.ConstraintValidator;

@@ -1,8 +1,8 @@
 package com.akerke.authservice.domain.service;
 
 import com.akerke.authservice.domain.entity.User;
-import com.akerke.authservice.payload.request.RegistrationRequest;
-import com.akerke.authservice.payload.response.StatusResponse;
+import com.akerke.authservice.domain.payload.request.RegistrationRequest;
+import com.akerke.authservice.domain.payload.response.StatusResponse;
 
 public interface UserService {
 

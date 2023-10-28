@@ -1,4 +1,4 @@
-package com.akerke.authservice.utils;
+package com.akerke.authservice.common.utils;
 
 
 public interface Expirable{

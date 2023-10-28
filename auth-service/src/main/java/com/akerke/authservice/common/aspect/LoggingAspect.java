@@ -1,4 +1,4 @@
-package com.akerke.authservice.aspect;
+package com.akerke.authservice.common.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;

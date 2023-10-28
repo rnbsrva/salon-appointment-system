@@ -1,4 +1,4 @@
-package com.akerke.authservice.utils;
+package com.akerke.authservice.common.utils;
 
 import com.akerke.authservice.common.constants.TokenType;
 

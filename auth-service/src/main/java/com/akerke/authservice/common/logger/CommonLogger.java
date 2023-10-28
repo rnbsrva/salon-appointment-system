@@ -1,7 +1,7 @@
-package com.akerke.authservice.logger;
+package com.akerke.authservice.common.logger;
 
 import com.akerke.authservice.common.reflection.MapUtils;
-import com.akerke.authservice.utils.LogBody;
+import com.akerke.authservice.common.utils.LogBody;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.akerke.authservice.common.constants;
 
-import com.akerke.authservice.utils.Expirable;
+import com.akerke.authservice.common.utils.Expirable;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

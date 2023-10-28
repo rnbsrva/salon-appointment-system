@@ -1,4 +1,4 @@
-package com.akerke.authservice.payload.response;
+package com.akerke.authservice.domain.payload.response;
 
 
 import lombok.AllArgsConstructor;

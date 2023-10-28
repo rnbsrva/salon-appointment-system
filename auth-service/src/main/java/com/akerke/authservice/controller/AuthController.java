@@ -1,9 +1,9 @@
 package com.akerke.authservice.controller;
 
 import com.akerke.authservice.common.constants.TokenType;
-import com.akerke.authservice.payload.request.AuthRequest;
-import com.akerke.authservice.payload.request.ForgotPasswordRequest;
-import com.akerke.authservice.payload.request.ResetPasswordRequest;
+import com.akerke.authservice.domain.payload.request.AuthRequest;
+import com.akerke.authservice.domain.payload.request.ForgotPasswordRequest;
+import com.akerke.authservice.domain.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.domain.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static com.akerke.authservice.validate.BindingValidator.validateRequest;
+import static com.akerke.authservice.common.validate.BindingValidator.validateRequest;
 
 @RestController
 @RequiredArgsConstructor
