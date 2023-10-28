@@ -1,6 +1,7 @@
 package com.akerke.apigateway.config;
 
 import com.akerke.apigateway.utils.StatusResponse;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -15,9 +16,12 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 
 @Component
 public class AuthFilter implements GatewayFilter {
+
+    Logger logger = Logger.getLogger("Gateway");
 
     private final WebClient webClient;
 
@@ -27,6 +31,10 @@ public class AuthFilter implements GatewayFilter {
 
     private final Predicate<ServerHttpRequest> authHeaderMissing = r -> !r.getHeaders().containsKey("Authorization");
 
+    @PostConstruct
+    void test(){
+        System.out.println("hi");
+    }
     @Override
     public Mono<Void> filter(
             ServerWebExchange exchange,
@@ -34,7 +42,11 @@ public class AuthFilter implements GatewayFilter {
     ) {
         var request = exchange.getRequest();
 
+       request.getHeaders().entrySet()
+                       .forEach(System.out::println);
+        System.out.println("new request " + request.getURI());
         if (this.authHeaderMissing.test(request)) {
+            logger.info("auth missing " + request.getURI());
             return onAuthError(exchange);
         }
 
@@ -52,8 +64,7 @@ public class AuthFilter implements GatewayFilter {
     private static Function<UriBuilder, URI> validateTokenUrl(String token) {
         return uriBuilder ->
                 uriBuilder.path("validate-token")
-                        .queryParam("token_type", "ACCESS_TOKEN")
-                        .queryParam("token", token)
+                        .queryParam("access_token", token.substring("Bearer ".length()))
                         .build();
     }
 
