@@ -1,13 +1,16 @@
 package com.akerke.tgbot.tg.handler;
 
 import com.akerke.tgbot.dao.UserDAO;
+import com.akerke.tgbot.exception.UserNotFoundException;
 import com.akerke.tgbot.tg.bot.ResponseSender;
 import com.akerke.tgbot.tg.bot.TelegramCommand;
 import com.akerke.tgbot.tg.helper.KeyboardHelper;
 import com.akerke.tgbot.tg.helper.LocaleHelper;
 import com.akerke.tgbot.tg.constants.CommonLocale;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@Slf4j
 public class SetEmailCommandHandler extends TelegramCommandHandler {
 
     private final UserDAO userDAO;
@@ -28,6 +31,12 @@ public class SetEmailCommandHandler extends TelegramCommandHandler {
             CommonLocale locale
     ) {
         var email = update.getMessage().getText();
+
+        try {
+            var user = userDAO.findByEmail(email);
+        } catch (UserNotFoundException e) {
+            log.error("{}", e.getMessage());
+        }
 
     }
 

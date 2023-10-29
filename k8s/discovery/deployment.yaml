@@ -15,6 +15,6 @@ spec:
       containers:
         - name: discovery
           image: rnbsrva/discovery
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8761
