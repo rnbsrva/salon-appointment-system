@@ -146,4 +146,6 @@ public class AppointmentServiceTest {
         assertThrows(EntityNotFoundException.class, () -> appointmentService.update(appointmentDTO, id));
         verify(appointmentRepository, never()).save(any(Appointment.class));
     }
+
+
 }
