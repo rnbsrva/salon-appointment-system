@@ -64,7 +64,9 @@ public class MasterServiceImpl implements MasterService {
 
     @Override
     public Master getById(Long id) {
-        return masterRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(Master.class, id));
+        return masterRepository
+                .findById(id)
+                .orElseThrow(()-> new EntityNotFoundException(Master.class, id));
     }
 
     @Override
