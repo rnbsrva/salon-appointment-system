@@ -1,16 +1,15 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.dto.AppointmentDTO;
-import com.akerke.salonservice.service.AppointmentService;
+import com.akerke.salonservice.domain.dto.AppointmentDTO;
+import com.akerke.salonservice.domain.service.AppointmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static com.akerke.salonservice.validatе.Validator.validate;
+import static com.akerke.salonservice.common.validatе.Validator.validate;
 
 @RequestMapping("appointment")
 @RequiredArgsConstructor

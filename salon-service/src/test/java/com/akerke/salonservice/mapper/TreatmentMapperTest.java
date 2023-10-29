@@ -1,8 +1,9 @@
 package com.akerke.salonservice.mapper;
 
-import com.akerke.salonservice.constants.TreatmentType;
-import com.akerke.salonservice.dto.TreatmentDTO;
-import com.akerke.salonservice.entity.Treatment;
+import com.akerke.salonservice.common.constants.TreatmentType;
+import com.akerke.salonservice.domain.mapper.TreatmentMapper;
+import com.akerke.salonservice.domain.dto.TreatmentDTO;
+import com.akerke.salonservice.domain.entity.Treatment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

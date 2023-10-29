@@ -1,12 +1,11 @@
 package com.akerke.salonservice.service;
 
-import com.akerke.salonservice.dto.FeedbackDTO;
-import com.akerke.salonservice.entity.Appointment;
-import com.akerke.salonservice.entity.Feedback;
-import com.akerke.salonservice.exception.EntityNotFoundException;
-import com.akerke.salonservice.mapper.FeedbackMapper;
-import com.akerke.salonservice.repository.FeedbackRepository;
-import com.akerke.salonservice.service.impl.FeedbackServiceImpl;
+import com.akerke.salonservice.domain.dto.FeedbackDTO;
+import com.akerke.salonservice.domain.entity.Feedback;
+import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.salonservice.domain.mapper.FeedbackMapper;
+import com.akerke.salonservice.domain.repository.FeedbackRepository;
+import com.akerke.salonservice.domain.service.impl.FeedbackServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

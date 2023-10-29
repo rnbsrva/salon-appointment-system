@@ -1,13 +1,12 @@
 package com.akerke.salonservice.mapper;
 
-import com.akerke.salonservice.dto.WorkTimeDTO;
-import com.akerke.salonservice.entity.WorkDay;
-import com.akerke.salonservice.entity.WorkTime;
+import com.akerke.salonservice.domain.mapper.WorkTimeMapper;
+import com.akerke.salonservice.domain.dto.WorkTimeDTO;
+import com.akerke.salonservice.domain.entity.WorkDay;
+import com.akerke.salonservice.domain.entity.WorkTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 

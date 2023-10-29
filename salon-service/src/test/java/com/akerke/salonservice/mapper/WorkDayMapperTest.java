@@ -1,10 +1,11 @@
 package com.akerke.salonservice.mapper;
 
-import com.akerke.salonservice.constants.WeekDay;
-import com.akerke.salonservice.dto.WorkDayDTO;
-import com.akerke.salonservice.entity.Master;
-import com.akerke.salonservice.entity.Salon;
-import com.akerke.salonservice.entity.WorkDay;
+import com.akerke.salonservice.common.constants.WeekDay;
+import com.akerke.salonservice.domain.mapper.WorkDayMapper;
+import com.akerke.salonservice.domain.dto.WorkDayDTO;
+import com.akerke.salonservice.domain.entity.Master;
+import com.akerke.salonservice.domain.entity.Salon;
+import com.akerke.salonservice.domain.entity.WorkDay;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

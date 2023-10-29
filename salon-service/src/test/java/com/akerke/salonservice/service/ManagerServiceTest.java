@@ -1,10 +1,11 @@
 package com.akerke.salonservice.service;
 
-import com.akerke.salonservice.constants.AppConstants;
-import com.akerke.salonservice.entity.User;
-import com.akerke.salonservice.kafka.KafkaManageRoleRequest;
-import com.akerke.salonservice.kafka.KafkaProducer;
-import com.akerke.salonservice.service.impl.ManagerServiceImpl;
+import com.akerke.salonservice.common.constants.AppConstants;
+import com.akerke.salonservice.domain.entity.User;
+import com.akerke.salonservice.domain.service.UserService;
+import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
+import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
+import com.akerke.salonservice.domain.service.impl.ManagerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

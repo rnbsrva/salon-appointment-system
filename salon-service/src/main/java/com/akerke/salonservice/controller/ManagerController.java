@@ -1,6 +1,6 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.service.ManagerService;
+import com.akerke.salonservice.domain.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

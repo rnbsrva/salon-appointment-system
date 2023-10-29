@@ -1,8 +1,7 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.dto.MasterDTO;
-import com.akerke.salonservice.dto.SalonDTO;
-import com.akerke.salonservice.service.MasterService;
+import com.akerke.salonservice.domain.dto.MasterDTO;
+import com.akerke.salonservice.domain.service.MasterService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.akerke.salonservice.validatе.Validator.validate;
+import static com.akerke.salonservice.common.validatе.Validator.validate;
 
 @RestController
 @RequestMapping("master")

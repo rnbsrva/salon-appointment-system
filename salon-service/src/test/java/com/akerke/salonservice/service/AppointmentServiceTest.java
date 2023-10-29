@@ -1,11 +1,12 @@
 package com.akerke.salonservice.service;
 
-import com.akerke.salonservice.dto.AppointmentDTO;
-import com.akerke.salonservice.entity.Appointment;
-import com.akerke.salonservice.exception.EntityNotFoundException;
-import com.akerke.salonservice.mapper.AppointmentMapper;
-import com.akerke.salonservice.repository.AppointmentRepository;
-import com.akerke.salonservice.service.impl.AppointmentServiceImpl;
+import com.akerke.salonservice.domain.dto.AppointmentDTO;
+import com.akerke.salonservice.domain.entity.Appointment;
+import com.akerke.salonservice.domain.service.UserService;
+import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.salonservice.domain.mapper.AppointmentMapper;
+import com.akerke.salonservice.domain.repository.AppointmentRepository;
+import com.akerke.salonservice.domain.service.impl.AppointmentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,9 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

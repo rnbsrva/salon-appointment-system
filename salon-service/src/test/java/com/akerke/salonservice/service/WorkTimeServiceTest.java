@@ -1,12 +1,13 @@
 package com.akerke.salonservice.service;
 
-import com.akerke.salonservice.dto.WorkTimeDTO;
-import com.akerke.salonservice.entity.WorkDay;
-import com.akerke.salonservice.entity.WorkTime;
-import com.akerke.salonservice.exception.EntityNotFoundException;
-import com.akerke.salonservice.mapper.WorkTimeMapper;
-import com.akerke.salonservice.repository.WorkTimeRepository;
-import com.akerke.salonservice.service.impl.WorkTimeServiceImpl;
+import com.akerke.salonservice.domain.dto.WorkTimeDTO;
+import com.akerke.salonservice.domain.entity.WorkDay;
+import com.akerke.salonservice.domain.entity.WorkTime;
+import com.akerke.salonservice.domain.service.WorkDayService;
+import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.salonservice.domain.mapper.WorkTimeMapper;
+import com.akerke.salonservice.domain.repository.WorkTimeRepository;
+import com.akerke.salonservice.domain.service.impl.WorkTimeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

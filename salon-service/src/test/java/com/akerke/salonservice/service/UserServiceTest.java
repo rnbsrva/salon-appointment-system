@@ -1,12 +1,12 @@
 package com.akerke.salonservice.service;
 
-import com.akerke.salonservice.constants.Gender;
-import com.akerke.salonservice.dto.UserDTO;
-import com.akerke.salonservice.entity.User;
-import com.akerke.salonservice.exception.EntityNotFoundException;
-import com.akerke.salonservice.mapper.UserMapper;
-import com.akerke.salonservice.repository.UserRepository;
-import com.akerke.salonservice.service.impl.UserServiceImpl;
+import com.akerke.salonservice.common.constants.Gender;
+import com.akerke.salonservice.domain.dto.UserDTO;
+import com.akerke.salonservice.domain.entity.User;
+import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.salonservice.domain.mapper.UserMapper;
+import com.akerke.salonservice.domain.repository.UserRepository;
+import com.akerke.salonservice.domain.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

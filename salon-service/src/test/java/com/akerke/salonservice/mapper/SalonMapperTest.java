@@ -1,9 +1,9 @@
 package com.akerke.salonservice.mapper;
 
-import com.akerke.salonservice.dto.AddressDTO;
-import com.akerke.salonservice.dto.SalonDTO;
-import com.akerke.salonservice.entity.Salon;
-import com.akerke.salonservice.entity.User;
+import com.akerke.salonservice.domain.mapper.SalonMapper;
+import com.akerke.salonservice.domain.dto.AddressDTO;
+import com.akerke.salonservice.domain.dto.SalonDTO;
+import com.akerke.salonservice.domain.entity.Salon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

@@ -1,7 +1,7 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.dto.UserDTO;
-import com.akerke.salonservice.service.UserService;
+import com.akerke.salonservice.domain.dto.UserDTO;
+import com.akerke.salonservice.domain.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.beans.BeanInfo;
-
-import static com.akerke.salonservice.validatе.Validator.validate;
+import static com.akerke.salonservice.common.validatе.Validator.validate;
 
 @RestController
 @RequestMapping("user")

@@ -1,8 +1,9 @@
 package com.akerke.salonservice.mapper;
 
-import com.akerke.salonservice.constants.Status;
-import com.akerke.salonservice.dto.AppointmentDTO;
-import com.akerke.salonservice.entity.*;
+import com.akerke.salonservice.common.constants.Status;
+import com.akerke.salonservice.domain.mapper.AppointmentMapper;
+import com.akerke.salonservice.domain.dto.AppointmentDTO;
+import com.akerke.salonservice.domain.entity.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
