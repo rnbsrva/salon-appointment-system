@@ -36,7 +36,6 @@ public class WorkDayServiceImpl implements WorkDayService {
     @Override
     public void update(WorkDayDTO workDayDTO, Long id) {
         var workDay = this.getById(id);
-
         workDayMapper.update(workDayDTO, workDay);
         workDayRepository.save(workDay);
     }
@@ -48,7 +47,7 @@ public class WorkDayServiceImpl implements WorkDayService {
 
     @Override
     public WorkDay getById(Long id) {
-        return workDayRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(WorkDay.class, id));
+        return workDayRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(WorkDay.class, id));
     }
 
     @Override
