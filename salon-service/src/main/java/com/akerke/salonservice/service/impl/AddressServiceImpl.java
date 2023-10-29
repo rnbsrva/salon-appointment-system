@@ -29,11 +29,6 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<Address> getAll() {
-        return addressRepository.findAll();
-    }
-
-    @Override
     public void update(AddressDTO addressDTO, Long id) {
         var address = this.getById(id);
         addressMapper.update(addressDTO, address);
@@ -44,4 +39,10 @@ public class AddressServiceImpl implements AddressService {
     public void delete(Long id) {
         addressRepository.delete(this.getById(id));
     }
+
+    @Override
+    public List<Address> getAll() {
+        return addressRepository.findAll();
+    }
+
 }
