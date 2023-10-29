@@ -28,13 +28,20 @@ public class WorkTimeServiceImpl implements WorkTimeService {
     }
 
     @Override
+    public void update(WorkTimeDTO workTimeDTO, Long id) {
+        var workTime = this.getById(id);
+        workTimeMapper.update(workTimeDTO, workTime);
+        workTimeRepository.save(workTime);
+    }
+
+    @Override
     public void delete(Long id) {
         workTimeRepository.delete(this.getById(id));
     }
 
     @Override
     public WorkTime getById(Long id) {
-        return workTimeRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(WorkTime.class, id));
+        return workTimeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(WorkTime.class, id));
     }
 
     @Override
@@ -42,10 +49,5 @@ public class WorkTimeServiceImpl implements WorkTimeService {
         return workTimeRepository.findAll();
     }
 
-    @Override
-    public void update(WorkTimeDTO workTimeDTO, Long id) {
-        var workTime = this.getById(id);
-        workTimeMapper.update(workTimeDTO, workTime);
-        workTimeRepository.save(workTime);
-    }
+
 }
