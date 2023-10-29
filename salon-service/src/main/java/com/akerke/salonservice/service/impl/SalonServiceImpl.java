@@ -28,7 +28,9 @@ public class SalonServiceImpl implements SalonService {
 
     @Override
     public Salon getById(Long id) {
-        return salonRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(Salon.class, id));
+        return salonRepository
+                .findById(id)
+                .orElseThrow(()-> new EntityNotFoundException(Salon.class, id));
     }
 
     @Override
