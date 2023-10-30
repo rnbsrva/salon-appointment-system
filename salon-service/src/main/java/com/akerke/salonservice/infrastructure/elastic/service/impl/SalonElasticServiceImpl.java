@@ -5,8 +5,14 @@ import com.akerke.salonservice.infrastructure.elastic.service.SalonElasticServic
 import com.akerke.salonservice.domain.mapper.SalonMapper;
 import com.akerke.salonservice.common.payload.SalonSearchRequest;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.erhlc.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -14,7 +20,9 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.akerke.salonservice.common.constants.AppConstants.SALON_INDEX;
@@ -23,7 +31,7 @@ import static com.akerke.salonservice.common.constants.AppConstants.SALON_INDEX;
 @RequiredArgsConstructor
 public class SalonElasticServiceImpl implements SalonElasticService {
 
-    private final ElasticsearchOperations elastic;
+    private final RestHighLevelClient elastic;
     private final SalonMapper salonMapper;
 
     @Override
@@ -32,6 +40,8 @@ public class SalonElasticServiceImpl implements SalonElasticService {
             int from,
             int size
     ) {
+        var searchRequest = new SearchRequest();
+        var searchSourceBuilder = new SearchSourceBuilder();
         var queryBuilder = QueryBuilders.boolQuery();
 
         if (searchDetails.name() != null) {
@@ -39,65 +49,67 @@ public class SalonElasticServiceImpl implements SalonElasticService {
         }
 
         if (searchDetails.treatmentToFind() != null) {
-            queryBuilder.must(getFuzzinessQuery("treatmentToFind", searchDetails.treatmentToFind()));
+            queryBuilder.must(getFuzzinessQuery("treatments", searchDetails.treatmentToFind()));
         }
 
         if (searchDetails.addressDetails() != null) {
             if (searchDetails.addressDetails().state() != null) {
-                queryBuilder.must(getFuzzinessQuery("state", searchDetails.addressDetails().state()));
+                queryBuilder.should(getFuzzinessQuery("state", searchDetails.addressDetails().state()));
             }
             if (searchDetails.addressDetails().city() != null) {
-                queryBuilder.must(getFuzzinessQuery("city", searchDetails.addressDetails().city()));
+                queryBuilder.should(getFuzzinessQuery("city", searchDetails.addressDetails().city()));
             }
             if (searchDetails.addressDetails().street() != null) {
-                queryBuilder.must(getFuzzinessQuery("street", searchDetails.addressDetails().street()));
+                queryBuilder.should(getFuzzinessQuery("street", searchDetails.addressDetails().street()));
             }
             if (searchDetails.addressDetails().houseNumber() != null) {
-                queryBuilder.must(getFuzzinessQuery("house_number", searchDetails.addressDetails().houseNumber().toString()));
+                queryBuilder.should(getFuzzinessQuery("house_number", String.valueOf(searchDetails.addressDetails().houseNumber())));
             }
         }
 
-        var searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(queryBuilder)
-                .withPageable(PageRequest.of(from, size))
-                .build();
+        searchSourceBuilder.query(queryBuilder);
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
 
-        SearchHits<SalonWrapper> searchHits =
-                elastic.search(
-                        searchQuery,
-                        SalonWrapper.class,
-                        IndexCoordinates.of(SALON_INDEX)
-                );
+        searchRequest.source(searchSourceBuilder);
 
-        return salonMapper.toListWrapperFromHit(searchHits);
+        try {
+            var searchResponse = elastic.search(searchRequest, RequestOptions.DEFAULT);
+            return salonMapper.toListWrapperFromHit(searchResponse.getHits().getHits());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static MatchQueryBuilder getFuzzinessQuery(String fieldName, String fieldValue) {
         return QueryBuilders
-                .matchQuery(fieldName, fieldValue)
-                .fuzziness("AUTO");
+                .matchQuery(fieldName, fieldValue);
     }
 
     @Override
     public List<String> fetchSuggestions(String query) {
         var queryBuilder = QueryBuilders
-                .wildcardQuery("name", query + "*");
+                .matchQuery("name", query);
 
-        var searchQuery = new NativeSearchQueryBuilder()
-                .withFilter(queryBuilder)
-                .withPageable(PageRequest.of(0, 10))
-                .build();
+        var searchRequest = new SearchRequest();
+        var searchSourceBuilder = new SearchSourceBuilder();
 
-        SearchHits<SalonWrapper> searchSuggestions =
-                elastic.search(searchQuery,
-                        SalonWrapper.class,
-                        IndexCoordinates.of(SALON_INDEX)
-                );
+        searchSourceBuilder.query(queryBuilder);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchSuggestionsResponse =
+                null;
+        try {
+            searchSuggestionsResponse = elastic.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         var suggestions = new ArrayList<String>();
 
-        searchSuggestions.getSearchHits().forEach(searchHit -> {
-            suggestions.add(searchHit.getContent().getName());
+        Arrays.stream(searchSuggestionsResponse.getHits().getHits()).forEach(searchHit -> {
+            suggestions.add(searchHit.getSourceAsMap().get("name").toString());
         });
 
         return suggestions;

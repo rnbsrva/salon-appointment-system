@@ -1,6 +1,8 @@
 package com.akerke.salonservice.elastic;
 
+import com.akerke.salonservice.common.payload.SalonSearchRequest;
 import com.akerke.salonservice.domain.entity.Address;
+import com.akerke.salonservice.generator.SalonGenerator;
 import com.akerke.salonservice.infrastructure.elastic.SalonWrapper;
 import com.akerke.salonservice.infrastructure.elastic.SalonWrapperRepository;
 import com.akerke.salonservice.infrastructure.elastic.service.SalonElasticService;
@@ -50,6 +52,9 @@ public class SalonElasticServiceIT extends SalonServicePostgresTestContainer {
     void testIsContainerRunning() {
         assertTrue(elasticsearchContainer.isRunning());
         recreateIndex();
+        salonWrapperRepository.saveAll(
+                SalonGenerator.salonWrappers()
+        );
     }
 
     private void recreateIndex() {
@@ -65,28 +70,15 @@ public class SalonElasticServiceIT extends SalonServicePostgresTestContainer {
     }
 
     @Test
-    void testSave(){
-        salonWrapperRepository.saveAll(
-               generateSalonList(3)
+    void testSave() {
+        SalonSearchRequest searchRequest = new SalonSearchRequest(
+                "Salon A", null, null
         );
 
-        Iterable<SalonWrapper> all = salonWrapperRepository.findAll();
-        assertTrue(all.iterator().hasNext());
+        salonWrapperRepository.findAll()
+                        .forEach(System.out::println);
+
+        System.out.println(salonElasticService.search(searchRequest, 0, 5));
     }
 
-    private static List<SalonWrapper> generateSalonList(int size) {
-        List<SalonWrapper> salonList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            SalonWrapper salon = new SalonWrapper();
-            salon.setId((long) i);
-            salon.setName("Salon " + i);
-            salon.setPhone("Phone " + i);
-            salon.setEmail("Email " + i);
-            salon.setAddress(new Address());
-            salon.setDescription("Description " + i);
-            salon.setTreatments(new ArrayList<>());
-            salonList.add(salon);
-        }
-        return salonList;
-    }
 }

@@ -3,12 +3,13 @@ package com.akerke.salonservice.domain.mapper;
 import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.entity.*;
 import com.akerke.salonservice.infrastructure.elastic.SalonWrapper;
+import org.elasticsearch.search.SearchHit;
 import org.mapstruct.*;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.SearchHits;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Mapper(imports = {Master.class, ArrayList.class,
         Treatment.class, WorkDay.class, Feedback.class},
@@ -27,12 +28,38 @@ public interface SalonMapper {
     @Mapping(target = "id", ignore = true)
     void update(SalonDTO salonDTO, @MappingTarget Salon salon);
 
-    default List<SalonWrapper> toListWrapperFromHit(SearchHits<SalonWrapper> searchHits){
-        return searchHits.getSearchHits()
-                .stream()
-                .map(SearchHit::getContent)
+    default List<SalonWrapper> toListWrapperFromHit(org.elasticsearch.search.SearchHit[] searchHits){
+        return Arrays.stream(searchHits)
+                .map(SearchHit::getSourceAsMap)
+                .map(this::mapToSalonWrapper)
                 .toList();
     };
 
+    private SalonWrapper mapToSalonWrapper(Map<String, Object> sourceMap) {
+        SalonWrapper salon = new SalonWrapper();
+
+        salon.setId(Long.parseLong(sourceMap.get("id").toString()));
+        salon.setName(sourceMap.get("name").toString());
+        salon.setPhone(sourceMap.get("phone").toString());
+        salon.setEmail(sourceMap.get("email").toString());
+
+        // Map the 'address' field to the 'Address' entity
+        Map<String, Object> addressMap = (Map<String, Object>) sourceMap.get("address");
+        Address address = new Address();
+        address.setId(Long.parseLong(addressMap.get("id").toString()));
+        address.setHouseNumber(Long.parseLong(addressMap.get("houseNumber").toString()));
+        address.setStreet(addressMap.get("street").toString());
+        address.setCity(addressMap.get("city").toString());
+        address.setState(addressMap.get("state").toString());
+        salon.setAddress(address);
+
+        salon.setDescription(sourceMap.get("description").toString());
+
+        // Map the 'treatments' field to a list
+        List<String> treatments = (List<String>) sourceMap.get("treatments");
+        salon.setTreatments(treatments);
+
+        return salon;
+    }
 
 }
