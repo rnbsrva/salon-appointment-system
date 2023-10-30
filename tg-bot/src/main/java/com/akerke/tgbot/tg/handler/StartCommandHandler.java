@@ -40,8 +40,6 @@ public class StartCommandHandler extends TelegramCommandHandler {
             message.setText(localeHelper.get("message.send-email"));
         }
 
-
-
         responseSender.send(message);
     }
 

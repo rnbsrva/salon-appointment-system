@@ -1,6 +1,7 @@
 package com.akerke.salonservice.mapper;
 
 import com.akerke.salonservice.common.constants.TreatmentType;
+import com.akerke.salonservice.domain.entity.Salon;
 import com.akerke.salonservice.domain.mapper.TreatmentMapper;
 import com.akerke.salonservice.domain.dto.TreatmentDTO;
 import com.akerke.salonservice.domain.entity.Treatment;
@@ -24,6 +25,7 @@ public class TreatmentMapperTest {
         treatment.setName("Test Treatment");
         treatment.setPrice(100L);
         treatment.setMinutes(60L);
+        treatment.setSalon(new Salon());
         treatment.setTreatmentType(TreatmentType.LASHES);
     }
 
@@ -45,7 +47,7 @@ public class TreatmentMapperTest {
         assertEquals(treatmentDTO.name(), treatment.getName());
         assertEquals(treatmentDTO.price(), treatment.getPrice());
         assertEquals(treatmentDTO.minutes(), treatment.getMinutes());
-        assertEquals(treatmentDTO.treatmentType(), treatment.getTreatmentType().toString());
+        assertEquals(treatmentDTO.treatmentType().toString(), treatment.getTreatmentType().toString());
     }
 
     @Test

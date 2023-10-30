@@ -55,7 +55,14 @@ public class UserMapperTest {
         void testUpdateWhenNullUserDtoGivenThenNoChangesAreMade(){
             User originalUser = new User();
             userMapper.update(null, user);
-            assertEquals(originalUser, user);
+            assertEquals(originalUser.getName(), user.getName());
+            assertEquals(originalUser.getPhone(), user.getPhone());
+            assertEquals(originalUser.getGender(), user.getGender());
+            assertEquals(originalUser.getEmail(), user.getEmail());
+            assertEquals(originalUser.getSurname(), user.getSurname());
+            assertEquals(originalUser.getAppointments(), user.getAppointments());
+            assertEquals(originalUser.getId(), user.getId());
+            assertEquals(originalUser.getSalons(), user.getSalons());
         }
 
         @Test

@@ -1,5 +1,6 @@
 package com.akerke.salonservice.mapper;
 
+import com.akerke.salonservice.domain.entity.User;
 import com.akerke.salonservice.domain.mapper.SalonMapper;
 import com.akerke.salonservice.domain.dto.AddressDTO;
 import com.akerke.salonservice.domain.dto.SalonDTO;
@@ -42,7 +43,6 @@ public class SalonMapperTest {
         salonMapper.update(salonDTO, salon);
 
         assertEquals(salonDTO.description(), salon.getDescription());
-        assertEquals(salonDTO.ownerId(), salon.getUserId());
         assertEquals(salonDTO.name(), salon.getName());
         assertEquals(salonDTO.phone(), salon.getPhone());
         assertEquals(salonDTO.email(), salon.getEmail());
@@ -54,6 +54,7 @@ public class SalonMapperTest {
         salon.setDescription("newDescription");
         salon.setEmail("newEmail");
         salon.setPhone("newPhone");
+        salon.setOwner(new User());
         var salonDTO = salonMapper.toDTO(salon);
 
         assertEquals(salonDTO.email(), salon.getEmail());

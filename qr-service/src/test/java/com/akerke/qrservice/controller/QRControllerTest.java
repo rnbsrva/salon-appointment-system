@@ -34,9 +34,10 @@ public class QRControllerTest {
     void testGenerateQR() throws Exception {
         String testData = "test-data";
 
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/generate")
-                .param("data", testData));
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/generate")
+                .param("data", testData)
+        );
 
         doReturn(CompletableFuture.completedFuture(null)).when(qrService).generateQRAsync(any(MockHttpServletResponse.class), eq (testData));
 
