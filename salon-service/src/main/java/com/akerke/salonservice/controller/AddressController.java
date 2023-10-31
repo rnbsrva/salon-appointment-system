@@ -9,7 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static com.akerke.salonservice.common.validatе.Validator.validate;
+import static com.akerke.salonservice.common.validate.Validator.validate;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -19,31 +20,31 @@ public class AddressController {
     private final AddressService addressService;
 
     @PostMapping()
-    ResponseEntity<?> save (
+    ResponseEntity<?> save(
             @Valid
             @RequestBody AddressDTO addressDTO,
             BindingResult bindingResult
-    ){
+    ) {
         validate(bindingResult);
-        return  ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(addressService.save(addressDTO));
     }
 
 
     @GetMapping("{id}")
-    ResponseEntity<?> getById (
+    ResponseEntity<?> getById(
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(addressService.getById(id));
     }
 
     @GetMapping()
-    ResponseEntity<?> getAll (){
-        return  ResponseEntity.ok(addressService.getAll());
+    ResponseEntity<?> getAll() {
+        return ResponseEntity.ok(addressService.getAll());
     }
 
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
-    ResponseEntity<?> update (
+    ResponseEntity<?> update(
             @RequestBody AddressDTO addressDTO,
             @PathVariable Long id
     ) {
@@ -52,11 +53,11 @@ public class AddressController {
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<?> delete (
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(
             @PathVariable Long id
-    ){
+    ) {
         addressService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.akerke.salonservice.common.validatе;
+package com.akerke.salonservice.common.validate;
 
 import com.akerke.salonservice.common.exception.InvalidRequestException;
 import lombok.experimental.UtilityClass;

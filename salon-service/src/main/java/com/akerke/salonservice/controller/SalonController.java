@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static com.akerke.salonservice.common.validatе.Validator.validate;
+import static com.akerke.salonservice.common.validate.Validator.validate;
 
 @Controller
 @RequestMapping("salon")

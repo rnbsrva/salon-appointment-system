@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static com.akerke.salonservice.common.validatе.Validator.validate;
+import static com.akerke.salonservice.common.validate.Validator.validate;
 
 @RestController
 @RequestMapping("feedback")

@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  jenkins:
+    build:
+      dockerfile: ./jenkins/dockerfile-jenkins
+    image: jenkins/jenkins
+    container_name: ci-jenkins
+    ports:
+      - "8085:8080"
+    environment:
+      JENKINS_OPTS: --prefix=/jenkins
+    volumes:
+      - jenkins-home:/var/jenkins_home
+    networks:
+      - docker-ci-network
+
+  sonarqube:
+    image: sonarqube:latest
+    container_name: ci-sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      sonar.web.context: /sonarqube
+    networks:
+      - docker-ci-network
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-extensions:/opt/sonarqube/extensions
+
+  nginx:
+    depends_on:
+      - jenkins
+    build:
+      dockerfile: ./nginx/dockerfile-nginx
+    container_name: ci-nginx
+    ports:
+      - "80:80"
+    networks:
+      - docker-ci-network
+
+volumes:
+  jenkins-home:
+  sonarqube-data:
+  sonarqube-extensions:
+
+networks:
+  docker-ci-network:
+    driver: bridge

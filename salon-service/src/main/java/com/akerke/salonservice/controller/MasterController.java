@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.akerke.salonservice.common.validatе.Validator.validate;
+import static com.akerke.salonservice.common.validate.Validator.validate;
 
 @RestController
 @RequestMapping("master")

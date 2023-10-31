@@ -1,6 +1,6 @@
 package com.akerke.salonservice.validatе;
 
-import com.akerke.salonservice.common.validatе.Validator;
+import com.akerke.salonservice.common.validate.Validator;
 import com.akerke.salonservice.common.exception.InvalidRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
