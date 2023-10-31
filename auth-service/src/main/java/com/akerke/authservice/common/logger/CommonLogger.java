@@ -42,7 +42,7 @@ public class CommonLogger {
 
     public void info(String message, LogBody additionalLogProperties) {
         addAdditionalLogProperties(additionalLogProperties);
-        log.info(message);
+//        log.info(message);
         dropSession();
     }
 
