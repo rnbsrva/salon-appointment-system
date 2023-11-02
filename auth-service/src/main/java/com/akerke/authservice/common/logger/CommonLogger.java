@@ -28,6 +28,12 @@ public class CommonLogger {
         });
     }
 
+    public void info(String message, LogBody additionalLogProperties) {
+        addAdditionalLogProperties(additionalLogProperties);
+        log.info(message);
+        dropSession();
+    }
+
     public void trace(String message, LogBody additionalLogProperties) {
         addAdditionalLogProperties(additionalLogProperties);
         log.trace(message);
@@ -37,12 +43,6 @@ public class CommonLogger {
     public void debug(String message, LogBody additionalLogProperties) {
         addAdditionalLogProperties(additionalLogProperties);
         log.debug(message);
-        dropSession();
-    }
-
-    public void info(String message, LogBody additionalLogProperties) {
-        addAdditionalLogProperties(additionalLogProperties);
-//        log.info(message);
         dropSession();
     }
 

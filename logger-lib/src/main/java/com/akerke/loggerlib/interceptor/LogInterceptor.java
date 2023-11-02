@@ -29,7 +29,6 @@ public class LogInterceptor implements HandlerInterceptor {
     ) throws Exception {
         var startTime = System.currentTimeMillis();
         request.setAttribute("startTime",startTime);
-
         return true;
     }
 

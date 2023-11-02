@@ -1,6 +1,9 @@
 package com.akerke.salonservice.infrastructure.elastic.service.impl;
 
+import com.akerke.salonservice.domain.entity.Salon;
+import com.akerke.salonservice.domain.repository.SalonRepository;
 import com.akerke.salonservice.infrastructure.elastic.SalonWrapper;
+import com.akerke.salonservice.infrastructure.elastic.SalonWrapperRepository;
 import com.akerke.salonservice.infrastructure.elastic.service.SalonElasticService;
 import com.akerke.salonservice.domain.mapper.SalonMapper;
 import com.akerke.salonservice.common.payload.SalonSearchRequest;
@@ -33,6 +36,7 @@ public class SalonElasticServiceImpl implements SalonElasticService {
 
     private final RestHighLevelClient elastic;
     private final SalonMapper salonMapper;
+    private final SalonWrapperRepository salonRepository;
 
     @Override
     public List<SalonWrapper> search(
@@ -113,5 +117,17 @@ public class SalonElasticServiceImpl implements SalonElasticService {
         });
 
         return suggestions;
+    }
+
+    @Override
+    public void save(Salon salon) {
+        var salonWrapper = salonMapper.toWrapper(salon);
+        salonRepository.save(salonWrapper);
+    }
+
+    @Override
+    public void delete(Salon salon) {
+        var salonWrapper = salonMapper.toWrapper(salon);
+        salonRepository.delete(salonWrapper);
     }
 }

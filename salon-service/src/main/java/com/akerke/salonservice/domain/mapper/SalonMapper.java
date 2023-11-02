@@ -23,17 +23,19 @@ public interface SalonMapper {
     Salon toModel(SalonDTO salonDTO);
 
     @Mapping(target = "ownerId", expression = "java(salon.getOwner().getId())")
-    SalonDTO toDTO (Salon salon);
+    SalonDTO toDTO(Salon salon);
 
     @Mapping(target = "id", ignore = true)
     void update(SalonDTO salonDTO, @MappingTarget Salon salon);
 
-    default List<SalonWrapper> toListWrapperFromHit(org.elasticsearch.search.SearchHit[] searchHits){
+    default List<SalonWrapper> toListWrapperFromHit(org.elasticsearch.search.SearchHit[] searchHits) {
         return Arrays.stream(searchHits)
                 .map(SearchHit::getSourceAsMap)
                 .map(this::mapToSalonWrapper)
                 .toList();
-    };
+    }
+
+    ;
 
     private SalonWrapper mapToSalonWrapper(Map<String, Object> sourceMap) {
         SalonWrapper salon = new SalonWrapper();
@@ -62,4 +64,13 @@ public interface SalonMapper {
         return salon;
     }
 
+    @Mapping(target = "treatments", expression = "java(treatmentList(salon))")
+    SalonWrapper toWrapper(Salon salon);
+
+    default List<String> treatmentList(Salon salon) {
+        return salon.getTreatments()
+                .stream()
+                .map(Treatment::getName)
+                .toList();
+    }
 }

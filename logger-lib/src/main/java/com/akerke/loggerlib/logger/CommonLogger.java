@@ -7,6 +7,8 @@ import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Component
 @Slf4j
@@ -40,5 +42,6 @@ public class CommonLogger {
     public void info(String message, Log logEntity) {
         addLogProperties(logEntity);
         log.info(message);
+        MDC.clear();
     }
 }
