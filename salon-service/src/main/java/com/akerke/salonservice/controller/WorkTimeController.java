@@ -2,6 +2,8 @@ package com.akerke.salonservice.controller;
 
 import com.akerke.salonservice.domain.dto.WorkTimeDTO;
 import com.akerke.salonservice.domain.service.WorkTimeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,12 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("worktime")
+@Api("WorkTime API")
 public class WorkTimeController {
 
     private final WorkTimeService workTimeService;
 
+    @ApiOperation("Create a new work time")
     @PostMapping()
     ResponseEntity<?> save (
             @Valid
@@ -30,6 +34,7 @@ public class WorkTimeController {
     }
 
 
+    @ApiOperation("Get an work time by ID")
     @GetMapping("{id}")
     ResponseEntity<?> getById (
             @PathVariable Long id
@@ -37,11 +42,13 @@ public class WorkTimeController {
         return ResponseEntity.ok(workTimeService.getById(id));
     }
 
+    @ApiOperation("Get a list of all work times")
     @GetMapping()
     ResponseEntity<?> getAll (){
         return  ResponseEntity.ok(workTimeService.getAll());
     }
 
+    @ApiOperation("Update an work time by ID")
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
     ResponseEntity<?> update (
             @RequestBody WorkTimeDTO workTimeDTO,
@@ -51,6 +58,7 @@ public class WorkTimeController {
         return ResponseEntity.accepted().build();
     }
 
+    @ApiOperation("Delete an work time by ID")
     @DeleteMapping("{id}")
     ResponseEntity<?> delete (
             @PathVariable Long id

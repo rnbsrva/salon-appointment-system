@@ -2,6 +2,8 @@ package com.akerke.salonservice.controller;
 
 import com.akerke.salonservice.domain.dto.AppointmentDTO;
 import com.akerke.salonservice.domain.service.AppointmentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,11 +16,13 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequestMapping("appointment")
 @RequiredArgsConstructor
 @RestController
+@Api(value = "Appointment API")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
     @PostMapping()
+    @ApiOperation("Create a new appointment")
     ResponseEntity<?> save (
             @Valid
             @RequestBody AppointmentDTO appointmentDTO,
@@ -31,6 +35,7 @@ public class AppointmentController {
 
 
     @GetMapping("{id}")
+    @ApiOperation("Get an appointment by ID")
     ResponseEntity<?> getById (
             @PathVariable Long id
     ) {
@@ -38,11 +43,13 @@ public class AppointmentController {
     }
 
     @GetMapping()
+    @ApiOperation("Get a list of all appointments")
     ResponseEntity<?> getAll (){
         return  ResponseEntity.ok(appointmentService.getAll());
     }
 
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
+    @ApiOperation("Update an appointment by ID")
     ResponseEntity<?> update (
             @RequestBody AppointmentDTO appointmentDTO,
             @PathVariable Long id
@@ -52,6 +59,7 @@ public class AppointmentController {
     }
 
     @DeleteMapping("{id}")
+    @ApiOperation("Delete an appointment by ID")
     ResponseEntity<?> delete (
             @PathVariable Long id
     ){

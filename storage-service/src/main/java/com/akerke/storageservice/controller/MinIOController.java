@@ -4,7 +4,10 @@ import com.akerke.storageservice.constants.AttachmentSource;
 import com.akerke.storageservice.dto.FileOperationDTO;
 import com.akerke.storageservice.exception.FileOperationException;
 import com.akerke.storageservice.service.MinIOService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletResponse;
+import kotlin.io.path.ExperimentalPathApi;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatusCode;
@@ -15,11 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("storage")
+@Api("Storage Minio API")
 public class MinIOController {
 
     private final MinIOService minIOService;
 
     @PostMapping("/upload")
+    @ApiOperation("Upload a file to MinIO storage")
     void uploadFileToMinIO(
             @RequestParam("file") MultipartFile file,
             @RequestParam Long target,
@@ -30,6 +35,7 @@ public class MinIOController {
     }
 
     @PostMapping("/uploadQR")
+    @ApiOperation("Upload a QR code file to MinIO storage")
     void uploadFileToMinIO(
             @RequestParam("file") MultipartFile file,
             @RequestParam AttachmentSource source,
@@ -39,6 +45,7 @@ public class MinIOController {
     }
 
     @GetMapping("/downloadByGroup")
+    @ApiOperation("Download files by group")
     void downloadFiles(
             @RequestParam Long target,
             @RequestParam AttachmentSource source,
@@ -48,6 +55,7 @@ public class MinIOController {
     }
 
     @DeleteMapping("/deleteByGroup")
+    @ApiOperation("Delete files by group")
     void deleteFolder(
             @RequestParam Long target,
             @RequestParam AttachmentSource source
@@ -56,6 +64,7 @@ public class MinIOController {
     }
 
     @GetMapping("/download")
+    @ApiOperation("Download a specific file")
     void downloadFile(
             @RequestParam String name,
             @RequestParam Long target,
@@ -65,6 +74,7 @@ public class MinIOController {
         minIOService.getObject(new FileOperationDTO(target, source, name), response);
     }
 
+    @ApiOperation("Download a QR code file")
     @GetMapping("/downloadQR")
     void downloadFile(
             @RequestParam String name,
@@ -74,6 +84,7 @@ public class MinIOController {
         minIOService.getQR(new FileOperationDTO(null, source, name), response);
     }
 
+    @ApiOperation("Delete an object")
     @PatchMapping("delete")
     @SneakyThrows
     void deleteObject(

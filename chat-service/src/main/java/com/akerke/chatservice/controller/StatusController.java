@@ -1,6 +1,8 @@
 package com.akerke.chatservice.controller;
 
 import com.akerke.chatservice.service.UserStatusService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +15,13 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("status")
+@Api("Status API")
 public class StatusController {
 
     private final UserStatusService userStatusService;
 
     @GetMapping("user/{id}")
+    @ApiOperation("Check if a user is online")
     ResponseEntity<?> userIsOnline(
             @PathVariable Long id
     ) {
@@ -26,6 +30,7 @@ public class StatusController {
     }
 
     @GetMapping("salon/{id}")
+    @ApiOperation("Check if support chat is online")
     ResponseEntity<?> supportChatIsOnline(
             @PathVariable Long id
     ) {

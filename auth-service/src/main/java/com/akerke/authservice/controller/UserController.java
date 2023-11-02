@@ -4,6 +4,8 @@ package com.akerke.authservice.controller;
 import com.akerke.authservice.domain.payload.request.RegistrationRequest;
 import com.akerke.authservice.domain.service.AuthService;
 import com.akerke.authservice.domain.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,12 +18,14 @@ import static com.akerke.authservice.common.validate.BindingValidator.validateRe
 @RestController
 @RequiredArgsConstructor
 @ResponseBody
+@Api("User API")
 public class UserController {
 
     private final UserService userService;
     private final AuthService authService;
 
     @PostMapping("register")
+    @ApiOperation("Register a new user")
     ResponseEntity<?> register(
             @RequestBody @Valid RegistrationRequest req,
             BindingResult br
@@ -36,6 +40,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
+    @ApiOperation("Delete a user by ID")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(
             @PathVariable Long id
@@ -44,6 +49,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
+    @ApiOperation("Retrieve a user by ID")
     ResponseEntity<?> find(
             @PathVariable Long id
     ) {

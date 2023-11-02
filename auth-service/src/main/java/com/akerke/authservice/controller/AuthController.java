@@ -5,6 +5,8 @@ import com.akerke.authservice.domain.payload.request.AuthRequest;
 import com.akerke.authservice.domain.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.domain.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.domain.service.AuthService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,13 @@ import static com.akerke.authservice.common.validate.BindingValidator.validateRe
 
 @RestController
 @RequiredArgsConstructor
+@Api(value = "Authentication API")
 public class AuthController {
 
     private final AuthService authService;
 
     @GetMapping("validate-token")
+    @ApiOperation("Validate an access token")
     ResponseEntity<?> validateToken(
             @RequestParam("access_token") String token
     ) {
@@ -27,6 +31,7 @@ public class AuthController {
                 .ok(authService.validateToken(token, TokenType.ACCESS_TOKEN));
     }
 
+    @ApiOperation("Request to reset a user's password")
     @PatchMapping("reset-password")
     ResponseEntity<?> requestToResetPassword(
             @RequestBody @Valid ResetPasswordRequest req,
@@ -38,6 +43,7 @@ public class AuthController {
     }
 
     @GetMapping("request-forgot-password")
+    @ApiOperation("Request a password reset for a user if user forgot the password")
     ResponseEntity<?> requestForgotPassword(
             @RequestParam String email
     ) {
@@ -46,6 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("confirm-forgot-password")
+    @ApiOperation("Confirm a password reset request")
     ResponseEntity<?> confirmForgotPassword(
             @RequestBody @Valid ForgotPasswordRequest req,
             @RequestParam("verification_token") String token
@@ -56,6 +63,7 @@ public class AuthController {
 
 
     @GetMapping("email-confirmation")
+    @ApiOperation("Confirm an email address")
     ResponseEntity<?> emailConfirmation(
             @RequestParam("verification_token") String verificationToken
     ) {
@@ -64,6 +72,7 @@ public class AuthController {
     }
 
     @PostMapping("authenticate")
+    @ApiOperation("Authenticate a user")
     ResponseEntity<?> authenticate(
             @RequestBody @Valid AuthRequest authRequest
     ) {

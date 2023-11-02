@@ -2,6 +2,8 @@ package com.akerke.salonservice.controller;
 
 import com.akerke.salonservice.domain.dto.MasterDTO;
 import com.akerke.salonservice.domain.service.MasterService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,11 +18,13 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RestController
 @RequestMapping("master")
 @RequiredArgsConstructor
+@Api(value = "Master API")
 public class MasterController {
 
     private final MasterService masterService;
 
     @PostMapping()
+    @ApiOperation("Save a new master")
     ResponseEntity<?> save (
             @Valid
             @RequestBody MasterDTO masterDTO,
@@ -32,6 +36,7 @@ public class MasterController {
     }
 
     @GetMapping("{id}")
+    @ApiOperation("Get an master by ID")
     ResponseEntity<?> getById (
             @PathVariable Long id
     ) {
@@ -39,10 +44,12 @@ public class MasterController {
     }
 
     @GetMapping()
+    @ApiOperation("Get a list of all masters")
     ResponseEntity<?> getAll (){
         return  ResponseEntity.ok(masterService.getAll());
     }
 
+    @ApiOperation("Update an master by ID")
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
     ResponseEntity<?> update (
             @RequestBody MasterDTO masterDTO,
@@ -53,6 +60,7 @@ public class MasterController {
     }
 
     @DeleteMapping("{id}")
+    @ApiOperation("Delete an master by ID")
     ResponseEntity<?> delete (
             @PathVariable Long id
     ){
@@ -60,6 +68,7 @@ public class MasterController {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation("Add a new treatment to the master")
     @PatchMapping("{id}/add")
     ResponseEntity<?> addTreatment(
             @RequestBody List<Long> treatmentIds,

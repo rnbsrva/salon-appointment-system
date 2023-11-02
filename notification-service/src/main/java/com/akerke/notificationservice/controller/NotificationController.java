@@ -2,6 +2,7 @@ package com.akerke.notificationservice.controller;
 
 import com.akerke.notificationservice.entity.Notification;
 import com.akerke.notificationservice.service.NotificationService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -18,6 +19,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @QueryMapping
+    @ApiOperation("Retrieve a notification by its ID")
     public Notification getNotificationById(
             @Argument Long id
     ) {
@@ -25,6 +27,7 @@ public class NotificationController {
     }
 
     @QueryMapping
+    @ApiOperation("Retrieve notifications for a user by their ID")
     public List<Notification> getNotificationsByUser (
             @Argument Long id
     ) {
@@ -32,6 +35,7 @@ public class NotificationController {
     }
 
     @MutationMapping
+    @ApiOperation("Delete a notification by its ID")
     public void deleteNotificationById(
             @Argument Long id
     ){
@@ -39,6 +43,7 @@ public class NotificationController {
     }
 
     @MutationMapping
+    @ApiOperation("Delete notifications for a user by their ID")
     public void deleteNotificationsByUser(
             @Argument Long id
     ){

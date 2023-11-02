@@ -2,6 +2,8 @@ package com.akerke.chatservice.controller;
 
 import com.akerke.chatservice.payload.request.ChatCreateRequest;
 import com.akerke.chatservice.service.ChatService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("chat")
+@Api("Chat API")
 public class ChatController {
 
     private final ChatService chatService;
 
     @PostMapping
+    @ApiOperation("Create a new chat")
     ResponseEntity<?> create(
             @RequestBody ChatCreateRequest createRequest
     ) {

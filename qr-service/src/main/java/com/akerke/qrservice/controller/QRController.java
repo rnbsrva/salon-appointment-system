@@ -1,6 +1,8 @@
 package com.akerke.qrservice.controller;
 
 import com.akerke.qrservice.service.QRService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -13,11 +15,13 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequiredArgsConstructor
+@Api
 public class QRController {
 
     private final QRService qrService;
 
     @GetMapping("generate")
+    @ApiOperation("Generate a new QR by given link")
     public CompletableFuture<Void> generateQR(
             HttpServletResponse response,
             @RequestParam String data

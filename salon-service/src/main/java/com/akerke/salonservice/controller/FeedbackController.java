@@ -2,6 +2,8 @@ package com.akerke.salonservice.controller;
 
 import com.akerke.salonservice.domain.dto.FeedbackDTO;
 import com.akerke.salonservice.domain.service.FeedbackService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,11 +16,13 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RestController
 @RequestMapping("feedback")
 @RequiredArgsConstructor
+@Api(value = "Feedback API")
 public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
     @PostMapping()
+    @ApiOperation("Create a new feedback")
     ResponseEntity<?> save (
             @Valid
             @RequestBody FeedbackDTO feedbackDTO,
@@ -31,6 +35,7 @@ public class FeedbackController {
 
 
     @GetMapping("{id}")
+    @ApiOperation("Get an feedback by ID")
     ResponseEntity<?> getById (
             @PathVariable Long id
     ) {
@@ -38,10 +43,12 @@ public class FeedbackController {
     }
 
     @GetMapping()
+    @ApiOperation("Get a list of all feedbacks")
     ResponseEntity<?> getAll (){
         return  ResponseEntity.ok(feedbackService.getAll());
     }
 
+    @ApiOperation("Update an feedback by ID")
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
     ResponseEntity<?> update (
             @RequestBody FeedbackDTO feedbackDTO,
@@ -52,6 +59,7 @@ public class FeedbackController {
     }
 
     @DeleteMapping("{id}")
+    @ApiOperation("Delete an feedback by ID")
     ResponseEntity<?> delete (
             @PathVariable Long id
     ){
