@@ -1,7 +1,7 @@
 package com.akerke.chatservice.controller;
 
-import com.akerke.chatservice.payload.request.ChatCreateRequest;
-import com.akerke.chatservice.service.ChatService;
+import com.akerke.chatservice.domain.request.ChatCreateRequest;
+import com.akerke.chatservice.domain.service.ChatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

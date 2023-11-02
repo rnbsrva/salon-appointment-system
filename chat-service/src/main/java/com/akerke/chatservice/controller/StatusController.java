@@ -1,6 +1,6 @@
 package com.akerke.chatservice.controller;
 
-import com.akerke.chatservice.service.UserStatusService;
+import com.akerke.chatservice.domain.service.UserStatusService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

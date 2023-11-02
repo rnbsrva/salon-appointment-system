@@ -32,9 +32,11 @@ public class CorsConfig {
 
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer () {
+        return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(@NonNull CorsRegistry registry) {
+            public void addCorsMappings(
+                    @NonNull CorsRegistry registry
+            ) {
                 registry.addMapping(mapping)
                         .allowedOriginPatterns(originPatterns)
                         .allowedMethods(allowedMethods)
