@@ -1,15 +1,23 @@
 package com.akerke.salonservice.domain.service.impl;
 
+import com.akerke.salonservice.common.constants.AppConstants;
+import com.akerke.salonservice.common.constants.NotificationType;
 import com.akerke.salonservice.domain.dto.AppointmentDTO;
 import com.akerke.salonservice.domain.entity.Appointment;
 import com.akerke.salonservice.domain.repository.AppointmentRepository;
 import com.akerke.salonservice.domain.service.*;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.AppointmentMapper;
+import com.akerke.salonservice.infrastructure.kafka.KafkaNotificationRequest;
+import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
+import com.akerke.salonservice.infrastructure.kafka.NotificationDTO;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.akerke.salonservice.common.constants.NotificationType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,16 +29,32 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final MasterService masterService;
     private final TreatmentService treatmentService;
     private final WorkTimeService workTimeService;
+    private final KafkaProducer kafkaProducer;
 
 
     @Override
     public Appointment save(AppointmentDTO appointmentDTO) {
+
+        var user = userService.getById(appointmentDTO.userId());
+        var master = masterService.getById(appointmentDTO.masterId());
+
         var appointment = appointmentMapper.toModel(appointmentDTO);
-        appointment.setUser(userService.getById(appointmentDTO.userId()));
-        appointment.setMaster(masterService.getById(appointmentDTO.masterId()));
+        appointment.setUser(user);
+        appointment.setMaster(master);
         appointment.setTreatment(treatmentService.getById(appointmentDTO.treatmentId()));
         appointment.setWorkTime(workTimeService.getById(appointmentDTO.workTimeId()) );
-        return appointmentRepository.save(appointment);
+
+        var savedAppointment = appointmentRepository.save(appointment);
+
+        kafkaProducer.produce(AppConstants.NOTIFY_TOPIC_NAME,
+                new NotificationDTO(
+                        user.getId(),
+                        "New Appointment",
+                         writeNotifyMsg(savedAppointment, APPOINTMENT_CONFIRMATION),
+                        APPOINTMENT_CONFIRMATION,
+                        user.getPhone()));
+
+        return savedAppointment;
     }
 
     @Override
@@ -38,11 +62,30 @@ public class AppointmentServiceImpl implements AppointmentService {
         var appointment = this.getById(id);
         appointmentMapper.update(appointmentDTO, appointment);
         appointmentRepository.save(appointment);
+
+        kafkaProducer.produce(AppConstants.NOTIFY_TOPIC_NAME,
+                new NotificationDTO(
+                        appointment.getUser().getId(),
+                        "Appointment rescheduled",
+                        writeNotifyMsg(appointment, APPOINTMENT_RESCHEDULE),
+                        APPOINTMENT_RESCHEDULE,
+                        appointment.getUser().getPhone()));
     }
 
     @Override
     public void delete(Long id) {
-        appointmentRepository.delete(this.getById(id));
+        Appointment appointment = this.getById(id);
+
+        kafkaProducer.produce(AppConstants.NOTIFY_TOPIC_NAME,
+                new NotificationDTO(
+                        appointment.getUser().getId(),
+                        "Appointment cancelled",
+                        writeNotifyMsg(appointment, APPOINTMENT_CANCELLATION),
+                        APPOINTMENT_CANCELLATION,
+                        appointment.getUser().getPhone()));
+
+
+        appointmentRepository.delete(appointment);
     }
 
     @Override
@@ -53,5 +96,37 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> getAll() {
         return appointmentRepository.findAll();
+    }
+
+
+
+    private static String writeNotifyMsg(Appointment appointment, NotificationType notificationType) {
+        String subtitle = getSubtitle(notificationType);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(appointment.getUser().getName()).append(subtitle);
+        sb.append("Date: ").append(appointment.getWorkTime()).append("\n");
+        sb.append("Salon: ").append(appointment.getMaster().getSalon().getName()).append("\n");
+        sb.append("Master: ").append(appointment.getMaster().getUser().getName()).append("\n");
+        sb.append("Time: ").append(appointment.getWorkTime().getStartTime()).append("\n");
+        sb.append("Service: ").append(appointment.getTreatment().getName()).append("\n");
+
+        sb.append("\nYou will be able to create, edit, or cancel your entries on the site");
+
+        return sb.toString();
+    }
+
+    private static String getSubtitle(NotificationType notificationType) {
+        String subtitle = "";
+
+        switch (notificationType) {
+            case APPOINTMENT_CONFIRMATION -> subtitle = ", we confirm the entry:\n";
+            case APPOINTMENT_REMINDER -> subtitle = ", a reminder for your appointment:\n";
+            case APPOINTMENT_CANCELLATION -> subtitle = ", appointment cancellation:\n";
+            case APPOINTMENT_RESCHEDULE -> subtitle = ", appointment reschedule:\n";
+            default -> {
+            }
+        }
+        return subtitle;
     }
 }

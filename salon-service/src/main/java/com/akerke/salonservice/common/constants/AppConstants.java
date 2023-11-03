@@ -8,4 +8,6 @@ public class AppConstants {
     public static final String ADMIN_TOPIC_NAME = "manage-role-admin";
 
     public static final String SALON_INDEX = "salon_index";
+
+    public static final String NOTIFY_TOPIC_NAME = "notification";
 }
