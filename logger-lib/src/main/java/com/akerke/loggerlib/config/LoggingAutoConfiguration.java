@@ -1,22 +1,31 @@
 package com.akerke.loggerlib.config;
 
-import com.akerke.loggerlib.aspects.ControllerTimeExecutionAspect;
-import com.akerke.loggerlib.logger.CommonLogger;
+import com.akerke.loggerlib.common.aspect.EnableLoggerLibTimeExecutionAspect;
+import com.akerke.loggerlib.common.logger.CommonLogger;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(LoggingProperties.class)
 @ConditionalOnClass(LoggingProperties.class)
-@ConditionalOnProperty(prefix = "app.logger.lib", name = "enabled", havingValue = "true")
+@EnableAspectJAutoProxy
+@ConditionalOnProperty(
+        prefix = "app.logger.lib",
+        name = "enabled",
+        havingValue = "true"
+)
+@RequiredArgsConstructor
 public class LoggingAutoConfiguration {
 
+    private final LoggingProperties loggingProperties;
 
     @PostConstruct
     void init() {
@@ -24,14 +33,17 @@ public class LoggingAutoConfiguration {
     }
 
     @Bean
-    public CommonLogger commonLogger() {
-        return new CommonLogger();
+    public CommonLogger commonLogger(){
+        return new CommonLogger(loggingProperties.getName());
     }
 
     @Bean
-    public ControllerTimeExecutionAspect controllerTimeExecutionAspect(
+    @ConditionalOnClass(EnableLoggerLibTimeExecutionAspect.class)
+    public EnableLoggerLibTimeExecutionAspect controllerTimeExecutionAspect(
             CommonLogger commonLogger
     ) {
-        return new ControllerTimeExecutionAspect(commonLogger);
+        log.info("Creating EnableLoggerLibTimeExecutionAspect instance");
+        return new EnableLoggerLibTimeExecutionAspect(commonLogger);
     }
+
 }

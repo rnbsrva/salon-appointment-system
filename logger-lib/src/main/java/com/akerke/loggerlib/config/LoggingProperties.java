@@ -13,7 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class LoggingProperties {
     private boolean enabled;
     private String level;
-    private String controllerPackagePath;
+    private String name;
 
     @PostConstruct
     void init() {

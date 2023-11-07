@@ -5,6 +5,7 @@ import com.akerke.authservice.domain.payload.request.AuthRequest;
 import com.akerke.authservice.domain.payload.request.ForgotPasswordRequest;
 import com.akerke.authservice.domain.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.domain.service.AuthService;
+import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import static com.akerke.authservice.common.validate.BindingValidator.validateRe
 @RestController
 @RequiredArgsConstructor
 @Api(value = "Authentication API")
+@EnableLoggerLib
 public class AuthController {
 
     private final AuthService authService;

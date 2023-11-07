@@ -1,25 +1,28 @@
-package com.akerke.loggerlib.aspects;
+package com.akerke.loggerlib.common.aspect;
 
-import com.akerke.loggerlib.logger.CommonLogger;
+import com.akerke.loggerlib.common.logger.CommonLogger;
 import com.akerke.loggerlib.model.ExecutionTimeLog;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.util.StopWatch;
 
-@Slf4j
 @Aspect
-public class ControllerTimeExecutionAspect {
+@RequiredArgsConstructor
+public class EnableLoggerLibTimeExecutionAspect {
+
 
     private final CommonLogger commonLogger;
 
-    public ControllerTimeExecutionAspect(CommonLogger commonLogger) {
-        this.commonLogger = commonLogger;
+    @Pointcut("within(@com.akerke.loggerlib.common.annotation.EnableLoggerLib *) && execution(* *(..))")
+    public void enableAuthLogging() {
+
     }
 
-    @Around("execution(* com.akerke..controller..*(..))")
+    @Around("@within(com.akerke.loggerlib.common.annotation.EnableLoggerLib)")
     public Object logMethodExecutionTime(ProceedingJoinPoint pjp) throws Throwable {
         var methodSignature = (MethodSignature) pjp.getSignature();
 
@@ -30,11 +33,8 @@ public class ControllerTimeExecutionAspect {
         stopWatch.stop();
 
         commonLogger.info(
-                "%s.%s :: %d ms".formatted(
-                        methodSignature.getDeclaringType().getSimpleName(), // Class Name
-                        methodSignature.getName(), // Method Name
-                        stopWatch.getLastTaskTimeMillis() // execution time in milliseconds
-                ), ExecutionTimeLog
+                "Log {}",
+                ExecutionTimeLog
                         .builder()
                         .method(methodSignature.getName())
                         .execution(stopWatch.getLastTaskTimeMillis())
