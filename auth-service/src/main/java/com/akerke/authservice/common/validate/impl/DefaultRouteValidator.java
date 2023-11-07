@@ -9,7 +9,7 @@ public class DefaultRouteValidator implements RouteValidator {
 
     @Override
     public Boolean canActivate(String route, String token, HttpMethod method) {
-        return null ; // todo
+        return null; // todo
     }
 
 }

@@ -8,14 +8,13 @@ import com.akerke.salonservice.domain.repository.AppointmentRepository;
 import com.akerke.salonservice.domain.service.*;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.AppointmentMapper;
-import com.akerke.salonservice.infrastructure.kafka.KafkaNotificationRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.infrastructure.kafka.NotificationDTO;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.akerke.salonservice.common.constants.NotificationType.*;
 
@@ -50,9 +49,16 @@ public class AppointmentServiceImpl implements AppointmentService {
                 new NotificationDTO(
                         user.getId(),
                         "New Appointment",
-                         writeNotifyMsg(savedAppointment, APPOINTMENT_CONFIRMATION),
+                         writeNotifyMsg(savedAppointment, APPOINTMENT_CONFIRMATION, "user"),
                         APPOINTMENT_CONFIRMATION,
                         user.getPhone()));
+        kafkaProducer.produce(AppConstants.NOTIFY_TOPIC_NAME,
+                new NotificationDTO(
+                        appointment.getMasterId(),
+                        "New Appointment",
+                        writeNotifyMsg(appointment, APPOINTMENT_CONFIRMATION, "master"),
+                        APPOINTMENT_CONFIRMATION,
+                        appointment.getMaster().getUser().getPhone()));
 
         return savedAppointment;
     }
@@ -67,9 +73,16 @@ public class AppointmentServiceImpl implements AppointmentService {
                 new NotificationDTO(
                         appointment.getUser().getId(),
                         "Appointment rescheduled",
-                        writeNotifyMsg(appointment, APPOINTMENT_RESCHEDULE),
+                        writeNotifyMsg(appointment, APPOINTMENT_RESCHEDULE, "user"),
                         APPOINTMENT_RESCHEDULE,
                         appointment.getUser().getPhone()));
+        kafkaProducer.produce(AppConstants.NOTIFY_TOPIC_NAME,
+                new NotificationDTO(
+                        appointment.getMasterId(),
+                        "Appointment rescheduled",
+                        writeNotifyMsg(appointment, APPOINTMENT_RESCHEDULE, "master"),
+                        APPOINTMENT_RESCHEDULE,
+                        appointment.getMaster().getUser().getPhone()));
     }
 
     @Override
@@ -80,9 +93,17 @@ public class AppointmentServiceImpl implements AppointmentService {
                 new NotificationDTO(
                         appointment.getUser().getId(),
                         "Appointment cancelled",
-                        writeNotifyMsg(appointment, APPOINTMENT_CANCELLATION),
+                        writeNotifyMsg(appointment, APPOINTMENT_CANCELLATION, "user"),
                         APPOINTMENT_CANCELLATION,
                         appointment.getUser().getPhone()));
+
+        kafkaProducer.produce(AppConstants.NOTIFY_TOPIC_NAME,
+                new NotificationDTO(
+                        appointment.getMasterId(),
+                        "Appointment cancelled",
+                        writeNotifyMsg(appointment, APPOINTMENT_CANCELLATION, "master"),
+                        APPOINTMENT_CANCELLATION,
+                        appointment.getMaster().getUser().getPhone()));
 
 
         appointmentRepository.delete(appointment);
@@ -100,14 +121,21 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
 
-    private static String writeNotifyMsg(Appointment appointment, NotificationType notificationType) {
+    private static String writeNotifyMsg(Appointment appointment, NotificationType notificationType, String target) {
         String subtitle = getSubtitle(notificationType);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(appointment.getUser().getName()).append(subtitle);
+        if (Objects.equals(target, "user")) {
+            sb.append(appointment.getUser().getName()+subtitle).append("\n");
+            sb.append("Master: ").append(appointment.getMaster().getUser().getName()).append("\n");
+        }
+        else {
+            sb.append(appointment.getMaster().getUser().getName()+subtitle).append("\n");
+            sb.append("Client: ").append(appointment.getUser().getName()).append("\n");
+        }
         sb.append("Date: ").append(appointment.getWorkTime()).append("\n");
         sb.append("Salon: ").append(appointment.getMaster().getSalon().getName()).append("\n");
-        sb.append("Master: ").append(appointment.getMaster().getUser().getName()).append("\n");
+
         sb.append("Time: ").append(appointment.getWorkTime().getStartTime()).append("\n");
         sb.append("Service: ").append(appointment.getTreatment().getName()).append("\n");
 

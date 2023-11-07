@@ -1,5 +1,6 @@
 package com.akerke.loggerlib.logger;
 
+import com.akerke.loggerlib.model.ExecutionTimeLog;
 import com.akerke.loggerlib.model.Log;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,14 +11,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Component
 @Slf4j
 @RequiredArgsConstructor
 public class CommonLogger {
 
     private final BiConsumer<String, String> addProperty = MDC::put;
 
-    private void addLogProperties(Log log) {
+    private void addLogProperties(ExecutionTimeLog log) {
         var objClass = Log.class;
 
         var fields = objClass.getDeclaredFields();
@@ -40,6 +40,11 @@ public class CommonLogger {
     }
 
     public void info(String message, Log logEntity) {
+//        addLogProperties(logEntity);
+        log.info(message);
+        MDC.clear();
+    }
+    public void info(String message, ExecutionTimeLog logEntity) {
         addLogProperties(logEntity);
         log.info(message);
         MDC.clear();

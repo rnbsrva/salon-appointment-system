@@ -34,14 +34,13 @@ public class WsSessionHandler {
             }
 
             messages.forEach(message -> {
-
-//                        if (message.getFromStuff()) {
-//                            var key = chatKey.apply(salonId, req.userId());
-//                            messageService.delete(key, message);
-//                            message.setReceived(true);
-//                            messageService.save(message, key);
-//                        }
-//                        wsMessageHandler.sendToUser(message, req.userId());
+                        if (message.getFromStuff()) {
+                            var key = chatKey.apply(salonId, req.userId());
+                            messageService.delete(key, message);
+                            message.setReceived(true);
+                            messageService.save(message, key);
+                        }
+                        wsMessageHandler.sendToUser(message, req.userId());
                     }
             );
 
@@ -56,6 +55,26 @@ public class WsSessionHandler {
     ) {
         log.info("staff [{}]session started", req);
         req.salons().forEach(salonId -> statusService.setOnline(salonId, req.userId()));
+
+        req.salons().forEach(salonId -> {
+            var messages = messageService.get(chatKey.apply(salonId, req.userId()));
+
+            if (messages.isEmpty()) {
+                return;
+            }
+
+            messages.forEach(message -> {
+                        if (!message.getFromStuff()) {
+                            var key = chatKey.apply(salonId, req.userId());
+                            messageService.delete(key, message);
+                            message.setReceived(true);
+                            messageService.save(message, key);
+                        }
+                        wsMessageHandler.sendToStaff(message, req.userId());
+                    }
+            );
+
+        });
     }
 
     @MessageMapping("/on_user_session_closed")

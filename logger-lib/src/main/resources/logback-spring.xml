@@ -5,31 +5,28 @@
         <destination>localhost:5000</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
+                <mdc />
+                <context />
+                <logLevel />
                 <loggerName />
                 <pattern>
                     <pattern>
                         {
-                        "timestamp":"%X{timestamp}",
-                        "app": "%X{app}",
-                        "http_status":"%X{httpStatus}",
-                        "url":"%X{url}",
-                        "method":"%X{httpMethod}",
-                        "execution":"%X{execution}"
+                        "app": "test-log",
+                        "className" : "%X{className}",
+                        "method" : "%X{method}",
+                        "execution" : "%X{execution}"
                         }
                     </pattern>
                 </pattern>
-
+                <threadName />
+                <message />
+                <logstashMarkers />
+                <stackTrace />
             </providers>
         </encoder>
     </appender>
-
-
     <root level="info">
         <appender-ref ref="logstash" />
     </root>
-
-    <logger name="logger" level="trace" additivity="false">
-        <appender-ref ref="logstash" />
-    </logger>
-
 </configuration>

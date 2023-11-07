@@ -10,7 +10,7 @@
 	<groupId>com.akerke</groupId>
 	<artifactId>logger-lib</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>logger-lib</name>
+	<name>logger-lib-starter</name>
 	<description>logger-lib</description>
 	<packaging>jar</packaging>
 	<properties>
@@ -20,6 +20,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
