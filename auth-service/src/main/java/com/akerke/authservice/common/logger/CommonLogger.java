@@ -7,7 +7,7 @@ import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 
-@Component
+//@Component
 @Slf4j
 public class CommonLogger {
 

@@ -21,7 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LogFilter extends OncePerRequestFilter {
 
-    private final CommonLogger logger;
+//    private final CommonLogger logger;
 
     @Override
     protected void doFilterInternal(
@@ -37,7 +37,7 @@ public class LogFilter extends OncePerRequestFilter {
                 HttpMethod.valueOf(request.getMethod())
         );
 
-        logger.info("new request to server [{" + additionalLogProperties + "}]", additionalLogProperties);
+//        logger.info("new request to server [{" + additionalLogProperties + "}]", additionalLogProperties);
 
         filterChain.doFilter(request, response);
     }
