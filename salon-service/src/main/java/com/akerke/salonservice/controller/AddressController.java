@@ -1,5 +1,6 @@
 package com.akerke.salonservice.controller;
 
+import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.dto.AddressDTO;
 import com.akerke.salonservice.domain.service.AddressService;
 import io.swagger.annotations.Api;
@@ -18,6 +19,7 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequiredArgsConstructor
 @RequestMapping("address")
 @Api(value = "Address API")
+@EnableLoggerLib
 public class AddressController {
 
     private final AddressService addressService;

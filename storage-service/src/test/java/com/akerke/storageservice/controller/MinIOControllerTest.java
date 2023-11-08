@@ -1,20 +1,12 @@
 package com.akerke.storageservice.controller;
 
-import com.akerke.storageservice.constants.AttachmentSource;
-import com.akerke.storageservice.dto.FileOperationDTO;
-import com.akerke.storageservice.service.impl.MinIOServiceImpl;
-import org.junit.jupiter.api.Test;
+import com.akerke.storageservice.domain.service.impl.MinIOServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.multipart.MultipartFile;
-
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @WebMvcTest

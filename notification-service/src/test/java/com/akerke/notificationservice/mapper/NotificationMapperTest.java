@@ -1,8 +1,9 @@
 package com.akerke.notificationservice.mapper;
 
-import com.akerke.notificationservice.constansts.NotificationType;
-import com.akerke.notificationservice.dto.NotificationDTO;
-import com.akerke.notificationservice.entity.Notification;
+import com.akerke.notificationservice.common.constansts.NotificationType;
+import com.akerke.notificationservice.domain.mapper.NotificationMapper;
+import com.akerke.notificationservice.domain.dto.NotificationDTO;
+import com.akerke.notificationservice.domain.entity.Notification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

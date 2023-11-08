@@ -1,9 +1,9 @@
 package com.akerke.qrservice.service;
 
-import com.akerke.qrservice.entity.QR;
-import com.akerke.qrservice.feign.StorageServiceFeignClient;
-import com.akerke.qrservice.repository.QRRepository;
-import com.akerke.qrservice.service.impl.QRServiceImpl;
+import com.akerke.qrservice.domain.entity.QR;
+import com.akerke.qrservice.common.feign.StorageServiceFeignClient;
+import com.akerke.qrservice.domain.repository.QRRepository;
+import com.akerke.qrservice.domain.service.impl.QRServiceImpl;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

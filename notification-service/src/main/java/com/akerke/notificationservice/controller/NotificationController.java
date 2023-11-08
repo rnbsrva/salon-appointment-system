@@ -1,7 +1,8 @@
 package com.akerke.notificationservice.controller;
 
-import com.akerke.notificationservice.entity.Notification;
-import com.akerke.notificationservice.service.NotificationService;
+import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
+import com.akerke.notificationservice.domain.entity.Notification;
+import com.akerke.notificationservice.domain.service.NotificationService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@EnableLoggerLib
 public class NotificationController {
 
     private final NotificationService notificationService;

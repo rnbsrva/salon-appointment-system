@@ -1,5 +1,6 @@
 package com.akerke.salonservice.controller;
 
+import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.service.ManagerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("manager")
 @RequiredArgsConstructor
 @Api("Manager Api")
+@EnableLoggerLib
 public class ManagerController {
 
     private final ManagerService managerService;

@@ -1,8 +1,8 @@
 package com.akerke.qrservice.feign;
 
-import com.akerke.qrservice.utils.ByteArrayMultipartFile;
+import com.akerke.qrservice.common.feign.StorageServiceFeignClient;
+import com.akerke.qrservice.common.utils.ByteArrayMultipartFile;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

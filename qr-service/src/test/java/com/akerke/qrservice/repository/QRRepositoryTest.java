@@ -1,10 +1,10 @@
 package com.akerke.qrservice.repository;
 
 
-import com.akerke.qrservice.entity.QR;
+import com.akerke.qrservice.domain.repository.QRRepository;
+import com.akerke.qrservice.domain.entity.QR;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

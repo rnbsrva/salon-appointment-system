@@ -1,17 +1,14 @@
 package com.akerke.storageservice.controller;
 
-import com.akerke.storageservice.constants.AttachmentSource;
-import com.akerke.storageservice.dto.FileOperationDTO;
-import com.akerke.storageservice.exception.FileOperationException;
-import com.akerke.storageservice.service.MinIOService;
+import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
+import com.akerke.storageservice.common.constants.AttachmentSource;
+import com.akerke.storageservice.domain.dto.FileOperationDTO;
+import com.akerke.storageservice.domain.service.MinIOService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletResponse;
-import kotlin.io.path.ExperimentalPathApi;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("storage")
 @Api("Storage Minio API")
+@EnableLoggerLib
 public class MinIOController {
 
     private final MinIOService minIOService;

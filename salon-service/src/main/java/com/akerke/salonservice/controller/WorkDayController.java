@@ -1,5 +1,6 @@
 package com.akerke.salonservice.controller;
 
+import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.dto.WorkDayDTO;
 import com.akerke.salonservice.domain.service.WorkDayService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("workday")
+@EnableLoggerLib
 @Api("Work Day API")
 public class WorkDayController {
 

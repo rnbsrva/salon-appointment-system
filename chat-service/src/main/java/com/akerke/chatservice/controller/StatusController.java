@@ -1,6 +1,7 @@
 package com.akerke.chatservice.controller;
 
 import com.akerke.chatservice.domain.service.UserStatusService;
+import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("status")
 @Api("Status API")
+@EnableLoggerLib
 public class StatusController {
 
     private final UserStatusService userStatusService;

@@ -1,5 +1,6 @@
 package com.akerke.salonservice.controller;
 
+import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.common.payload.SalonSearchRequest;
 import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.service.SalonService;
@@ -20,6 +21,7 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequestMapping("salon")
 @Api("Salon API")
 @RequiredArgsConstructor
+@EnableLoggerLib
 public class SalonController {
 
     private final SalonService salonService;
