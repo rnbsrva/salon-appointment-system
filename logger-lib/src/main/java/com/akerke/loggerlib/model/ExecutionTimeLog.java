@@ -2,9 +2,12 @@ package com.akerke.loggerlib.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.MDC;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class ExecutionTimeLog {
     private String className;
@@ -19,4 +22,11 @@ public class ExecutionTimeLog {
         MDC.put("app", app);
     }
 
+    @Override
+    public String toString() {
+        return "class_name='" + className + '\'' +
+                ", method='" + method + '\'' +
+                ", execution=" + execution + " ms"  +
+                ", app='" + app;
+    }
 }

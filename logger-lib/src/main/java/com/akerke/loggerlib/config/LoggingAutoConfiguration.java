@@ -1,7 +1,6 @@
 package com.akerke.loggerlib.config;
 
 import com.akerke.loggerlib.common.aspect.EnableLoggerLibTimeExecutionAspect;
-import com.akerke.loggerlib.common.logger.CommonLogger;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,18 +13,18 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Slf4j
 @Configuration
+
 @EnableConfigurationProperties(LoggingProperties.class)
 @ConditionalOnClass(LoggingProperties.class)
+
 @EnableAspectJAutoProxy
+
 @ConditionalOnProperty(
         prefix = "app.logger.lib",
         name = "enabled",
         havingValue = "true"
 )
-@RequiredArgsConstructor
 public class LoggingAutoConfiguration {
-
-    private final LoggingProperties loggingProperties;
 
     @PostConstruct
     void init() {
@@ -33,17 +32,12 @@ public class LoggingAutoConfiguration {
     }
 
     @Bean
-    public CommonLogger commonLogger(){
-        return new CommonLogger(loggingProperties.getName());
-    }
-
-    @Bean
     @ConditionalOnClass(EnableLoggerLibTimeExecutionAspect.class)
     public EnableLoggerLibTimeExecutionAspect controllerTimeExecutionAspect(
-            CommonLogger commonLogger
+            LoggingProperties loggingProperties
     ) {
         log.info("Creating EnableLoggerLibTimeExecutionAspect instance");
-        return new EnableLoggerLibTimeExecutionAspect(commonLogger);
+        return new EnableLoggerLibTimeExecutionAspect(loggingProperties.getName());
     }
 
 }
