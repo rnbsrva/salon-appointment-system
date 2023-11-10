@@ -1,5 +1,7 @@
 package com.akerke.salonservice.tc;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -15,7 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(initializers = {SalonServicePostgresTestContainer.Initializer.class})
-@TestPropertySource(properties = {"spring.config.location=classpath:application-test.properties"})
+@TestPropertySource(properties = {"spring.config.location=classpath:application.properties"})
 public class SalonServicePostgresTestContainer {
 
     private static final String DATABASE_NAME = "salon";
@@ -25,7 +27,7 @@ public class SalonServicePostgresTestContainer {
             .withReuse(true)
             .withDatabaseName(DATABASE_NAME);
 
-    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             TestPropertyValues.of(
                     "CONTAINER.USERNAME=" + postgreSQLContainer.getUsername(),
@@ -35,4 +37,12 @@ public class SalonServicePostgresTestContainer {
         }
     }
 
+    static {
+        postgreSQLContainer.start();
+    }
+
+    @AfterAll
+    static void afterAll(){
+        postgreSQLContainer.stop();
+    }
 }
