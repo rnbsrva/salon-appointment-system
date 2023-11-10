@@ -2,7 +2,7 @@ package com.akerke.chatservice.controller;
 
 import com.akerke.chatservice.domain.request.ChatCreateRequest;
 import com.akerke.chatservice.domain.service.ChatService;
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
+//import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("chat")
 @Api("Chat API")
-@EnableLoggerLib
+//@EnableLoggerLib
 public class ChatController {
 
     private final ChatService chatService;

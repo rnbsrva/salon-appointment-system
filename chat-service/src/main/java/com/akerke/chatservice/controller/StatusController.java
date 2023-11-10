@@ -1,7 +1,7 @@
 package com.akerke.chatservice.controller;
 
 import com.akerke.chatservice.domain.service.UserStatusService;
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
+//import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("status")
 @Api("Status API")
-@EnableLoggerLib
+//@EnableLoggerLib
 public class StatusController {
 
     private final UserStatusService userStatusService;
@@ -28,7 +28,7 @@ public class StatusController {
             @PathVariable Long id
     ) {
         return ResponseEntity
-                .ok(CompletableFuture.supplyAsync(() -> userStatusService.isOnline(id)));
+                .ok(userStatusService.isOnline(id));
     }
 
     @GetMapping("salon/{id}")
@@ -36,9 +36,7 @@ public class StatusController {
     ResponseEntity<?> supportChatIsOnline(
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(
-                CompletableFuture.supplyAsync(() -> userStatusService.supportChatIsOnline(id))
-        );
+        return ResponseEntity.ok(userStatusService.supportChatIsOnline(id));
     }
 
 }

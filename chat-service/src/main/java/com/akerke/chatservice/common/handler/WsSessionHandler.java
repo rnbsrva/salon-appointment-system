@@ -24,7 +24,7 @@ public class WsSessionHandler {
     void onUserSessionStarted(
             SessionRequest req
     ) {
-        log.info("user [id: {}]session started", req.userId());
+        log.info("user [{}]session started", req);
 
         req.salons().forEach(salonId -> {
             var messages = messageService.get(chatKey.apply(salonId, req.userId()));
@@ -64,7 +64,7 @@ public class WsSessionHandler {
             }
 
             messages.forEach(message -> {
-                        if (!message.getFromStuff()) {
+                        if (!message.getFromStuff() && !message.getReceived()) {
                             var key = chatKey.apply(salonId, req.userId());
                             messageService.delete(key, message);
                             message.setReceived(true);
@@ -97,5 +97,4 @@ public class WsSessionHandler {
     }
 
     private final BiFunction<Long, Long, String> chatKey = WsMessageHandler::chatMessagesKey;
-    ;
 }

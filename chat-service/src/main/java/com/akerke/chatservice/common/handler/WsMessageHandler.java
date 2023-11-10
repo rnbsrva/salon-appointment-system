@@ -29,7 +29,6 @@ public class WsMessageHandler {
     void onMessage(MessageRequest req) {
         var message = messageMapper.toModel(req);
         messageRepository.save(message);
-
         if (req.fromStuff() && userStatusService.isOnline(req.userId())) {
             logAndSendToUser(req, message);
         } else if (userStatusService.supportChatIsOnline(req.salonId())) {
