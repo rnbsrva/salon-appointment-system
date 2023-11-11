@@ -8,7 +8,7 @@ import com.akerke.salonservice.domain.service.MasterService;
 import com.akerke.salonservice.domain.service.SalonService;
 import com.akerke.salonservice.domain.service.TreatmentService;
 import com.akerke.salonservice.domain.service.UserService;
-import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.MasterMapper;

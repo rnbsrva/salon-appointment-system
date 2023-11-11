@@ -7,7 +7,7 @@ import com.akerke.salonservice.domain.repository.SalonRepository;
 import com.akerke.salonservice.domain.service.AddressService;
 import com.akerke.salonservice.domain.service.SalonService;
 import com.akerke.salonservice.domain.service.UserService;
-import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.infrastructure.elastic.service.SalonElasticService;
 import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;

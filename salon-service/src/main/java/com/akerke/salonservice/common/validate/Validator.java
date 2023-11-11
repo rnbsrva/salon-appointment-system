@@ -1,6 +1,6 @@
 package com.akerke.salonservice.common.validate;
 
-import com.akerke.salonservice.common.exception.InvalidRequestException;
+import com.akerke.exceptionlib.exception.InvalidRequestPayloadException;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
@@ -14,12 +14,6 @@ import java.util.function.Consumer;
 @UtilityClass
 public class Validator {
 
-    /**
-     * A consumer function that throws an exception with detailed error messages for a given binding result.
-     *
-     * @param bindingResult The Spring MVC binding result containing validation errors.
-     * @throws InvalidRequestException If the binding result has errors, an exception with error details is thrown.
-     */
     private static final Consumer<BindingResult> returnErrorToClient = br -> {
 
         if (br.getTarget() == null) {
@@ -36,7 +30,7 @@ public class Validator {
                                 .append(System.lineSeparator())
                 );
 
-        throw new InvalidRequestException(br.getTarget().getClass(), sb.toString());
+        throw new InvalidRequestPayloadException(sb.toString());
     };
 
     /**

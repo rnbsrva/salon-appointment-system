@@ -5,7 +5,7 @@ import com.akerke.salonservice.domain.entity.Treatment;
 import com.akerke.salonservice.domain.repository.TreatmentRepository;
 import com.akerke.salonservice.domain.service.SalonService;
 import com.akerke.salonservice.domain.service.TreatmentService;
-import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.TreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

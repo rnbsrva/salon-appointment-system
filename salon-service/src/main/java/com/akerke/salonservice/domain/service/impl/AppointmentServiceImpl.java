@@ -6,7 +6,7 @@ import com.akerke.salonservice.domain.dto.AppointmentDTO;
 import com.akerke.salonservice.domain.entity.Appointment;
 import com.akerke.salonservice.domain.repository.AppointmentRepository;
 import com.akerke.salonservice.domain.service.*;
-import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.AppointmentMapper;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.infrastructure.kafka.NotificationDTO;

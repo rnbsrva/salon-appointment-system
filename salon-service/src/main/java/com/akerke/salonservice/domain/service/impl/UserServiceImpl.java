@@ -4,7 +4,7 @@ import com.akerke.salonservice.domain.dto.UserDTO;
 import com.akerke.salonservice.domain.entity.User;
 import com.akerke.salonservice.domain.repository.UserRepository;
 import com.akerke.salonservice.domain.service.UserService;
-import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

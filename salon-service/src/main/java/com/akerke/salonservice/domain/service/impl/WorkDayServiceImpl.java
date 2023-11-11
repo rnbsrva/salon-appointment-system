@@ -6,7 +6,7 @@ import com.akerke.salonservice.domain.repository.WorkDayRepository;
 import com.akerke.salonservice.domain.service.MasterService;
 import com.akerke.salonservice.domain.service.SalonService;
 import com.akerke.salonservice.domain.service.WorkDayService;
-import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.WorkDayMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
