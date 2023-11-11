@@ -4,7 +4,7 @@ import com.akerke.authservice.common.constants.Scope;
 import com.akerke.authservice.common.constants.SecurityRole;
 import com.akerke.authservice.domain.entity.Role;
 import com.akerke.authservice.domain.entity.User;
-import com.akerke.authservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.authservice.domain.repository.RoleRepository;
 import com.akerke.authservice.domain.service.PermissionService;
 import com.akerke.authservice.domain.service.RoleService;

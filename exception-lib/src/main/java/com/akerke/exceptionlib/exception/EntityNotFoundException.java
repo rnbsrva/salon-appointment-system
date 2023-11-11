@@ -17,4 +17,8 @@ public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(Class<?> entityClass) {
         super("%s not found".formatted(entityClass.getSimpleName()));
     }
+
+    public EntityNotFoundException(String errorMessage){
+        super(errorMessage);
+    }
 }
