@@ -47,8 +47,9 @@ public class EmailListener {
     @DltHandler
     public Mono<Void> dlt(String in, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         return Mono.fromRunnable(() -> {
-            log.info(in + " from " + topic); // + some logic in dead letter queue
-        });
+                    log.info(in + " from " + topic); // + some logic in dead letter queue
+                }
+        );
     }
 
 }

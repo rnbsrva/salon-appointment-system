@@ -13,12 +13,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Slf4j
 @Configuration
-
 @EnableConfigurationProperties(LoggingProperties.class)
 @ConditionalOnClass(LoggingProperties.class)
-
 @EnableAspectJAutoProxy
-
 @ConditionalOnProperty(
         prefix = "app.logger.lib",
         name = "enabled",

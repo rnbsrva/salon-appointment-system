@@ -25,20 +25,20 @@ public class AppointmentController {
 
     @PostMapping()
     @ApiOperation("Create a new appointment")
-    ResponseEntity<?> save (
+    ResponseEntity<?> save(
             @Valid
             @RequestBody AppointmentDTO appointmentDTO,
             BindingResult bindingResult
-    ){
+    ) {
         validate(bindingResult);
-        return  ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(appointmentService.save(appointmentDTO));
     }
 
 
     @GetMapping("{id}")
     @ApiOperation("Get an appointment by ID")
-    ResponseEntity<?> getById (
+    ResponseEntity<?> getById(
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(appointmentService.getById(id));
@@ -46,13 +46,13 @@ public class AppointmentController {
 
     @GetMapping()
     @ApiOperation("Get a list of all appointments")
-    ResponseEntity<?> getAll (){
-        return  ResponseEntity.ok(appointmentService.getAll());
+    ResponseEntity<?> getAll() {
+        return ResponseEntity.ok(appointmentService.getAll());
     }
 
     @RequestMapping(method = {RequestMethod.PATCH, RequestMethod.PUT}, value = "{id}")
     @ApiOperation("Update an appointment by ID")
-    ResponseEntity<?> update (
+    ResponseEntity<?> update(
             @RequestBody AppointmentDTO appointmentDTO,
             @PathVariable Long id
     ) {
@@ -62,9 +62,9 @@ public class AppointmentController {
 
     @DeleteMapping("{id}")
     @ApiOperation("Delete an appointment by ID")
-    ResponseEntity<?> delete (
+    ResponseEntity<?> delete(
             @PathVariable Long id
-    ){
+    ) {
         appointmentService.delete(id);
         return ResponseEntity.noContent().build();
     }

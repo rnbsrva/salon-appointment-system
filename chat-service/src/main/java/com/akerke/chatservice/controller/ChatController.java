@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,4 +27,24 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(chatService.createChat(createRequest));
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{id}")
+    @ApiOperation("Delete chat by id")
+    void deleteChat(
+            @PathVariable String id
+    ) {
+        chatService.deleteChat(id);
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<?> getChat(
+            @PathVariable String id
+    ){
+        return ResponseEntity
+                .ok(chatService.getById(id));
+    }
+
+
+
 }

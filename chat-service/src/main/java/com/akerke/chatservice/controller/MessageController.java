@@ -27,4 +27,5 @@ public class MessageController {
                 messageService.get(WsMessageHandler.chatMessagesKey(salonId, userId))
         );
     }
+
 }

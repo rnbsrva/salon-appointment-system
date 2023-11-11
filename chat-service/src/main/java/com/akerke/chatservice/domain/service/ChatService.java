@@ -6,4 +6,8 @@ import com.akerke.chatservice.domain.request.ChatCreateRequest;
 public interface ChatService {
 
     Chat createChat(ChatCreateRequest createRequest);
+
+    void deleteChat(String chatId);
+
+    Chat getById(String id);
 }
