@@ -1,7 +1,7 @@
 package com.akerke.storageservice.config;
 
+import com.akerke.exceptionlib.exception.BucketInitializerException;
 import com.akerke.storageservice.common.constants.AttachmentSource;
-import com.akerke.storageservice.common.exception.BucketInitializerException;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;

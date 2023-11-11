@@ -33,6 +33,11 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.akerke</groupId>
+            <artifactId>exception-lib</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -68,6 +73,7 @@
             <artifactId>swagger-annotations</artifactId>
             <version>1.5.0</version>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>
