@@ -10,5 +10,5 @@ public interface QRService {
 
     CompletableFuture<Void> generateQRAsync(HttpServletResponse response, String data) throws IOException;
 
-    CompletableFuture<MultipartFile> generateMultipartQR(HttpServletResponse response,String date);
+    CompletableFuture<MultipartFile> generateMultipartQR(HttpServletResponse response, String date) throws Exception;
 }
