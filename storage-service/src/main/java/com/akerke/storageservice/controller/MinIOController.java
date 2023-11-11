@@ -2,7 +2,7 @@ package com.akerke.storageservice.controller;
 
 import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.storageservice.common.constants.AttachmentSource;
-import com.akerke.storageservice.domain.dto.FileOperationDTO;
+import com.akerke.storageservice.domain.request.FileOperationRequest;
 import com.akerke.storageservice.domain.service.MinIOService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,17 +29,7 @@ public class MinIOController {
             @RequestParam AttachmentSource source,
             @RequestParam String name
     ) {
-        minIOService.putObject(new FileOperationDTO(target, source, name), file);
-    }
-
-    @PostMapping("/uploadQR")
-    @ApiOperation("Upload a QR code file to MinIO storage")
-    void uploadFileToMinIO(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam AttachmentSource source,
-            @RequestParam String name
-    ) {
-        minIOService.putQR(new FileOperationDTO(null, source, name), file);
+        minIOService.putObject(new FileOperationRequest(target, source, name), file);
     }
 
     @GetMapping("/downloadByGroup")
@@ -69,24 +59,15 @@ public class MinIOController {
             @RequestParam AttachmentSource source,
             HttpServletResponse response
     ) {
-        minIOService.getObject(new FileOperationDTO(target, source, name), response);
+        minIOService.getObject(new FileOperationRequest(target, source, name), response);
     }
 
-    @ApiOperation("Download a QR code file")
-    @GetMapping("/downloadQR")
-    void downloadFile(
-            @RequestParam String name,
-            @RequestParam AttachmentSource source,
-            HttpServletResponse response
-    ) {
-        minIOService.getQR(new FileOperationDTO(null, source, name), response);
-    }
 
     @ApiOperation("Delete an object")
     @PatchMapping("delete")
     @SneakyThrows
     void deleteObject(
-            @RequestBody FileOperationDTO dto
+            @RequestBody FileOperationRequest dto
     ) {
         minIOService.removeObject(dto);
     }

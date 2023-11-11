@@ -1,7 +1,7 @@
 package com.akerke.storageservice.domain.service.impl;
 
 import com.akerke.storageservice.common.constants.AttachmentSource;
-import com.akerke.storageservice.domain.dto.FileOperationDTO;
+import com.akerke.storageservice.domain.request.FileOperationRequest;
 import com.akerke.storageservice.common.exception.FileOperationException;
 import com.akerke.storageservice.domain.service.MinIOService;
 import io.minio.*;
@@ -11,7 +11,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.AsyncTaskExecutor;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +34,7 @@ public class MinIOServiceImpl implements MinIOService {
     private String urlPrefix;
 
     @Override
-    public void putObject(FileOperationDTO dto, MultipartFile file) {
+    public void putObject(FileOperationRequest dto, MultipartFile file) {
         this.getFromFuture(submit(() -> {
             try {
                 var in = new ByteArrayInputStream(file.getBytes());
@@ -52,66 +51,10 @@ public class MinIOServiceImpl implements MinIOService {
         }));
     }
 
-    @Override
-    public void putQR(FileOperationDTO dto, MultipartFile file) {
-        log.info("new qr saved: "+dto.toString());
-        log.info(file.getContentType());
-        this.getFromFuture(submit(() -> {
-            try {
-                var in = new ByteArrayInputStream(file.getBytes());
-                var objectName = file.getOriginalFilename();
-                minioClient.putObject(
-                        PutObjectArgs.builder()
-                                .contentType(MediaType.IMAGE_PNG_VALUE)
-                                .bucket(dto.source().getName())
-                                .object(objectName)
-                                .stream(in, -1, 10485760).build()
-                );
-            } catch (Exception e) {
-                throw new FileOperationException(e.getMessage());
-            }
-        }));
-    }
-
-    @Override
-    public void getQR(FileOperationDTO dto, HttpServletResponse response) {
-        this.getFromFuture(submit(() -> {
-            GetObjectResponse minioInputStream;
-            try {
-                minioInputStream = minioClient.getObject(
-                        GetObjectArgs.builder()
-                                .bucket(dto.source().getName())
-                                .object(dto.name())
-                                .build()
-                );
-            } catch (Exception e) {
-                throw new FileOperationException(e.getMessage());
-            }
-
-            response.setContentType(MediaType.IMAGE_PNG_VALUE);
-            response.setHeader("Content-Disposition", "inline; filename=qr-code.png");
-
-            try (
-                    var inputStream = minioInputStream;
-                    var outputStream = response.getOutputStream()
-            ) {
-
-                var buffer = new byte[10240];
-                int bytesRead;
-
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
-        }));
-    }
 
     @Override
     @SneakyThrows
-    public void getObject(FileOperationDTO dto, HttpServletResponse response) {
+    public void getObject(FileOperationRequest dto, HttpServletResponse response) {
         this.getFromFuture(submit(() -> {
             GetObjectResponse minioInputStream;
             try {
@@ -169,7 +112,7 @@ public class MinIOServiceImpl implements MinIOService {
 
     @Override
     @SneakyThrows
-    public void removeObject(FileOperationDTO dto) {
+    public void removeObject(FileOperationRequest dto) {
         this.getFromFuture(submit(() -> {
             try {
                 minioClient.removeObject(
@@ -248,7 +191,7 @@ public class MinIOServiceImpl implements MinIOService {
         return source.getName().concat("-") + target;
     }
 
-    private String toObjectNameWithFolder(FileOperationDTO dto) {
+    private String toObjectNameWithFolder(FileOperationRequest dto) {
         return dto.target().toString().concat("/").concat(dto.name());
     }
 
