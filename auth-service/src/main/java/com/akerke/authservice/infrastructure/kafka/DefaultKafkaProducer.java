@@ -25,7 +25,8 @@ public class DefaultKafkaProducer implements KafkaProducer {
     @Override
     public <T> void produce(String topic, T data) {
         kafka.send(topic, data)
-                .whenCompleteAsync((res, th) -> {
+                .whenCompleteAsync(
+                        (res, th) -> {
                             if (th != null) {
                                 log.error("kafka produced message error {}", th.getMessage());
                             } else {

@@ -14,7 +14,7 @@ public class KafkaManageRoleListener {
 //    @KafkaListener(
 //            topics = "manage_role_admin",
 //            groupId = "0"
-//    )
+//    )todo
     void listenManageRoleAdmin(
         KafkaManageRoleRequest kafkaManageRoleRequest
     ){
@@ -25,7 +25,7 @@ public class KafkaManageRoleListener {
 //    @KafkaListener(
 //            topics = "manage_role_manager",
 //            groupId = "0"
-//    )
+//    )todo
     void listenManageRoleManager(
             KafkaManageRoleRequest kafkaManageRoleRequest
     ){

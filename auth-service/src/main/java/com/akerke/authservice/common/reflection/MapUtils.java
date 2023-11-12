@@ -49,42 +49,4 @@ public class MapUtils {
         return map;
     }
 
-
-    /**
-     * Converts an object's fields to a map with string values.
-     *
-     * @param obj The object to convert.
-     * @param <T> The type of the object.
-     * @return A map where keys are field names, and values are string representations of field values.
-     */
-    public static <T> Map<String, String> classToMapWithValueString(T obj)  {
-        Map<String, String> map = new HashMap<>();
-        Class<?> objClass = obj.getClass();
-
-        try {
-            for (var field : objClass.getDeclaredFields()) {
-                field.setAccessible(true);
-                var value = field.get(obj);
-
-                if (value != null) {
-                    if (simpleType(value)) {
-                        map.put(field.getName(), value.toString());
-                    } else {
-                        log.error("Value cannot be a data type!");
-                    }
-                } else {
-                    map.put(field.getName(), null);
-                }
-            }
-        } catch (IllegalAccessException e) {
-            log.error("error while classToMapWithValueString {}", e.getClass());
-        }
-
-        return map;
-    }
-
-    private static boolean simpleType(Object value) {
-        return value.getClass().isEnum() || value.getClass().isPrimitive() || value instanceof Number || value instanceof String;
-    }
-
 }
