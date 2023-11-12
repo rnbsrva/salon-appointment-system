@@ -1,4 +1,4 @@
-package com.akerke.authservice.kafka;
+package com.akerke.authservice.infrastructure.kafka;
 
 import com.akerke.authservice.common.constants.SecurityRole;
 import com.akerke.authservice.domain.service.AuthService;

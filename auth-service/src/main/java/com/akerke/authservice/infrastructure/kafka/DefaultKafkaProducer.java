@@ -1,4 +1,4 @@
-package com.akerke.authservice.kafka;
+package com.akerke.authservice.infrastructure.kafka;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

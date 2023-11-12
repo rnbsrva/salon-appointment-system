@@ -1,4 +1,4 @@
-package com.akerke.authservice.kafka;
+package com.akerke.authservice.infrastructure.kafka;
 
 import lombok.Builder;
 import lombok.Data;
