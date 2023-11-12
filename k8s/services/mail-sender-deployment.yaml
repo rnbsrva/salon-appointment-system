@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mail-sender
+  name: mail-sender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mail-sender
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: mail-sender
+    spec:
+      containers:
+        - name: mail-sender
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
+            - name: SERVER_PORT
+              value: "4000"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: http://kafka:29092
+            - name: SMTP_USERNAME
+              value: orynbasarovaakerke88@gmail.com
+            - name: EUREKA_URL
+              value: todo
+          image: rnbsrva/mail-sender
+          resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mail-sender
+  name: mail-sender
+spec:
+  ports:
+    - port: 80
+      name: "80"
+      targetPort: 8080
+status:
+  loadBalancer: {}
+
+
+
+
+
+

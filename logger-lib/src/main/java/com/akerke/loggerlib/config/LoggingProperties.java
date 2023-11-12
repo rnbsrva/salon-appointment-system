@@ -14,7 +14,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @NoArgsConstructor
 @ConfigurationProperties(prefix = "app.logger.lib")
 public class LoggingProperties {
-    private boolean enabled;
     private String level;
     private String name;
 
@@ -25,8 +24,7 @@ public class LoggingProperties {
 
     @Override
     public String toString() {
-        return "enabled=" + enabled +
-                ", level='" + level + '\'' +
-                ", name='" + name + '\'' ;
+        return "level='" + level + '\'' +
+                ", name='" + name + '\'';
     }
 }
