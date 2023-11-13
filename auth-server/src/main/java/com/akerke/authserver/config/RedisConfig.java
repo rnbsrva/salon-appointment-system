@@ -14,16 +14,16 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
-    @Value("{spring.date.redis.host}")
+    @Value("${spring.data.redis.host}")
     private String host;
-    @Value("{spring.date.redis.port}")
+    @Value("${spring.data.redis.port}")
     private Integer port;
 
     @Bean
     public ReactiveRedisConnectionFactory reactiveRedisConnectionFactory() {
         var lettuceConnectionFactory = new LettuceConnectionFactory(host, port);
 
-        lettuceConnectionFactory.setValidateConnection(true);
+//        lettuceConnectionFactory.setValidateConnection(true);todo
 
         return lettuceConnectionFactory;
     }
