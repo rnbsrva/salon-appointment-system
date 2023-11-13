@@ -42,12 +42,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(RegistrationRequest req) {
-        var optionalUser = userRepository.findByEmailOrPhone(req.email(), req.phone());
-
-        if (optionalUser.isPresent()) {
-            throw new EmailRegisteredYetException(req.email());
-        }
-
         var mapped = userMapper.toModel(req, passwordEncoder.encode(req.password()));
         var user = userRepository.save(mapped);
 

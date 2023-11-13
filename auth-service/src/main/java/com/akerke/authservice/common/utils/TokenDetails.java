@@ -8,7 +8,8 @@ public record TokenDetails(
 ) {
     public TokenDetails(TokenType type, String token) {
         this(
-                type.getExpirationMinute() * 60, token
+                type.getExpirationMinute() * 60,
+                token
         );
     }
 }

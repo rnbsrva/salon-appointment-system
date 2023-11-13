@@ -26,12 +26,12 @@ public class AppointmentController {
     @PostMapping()
     @ApiOperation("Create a new appointment")
     ResponseEntity<?> save(
-            @Valid
-            @RequestBody AppointmentDTO appointmentDTO,
+            @Valid @RequestBody AppointmentDTO appointmentDTO,
             BindingResult bindingResult
     ) {
         validate(bindingResult);
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(appointmentService.save(appointmentDTO));
     }
 

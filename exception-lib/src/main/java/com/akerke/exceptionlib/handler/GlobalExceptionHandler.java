@@ -110,10 +110,8 @@ public class GlobalExceptionHandler {
     }
 
     private ProblemDetail withDetails(RuntimeException e, int sc) {
-        log.error("created problem details message[{}] status_code[{}]", e.getMessage(), sc);
-        var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(sc), e.getMessage());
-        problemDetail.setTitle("Error");
-        return problemDetail;
+        log.error("created problem details message={} status_code={}", e.getMessage(), sc);
+        return ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(sc), e.getMessage());
     }
 
 }

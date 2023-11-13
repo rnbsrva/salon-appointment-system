@@ -1,6 +1,7 @@
 package com.akerke.authservice.controller;
 
 
+import com.akerke.authservice.common.annotations.ValidatedMethod;
 import com.akerke.authservice.domain.payload.request.RegistrationRequest;
 import com.akerke.authservice.domain.service.AuthService;
 import com.akerke.authservice.domain.service.UserService;
@@ -19,24 +20,21 @@ import static com.akerke.authservice.common.validate.BindingValidator.validateRe
 @RequiredArgsConstructor
 @ResponseBody
 @Api("User API")
+@CrossOrigin(origins = "*")//todo
 public class UserController {
 
     private final UserService userService;
-    private final AuthService authService;
 
     @PostMapping("register")
     @ApiOperation("Register a new user")
+    @ValidatedMethod
     ResponseEntity<?> register(
             @RequestBody @Valid RegistrationRequest req,
             BindingResult br
     ) {
-        validateRequest(br);
-
-        var user = userService.register(req);
-
         return ResponseEntity
                 .status(201)
-                .body(this.authService.token(user));
+                .body(userService.register(req));
     }
 
     @DeleteMapping("{id}")

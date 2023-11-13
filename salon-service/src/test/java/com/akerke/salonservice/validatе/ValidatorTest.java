@@ -1,7 +1,7 @@
 package com.akerke.salonservice.validatе;
 
 import com.akerke.salonservice.common.validate.Validator;
-import com.akerke.salonservice.common.exception.InvalidRequestException;
+import com.akerke.exceptionlib.exception.InvalidRequestPayloadException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.BindingResult;
@@ -40,7 +40,7 @@ class ValidatorTest {
 
         when(br.getFieldErrors()).thenReturn(List.of(fieldError1, fieldError2));
 
-        var exception = assertThrows(InvalidRequestException.class, () -> {
+        var exception = assertThrows(InvalidRequestPayloadException.class, () -> {
             Validator.validate(br);
         });
 

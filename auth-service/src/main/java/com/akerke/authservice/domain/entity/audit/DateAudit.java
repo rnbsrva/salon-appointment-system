@@ -28,7 +28,7 @@ public class DateAudit {
 
     @PrePersist
     private void prePersist() {
-        createdTime = LocalDateTime.now();
+        this.createdTime = LocalDateTime.now();
     }
 
     @PostUpdate

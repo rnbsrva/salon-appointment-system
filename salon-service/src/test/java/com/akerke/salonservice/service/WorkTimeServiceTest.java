@@ -4,7 +4,7 @@ import com.akerke.salonservice.domain.dto.WorkTimeDTO;
 import com.akerke.salonservice.domain.entity.WorkDay;
 import com.akerke.salonservice.domain.entity.WorkTime;
 import com.akerke.salonservice.domain.service.WorkDayService;
-import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.WorkTimeMapper;
 import com.akerke.salonservice.domain.repository.WorkTimeRepository;
 import com.akerke.salonservice.domain.service.impl.WorkTimeServiceImpl;

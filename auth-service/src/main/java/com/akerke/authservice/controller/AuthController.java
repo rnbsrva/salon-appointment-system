@@ -1,8 +1,10 @@
 package com.akerke.authservice.controller;
 
+import com.akerke.authservice.common.annotations.ValidatedMethod;
 import com.akerke.authservice.common.constants.TokenType;
 import com.akerke.authservice.domain.payload.request.AuthRequest;
 import com.akerke.authservice.domain.payload.request.ForgotPasswordRequest;
+import com.akerke.authservice.domain.payload.request.RegistrationRequest;
 import com.akerke.authservice.domain.payload.request.ResetPasswordRequest;
 import com.akerke.authservice.domain.service.AuthService;
 import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
@@ -20,6 +22,7 @@ import static com.akerke.authservice.common.validate.BindingValidator.validateRe
 @RequiredArgsConstructor
 @Api(value = "Authentication API")
 @EnableLoggerLib
+@CrossOrigin(origins = "*")//todo
 public class AuthController {
 
     private final AuthService authService;
@@ -67,6 +70,7 @@ public class AuthController {
     @GetMapping("email-confirmation")
     @ApiOperation("Confirm an email address")
     ResponseEntity<?> emailConfirmation(
+            @RequestBody @Valid RegistrationRequest request,
             @RequestParam("verification_token") String verificationToken
     ) {
         return ResponseEntity
@@ -75,8 +79,10 @@ public class AuthController {
 
     @PostMapping("authenticate")
     @ApiOperation("Authenticate a user")
+    @ValidatedMethod
     ResponseEntity<?> authenticate(
-            @RequestBody @Valid AuthRequest authRequest
+            @RequestBody @Valid AuthRequest authRequest,
+            BindingResult br
     ) {
         return ResponseEntity
                 .ok(authService.authenticate(authRequest));

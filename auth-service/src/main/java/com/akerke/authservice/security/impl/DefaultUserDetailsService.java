@@ -23,10 +23,12 @@ public class DefaultUserDetailsService implements UserDetailsService {
      *
      * @param email the email of the user
      * @return the UserDetails object
-     * @throws UsernameNotFoundException if the user is not found
+     * @throws InvalidCredentialsException if the user is not found
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(
+            String email
+    ) throws UsernameNotFoundException {
 
         return userRepository
                 .findByEmail(email)

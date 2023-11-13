@@ -2,7 +2,7 @@ package com.akerke.salonservice.service;
 
 import com.akerke.salonservice.domain.dto.FeedbackDTO;
 import com.akerke.salonservice.domain.entity.Feedback;
-import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.FeedbackMapper;
 import com.akerke.salonservice.domain.repository.FeedbackRepository;
 import com.akerke.salonservice.domain.service.impl.FeedbackServiceImpl;

@@ -51,7 +51,7 @@ public abstract class TokenValidator {
     }
 
     static Boolean sameTokenClaims(Claims claims, TokenType type) {
-        return claims.containsKey(TOKEN_TYPE_CLAIM_KEY) && type == TokenType.valueOf(claims.get(TOKEN_TYPE_CLAIM_KEY).toString());
+        return claims.containsKey(TOKEN_TYPE_CLAIM_KEY) && type.getName() == claims.get(TOKEN_TYPE_CLAIM_KEY).toString();
     }
 
 }
