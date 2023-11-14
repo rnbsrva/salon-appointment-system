@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @RedisHash
 public class Token implements Serializable {
 
-    private String userId;
+    private String email;
     private TokenType type;
     private LocalDateTime created;
     private Long lifeTime;
