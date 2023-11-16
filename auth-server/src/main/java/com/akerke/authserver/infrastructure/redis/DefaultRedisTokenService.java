@@ -2,7 +2,7 @@ package com.akerke.authserver.infrastructure.redis;
 
 import com.akerke.authserver.domain.model.Token;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,7 +11,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DefaultRedisTokenService implements RedisTokenService{
 
-    private final ReactiveRedisTemplate<String,Token> reactiveRedis;
+
+    private final RedisTemplate<String,Token> redisTemplate;
 
     @Override
     public void save(Token token) {

@@ -17,8 +17,9 @@ import java.util.List;
 public interface UserMapper {
 
     @Mapping(target = "id",ignore = true)
+    @Mapping(target = "otp" , expression = "java(otp)")
     @Mapping(target = "emailConfirmed" , expression = "java(false)")
     @Mapping(target = "roles", expression = "java(List.of(SecurityRole.USER))")
-    User toModel(RegistrationDTO registrationDTO);
+    User toModel(RegistrationDTO registrationDTO,Integer otp);
 
 }
