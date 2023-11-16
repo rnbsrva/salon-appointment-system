@@ -1,7 +1,7 @@
 package com.akerke.authserver.config;
 
-import com.akerke.authserver.common.exception.InvalidCredentialsException;
 import com.akerke.authserver.domain.repository.UserRepository;
+import com.akerke.exceptionlib.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
