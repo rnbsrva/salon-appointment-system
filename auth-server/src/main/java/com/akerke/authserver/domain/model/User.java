@@ -1,6 +1,8 @@
 package com.akerke.authserver.domain.model;
 
 import com.akerke.authserver.common.constants.SecurityRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,6 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties({"otp", "getUsername" , "isAccountNonExpired", "isEnabled", "isCredentialsNonExpired", "isAccountNonLocked"})
 public class User implements UserDetails {
 
     @Id

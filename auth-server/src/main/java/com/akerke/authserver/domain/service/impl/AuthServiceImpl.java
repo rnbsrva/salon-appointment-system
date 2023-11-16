@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Random;
 
+import static com.akerke.authserver.common.jwt.JwtService.TOKEN_CLAIM_KEY;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -71,12 +73,12 @@ public class AuthServiceImpl implements AuthService {
             throw new EmailRegisteredYetException(registration.email());
         }
 
-        var optionalPhoneUser = userRepository.findByPhoneNumber(registration.phone());
+        var optionalPhoneUser = userRepository.findByPhoneNumber(registration.phoneNumber());
         if (optionalPhoneUser.isPresent()) {
-            throw new PhoneNumberRegisteredYetException(registration.phone());
+            throw new PhoneNumberRegisteredYetException(registration.phoneNumber());
         }
         var otp = random.nextInt(100_000, 999_999);
-        kafkaTemplate.send("email_confirmation",
+        kafkaTemplate.send("email_verification",
                 Map.of(
                         "recipient", registration.email(),
                         "msgBody", otp
@@ -104,6 +106,32 @@ public class AuthServiceImpl implements AuthService {
         }
 
         return createTokenResponse(user);
+    }
+
+    @Override
+    public TokenResponseDTO refreshToken(
+            String refreshToken
+    ) {
+        try {
+            var decodedJWT = jwt.convertToken(refreshToken);
+            var tokenType = TokenType.valueOf(decodedJWT.getClaim(TOKEN_CLAIM_KEY).asString());
+
+            if (tokenType!=TokenType.REFRESH){
+                throw new InvalidTokenTypeException();
+            }
+
+            var email = decodedJWT.getSubject();
+            var optionalUser = userRepository.findByEmail(email);
+
+            if (optionalUser.isEmpty()){
+                throw new InvalidCredentialsException();
+            }
+
+            var user  = optionalUser.get();
+            return createTokenResponse(user);
+        }catch (Exception e){
+            throw new JwtException(e);
+        }
     }
 
     private TokenResponseDTO createTokenResponse(User user) {

@@ -31,7 +31,7 @@ public class JwtService {
     @Value("${jwt.token.refresh-token-expiration}")
     private Long refreshTokenExpiration;
 
-    private final static String TOKEN_CLAIM_KEY = "type";
+    public final static String TOKEN_CLAIM_KEY = "type";
     public final static String ROLES_CLAIM_KEY = "roles";
 
     public String createToken(

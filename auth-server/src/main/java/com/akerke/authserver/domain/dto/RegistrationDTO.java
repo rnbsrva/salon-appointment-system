@@ -7,6 +7,6 @@ public record RegistrationDTO(
         String surname,
         String email,
         String password,
-        String phone
+        String phoneNumber
 ) implements Serializable {
 }

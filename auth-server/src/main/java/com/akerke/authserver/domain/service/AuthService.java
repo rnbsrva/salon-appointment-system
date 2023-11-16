@@ -13,4 +13,6 @@ public interface AuthService {
     User register(RegistrationDTO registration);
 
     TokenResponseDTO confirmEmail(OTP otp);
+
+    TokenResponseDTO refreshToken(String refreshToken);
 }
