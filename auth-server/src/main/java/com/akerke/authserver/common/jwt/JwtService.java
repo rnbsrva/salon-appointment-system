@@ -32,7 +32,7 @@ public class JwtService {
     private Long refreshTokenExpiration;
 
     private final static String TOKEN_CLAIM_KEY = "type";
-    private final static String ROLES_CLAIM_KEY = "roles";
+    public final static String ROLES_CLAIM_KEY = "roles";
 
     public String createToken(
             User user,

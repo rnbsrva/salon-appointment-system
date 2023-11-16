@@ -10,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +30,10 @@ public class User implements UserDetails {
     private String email;
     private String phoneNumber;
     private String password;
+    private Boolean emailConfirmed;
+    private Integer otp;
+    private LocalDateTime registeredTime;
+    private LocalDateTime otpCreationTime;
 
     private List<SecurityRole> roles = new ArrayList<>();
 

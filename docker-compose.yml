@@ -14,7 +14,7 @@ services:
 #      MINIO_ADDRESS: ':9000'
 #      MINIO_CONSOLE_ADDRESS: ':9090'
 #    command: minio server /data
-
+#
   mail-sender:
     image: rnbsrva/mail-sender
     container_name: mail-sender
@@ -26,10 +26,10 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SERVER_PORT: 4000
-      SMTP_USERNAME: orynbasarovaakerke88@gmail.com
-      SMTP_PASSWORD:
+      SMTP_USERNAME: kkraken2005@gmail.com
+      SMTP_PASSWORD: qjgbgobivdwfxlel
       KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
-      'eureka.cliend.enabled': false
+      'eureka.client.enabled': false
 
 
   zookeeper:
