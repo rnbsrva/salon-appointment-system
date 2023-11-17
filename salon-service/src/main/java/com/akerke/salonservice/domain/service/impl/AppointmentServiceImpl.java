@@ -45,6 +45,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         var savedAppointment = appointmentRepository.save(appointment);
 
+        System.out.println(savedAppointment.toString());
+
         kafkaProducer.produce(AppConstants.NOTIFY_TOPIC_NAME,
                 new NotificationDTO(
                         user.getId(),

@@ -15,13 +15,17 @@ public class ApiGatewayApplication {
     }
 
     @Bean
-    RouteLocator routeLocator(RouteLocatorBuilder builder, AuthFilter filter) {
+    RouteLocator routeLocator(RouteLocatorBuilder builder
+            , AuthFilter filter
+    ) {
         return builder.routes()
                 .route("auth-service", r -> r.path("/api/v1/auth/**")
                         .uri("http://localhost:3000"))
                 .route("chat-service", r -> r.path("/api/v1/chat/**")
                         .filters(f -> f.filter(filter))
                         .uri("http://localhost:3000"))
+                .route("notification-service", r -> r.path("/api/v1/notification")
+                        .uri("http://localhost:2904"))
                 .build();
     }
 

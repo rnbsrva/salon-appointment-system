@@ -3,10 +3,12 @@ package com.akerke.salonservice.domain.entity;
 import com.akerke.salonservice.common.constants.Gender;
 import com.akerke.salonservice.domain.entity.audit.DateAudit;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity

@@ -25,6 +25,7 @@ public class NotificationController {
     public Notification getNotificationById(
             @Argument Long id
     ) {
+        System.out.println("get notif");
         return notificationService.findById(id);
     }
 
