@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -43,9 +44,7 @@ public class AuthFilter implements GatewayFilter {
     ) {
         var request = exchange.getRequest();
 
-        request.getHeaders().entrySet()
-                .forEach(System.out::println);
-        System.out.println("new request " + request.getURI());
+
         if (this.authHeaderMissing.test(request)) {
             logger.info("auth missing " + request.getURI());
             return onAuthError(exchange, AuthErrorType.MISSING_BEARER_TOKEN);
@@ -53,21 +52,27 @@ public class AuthFilter implements GatewayFilter {
 
         final var token = request.getHeaders().getOrEmpty("Authorization").get(0);
 
-        var res = webClient.get()
+        var res = webClient.post()
                 .uri(validateTokenUrl(token))
+                .bodyValue(new RouteValidateDTO(
+                        request.getMethod(),
+                        request.getPath().toString(),
+                        token
+                ))
                 .retrieve()
                 .bodyToMono(StatusResponse.class);
 
-        return res.flatMap(statusResponse -> statusResponse.success() ?
-                chain.filter(exchange) :
-                onAuthError(exchange, AuthErrorType.INVALID_BEARER_TOKEN)
+        return res.flatMap(
+                statusResponse -> statusResponse.success() ?
+                        chain.filter(exchange) :
+                        onAuthError(exchange, AuthErrorType.INVALID_BEARER_TOKEN)
         );
 
     }
 
     private static Function<UriBuilder, URI> validateTokenUrl(String token) {
         return uriBuilder ->
-                uriBuilder.path("validate-token")
+                uriBuilder.path("validate-route")
                         .queryParam("access_token", token.substring("Bearer ".length()))
                         .build();
     }
@@ -83,4 +88,13 @@ public class AuthFilter implements GatewayFilter {
         INVALID_BEARER_TOKEN,
         MISSING_BEARER_TOKEN
     }
+
+    record RouteValidateDTO(
+            HttpMethod httpMethod,
+            String route,
+            String token
+    ) {
+    }
+
+
 }

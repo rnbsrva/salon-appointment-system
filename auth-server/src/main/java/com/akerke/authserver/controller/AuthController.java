@@ -1,9 +1,7 @@
 package com.akerke.authserver.controller;
 
-import com.akerke.authserver.domain.dto.AuthDTO;
-import com.akerke.authserver.domain.dto.ChangePasswordDTO;
-import com.akerke.authserver.domain.dto.OTP;
-import com.akerke.authserver.domain.dto.RegistrationDTO;
+import com.akerke.authserver.common.jwt.JwtRouteValidator;
+import com.akerke.authserver.domain.dto.*;
 import com.akerke.authserver.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtRouteValidator jwtRouteValidator;
 
     @PostMapping("register")
     ResponseEntity<?> register(
@@ -73,6 +72,13 @@ public class AuthController {
     ) {
         return ResponseEntity
                 .ok(authService.changePassword(changePassword));
+    }
+
+    @PostMapping("validate-route")
+    ResponseEntity<?> validateRoute(
+            @RequestBody RouteValidateDTO routeValidateDTO
+    ) {
+        return ResponseEntity.ok(jwtRouteValidator.canActivate(routeValidateDTO));
     }
 
 
