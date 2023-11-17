@@ -29,4 +29,9 @@ public class DefaultRedisTokenService implements RedisTokenService {
         return redisTemplate.opsForSet().members(TOKEN_HASH_KEY.concat(subject));
     }
 
+    @Override
+    public void clear(String email) {
+        redisTemplate.delete(TOKEN_HASH_KEY.concat(email));
+    }
+
 }

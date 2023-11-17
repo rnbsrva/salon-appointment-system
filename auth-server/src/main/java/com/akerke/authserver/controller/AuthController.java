@@ -7,6 +7,7 @@ import com.akerke.authserver.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,4 +49,13 @@ public class AuthController {
                 authService.refreshToken(refreshToken)
         );
     }
+
+    @PostMapping("logout")
+    void logout(
+            @RequestParam String email
+    ){
+        authService.logout(email);
+        SecurityContextHolder.clearContext();
+    }
+
 }

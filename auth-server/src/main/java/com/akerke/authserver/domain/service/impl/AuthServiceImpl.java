@@ -1,6 +1,7 @@
 package com.akerke.authserver.domain.service.impl;
 
 import com.akerke.authserver.common.constants.TokenType;
+import com.akerke.authserver.domain.model.Token;
 import com.akerke.authserver.infrastructure.redis.RedisTokenService;
 import com.akerke.exceptionlib.exception.*;
 import com.akerke.authserver.common.jwt.JwtService;
@@ -14,6 +15,7 @@ import com.akerke.authserver.domain.repository.UserRepository;
 import com.akerke.authserver.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.metrics.stats.TokenBucket;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
             throw new EmailNotVerified();
         }
 
-        return createTokenResponse(user);
+        return createTokenResponseAndCacheTokens(user);
     }
 
 
@@ -107,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidOTPException();
         }
 
-        return createTokenResponse(user);
+        return createTokenResponseAndCacheTokens(user);
     }
 
     @Override
@@ -131,22 +133,35 @@ public class AuthServiceImpl implements AuthService {
             }
 
             user = optionalUser.get();
-            return createTokenResponse(user);
+            return createTokenResponseAndCacheTokens(user);
         } catch (Exception e) {
             var tokens = redisTokenService.get(user.getEmail());
             if (tokens.stream().anyMatch(token -> token.getType() == TokenType.REFRESH)) {
-                return createTokenResponse(user);
+                return createTokenResponseAndCacheTokens(user);
             }
             throw new InvalidCredentialsException();
         }
     }
 
-    private TokenResponseDTO createTokenResponse(User user) {
+    @Override
+    public void logout(String email) {
+
+    }
+
+    private TokenResponseDTO createTokenResponseAndCacheTokens(User user) {
+        var accessToken = jwt.createToken(user, TokenType.ACCESS);
+        var refreshToken = jwt.createToken(user, TokenType.REFRESH);
+
+        redisTokenService.save(accessToken);
+        redisTokenService.save(refreshToken);
+
         return new TokenResponseDTO(
-                jwt.createToken(user, TokenType.ACCESS).getValue(),
-                jwt.createToken(user, TokenType.REFRESH).getValue(),
+                accessToken.getValue(),
+                refreshToken.getValue(),
                 accessTokenExpiration,
                 refreshTokenExpiration
         );
     }
+
+
 }

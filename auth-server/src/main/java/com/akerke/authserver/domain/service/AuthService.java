@@ -15,4 +15,6 @@ public interface AuthService {
     TokenResponseDTO confirmEmail(OTP otp);
 
     TokenResponseDTO refreshToken(String refreshToken);
+
+    void logout(String email);
 }

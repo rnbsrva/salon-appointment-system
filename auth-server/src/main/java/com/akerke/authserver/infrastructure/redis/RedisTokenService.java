@@ -11,4 +11,6 @@ public interface RedisTokenService {
 
     Set<Token> get(String subject);
 
+    void clear(String email);
+
 }
