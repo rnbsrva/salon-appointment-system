@@ -89,12 +89,12 @@ public class SalonControllerTest {
 
 
     @Test
-    void getById_whenValidId_thenReturnAddress()
+    void getById_whenValidId_thenReturnSalon()
             throws Exception {
         salonRepository.save(salon);
 
         var getByIdResponse = mvc.perform(
-                get("/address/" + salon.getId())
+                get("/salon/" + salon.getId())
         );
 
         getByIdResponse
@@ -103,9 +103,9 @@ public class SalonControllerTest {
 
 
         var getByIdResponseContent = getByIdResponse.andReturn().getResponse().getContentAsString();
-        var addressFromResponse = objectMapper.readValue(getByIdResponseContent, Salon.class);
+        var salonFromResponse = objectMapper.readValue(getByIdResponseContent, Salon.class);
 
-        assertEquals(salon.getId(), addressFromResponse.getId());
+        assertEquals(salon.getId(), salonFromResponse.getId());
     }
 
 

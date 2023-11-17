@@ -1,8 +1,8 @@
 package com.akerke.salonservice.domain.service.impl;
 
-import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.dto.AddressDTO;
 import com.akerke.salonservice.domain.entity.Address;
+import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.repository.AddressRepository;
 import com.akerke.salonservice.domain.service.AddressService;
 import com.akerke.salonservice.domain.mapper.AddressMapper;

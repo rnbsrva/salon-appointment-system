@@ -1,6 +1,6 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.exceptionlib.exception.InvalidRequestPayloadException;
+import com.akerke.salonservice.common.exception.InvalidRequestPayloadException;
 import com.akerke.salonservice.common.constants.Gender;
 import com.akerke.salonservice.domain.dto.AddressDTO;
 import com.akerke.salonservice.domain.dto.AppointmentDTO;

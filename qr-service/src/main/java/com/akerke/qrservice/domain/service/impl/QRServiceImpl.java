@@ -1,8 +1,8 @@
 package com.akerke.qrservice.domain.service.impl;
 
-import com.akerke.exceptionlib.exception.QRGenerationException;
 import com.akerke.qrservice.domain.service.QRService;
 import com.akerke.qrservice.common.utils.ByteArrayMultipartFile;
+import com.akerke.qrservice.common.exception.QRGenerationException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;

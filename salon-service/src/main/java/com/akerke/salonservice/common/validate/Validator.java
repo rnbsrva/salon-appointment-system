@@ -1,6 +1,6 @@
 package com.akerke.salonservice.common.validate;
 
-import com.akerke.exceptionlib.exception.InvalidRequestPayloadException;
+import com.akerke.salonservice.common.exception.InvalidRequestPayloadException;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;

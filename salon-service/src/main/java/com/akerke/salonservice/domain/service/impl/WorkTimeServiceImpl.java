@@ -5,7 +5,7 @@ import com.akerke.salonservice.domain.entity.WorkTime;
 import com.akerke.salonservice.domain.repository.WorkTimeRepository;
 import com.akerke.salonservice.domain.service.WorkDayService;
 import com.akerke.salonservice.domain.service.WorkTimeService;
-import com.akerke.exceptionlib.exception.EntityNotFoundException;
+import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.WorkTimeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

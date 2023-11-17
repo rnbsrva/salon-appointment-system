@@ -1,7 +1,7 @@
 package com.akerke.storageservice.domain.service.impl;
 
-import com.akerke.exceptionlib.exception.FileOperationException;
 import com.akerke.storageservice.common.constants.AttachmentSource;
+import com.akerke.storageservice.common.exception.FileOperationException;
 import com.akerke.storageservice.domain.request.FileOperationRequest;
 import com.akerke.storageservice.domain.service.MinIOService;
 import io.minio.*;

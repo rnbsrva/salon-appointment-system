@@ -3,7 +3,7 @@ package com.akerke.authserver.domain.service.impl;
 import com.akerke.authserver.common.constants.TokenType;
 import com.akerke.authserver.domain.model.Token;
 import com.akerke.authserver.infrastructure.redis.RedisTokenService;
-import com.akerke.exceptionlib.exception.*;
+import com.akerke.authserver.common.exception.*;
 import com.akerke.authserver.common.jwt.JwtService;
 import com.akerke.authserver.domain.dto.AuthDTO;
 import com.akerke.authserver.domain.dto.OTP;

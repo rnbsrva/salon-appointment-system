@@ -28,7 +28,6 @@
     <module>discovery</module>
     <module>chat-service</module>
     <module>tg-bot</module>
-    <module>exception-lib</module>
   </modules>
 
   <dependencies>
