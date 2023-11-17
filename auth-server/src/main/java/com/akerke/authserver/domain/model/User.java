@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@JsonIgnoreProperties({"otp", "getUsername" , "isAccountNonExpired", "isEnabled", "isCredentialsNonExpired", "isAccountNonLocked"})
+@JsonIgnoreProperties({"otp", "username", "accountNonExpired", "authorities", "enabled", "credentialsNonExpired", "accountNonLocked"})
 public class User implements UserDetails {
 
     @Id

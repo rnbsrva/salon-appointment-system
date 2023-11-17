@@ -1,5 +1,6 @@
 package com.akerke.authserver.infrastructure.redis;
 
+import com.akerke.authserver.common.constants.TokenType;
 import com.akerke.authserver.domain.model.Token;
 
 import java.util.Optional;
@@ -9,7 +10,7 @@ public interface RedisTokenService {
 
     void save(Token token);
 
-    Set<Token> get(String subject);
+    Set<Token> get(String subject, TokenType type);
 
     void clear(String email);
 

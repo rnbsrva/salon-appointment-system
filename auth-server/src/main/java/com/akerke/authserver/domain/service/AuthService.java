@@ -1,9 +1,6 @@
 package com.akerke.authserver.domain.service;
 
-import com.akerke.authserver.domain.dto.AuthDTO;
-import com.akerke.authserver.domain.dto.OTP;
-import com.akerke.authserver.domain.dto.RegistrationDTO;
-import com.akerke.authserver.domain.dto.TokenResponseDTO;
+import com.akerke.authserver.domain.dto.*;
 import com.akerke.authserver.domain.model.User;
 
 public interface AuthService {
@@ -17,4 +14,8 @@ public interface AuthService {
     TokenResponseDTO refreshToken(String refreshToken);
 
     void logout(String email);
+
+    void resendEmail(String email);
+
+    StatusResponseDTO changePassword(ChangePasswordDTO changePassword);
 }

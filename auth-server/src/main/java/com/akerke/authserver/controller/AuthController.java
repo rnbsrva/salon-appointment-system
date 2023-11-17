@@ -1,6 +1,7 @@
 package com.akerke.authserver.controller;
 
 import com.akerke.authserver.domain.dto.AuthDTO;
+import com.akerke.authserver.domain.dto.ChangePasswordDTO;
 import com.akerke.authserver.domain.dto.OTP;
 import com.akerke.authserver.domain.dto.RegistrationDTO;
 import com.akerke.authserver.domain.service.AuthService;
@@ -11,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -21,7 +22,8 @@ public class AuthController {
     ResponseEntity<?> register(
             @RequestBody RegistrationDTO dto
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(authService.register(dto));
     }
 
@@ -44,7 +46,7 @@ public class AuthController {
     @PostMapping("refresh-token")
     ResponseEntity<?> refreshToken(
             @RequestParam String refreshToken
-    ){
+    ) {
         return ResponseEntity.ok(
                 authService.refreshToken(refreshToken)
         );
@@ -53,9 +55,25 @@ public class AuthController {
     @PostMapping("logout")
     void logout(
             @RequestParam String email
-    ){
+    ) {
         authService.logout(email);
         SecurityContextHolder.clearContext();
     }
+
+    @GetMapping("resend-email")
+    void resendEmail(
+            @RequestParam String email
+    ) {
+        authService.resendEmail(email);
+    }
+
+    @PostMapping("change-password")
+    ResponseEntity<?> changePassword(
+            @RequestBody ChangePasswordDTO changePassword
+    ) {
+        return ResponseEntity
+                .ok(authService.changePassword(changePassword));
+    }
+
 
 }

@@ -1,14 +1,11 @@
 package com.akerke.authserver.domain.service.impl;
 
 import com.akerke.authserver.common.constants.TokenType;
+import com.akerke.authserver.domain.dto.*;
 import com.akerke.authserver.domain.model.Token;
 import com.akerke.authserver.infrastructure.redis.RedisTokenService;
 import com.akerke.authserver.common.exception.*;
 import com.akerke.authserver.common.jwt.JwtService;
-import com.akerke.authserver.domain.dto.AuthDTO;
-import com.akerke.authserver.domain.dto.OTP;
-import com.akerke.authserver.domain.dto.RegistrationDTO;
-import com.akerke.authserver.domain.dto.TokenResponseDTO;
 import com.akerke.authserver.domain.mapper.UserMapper;
 import com.akerke.authserver.domain.model.User;
 import com.akerke.authserver.domain.repository.UserRepository;
@@ -24,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import static com.akerke.authserver.common.jwt.JwtService.TOKEN_CLAIM_KEY;
 
@@ -64,6 +62,8 @@ public class AuthServiceImpl implements AuthService {
             throw new EmailNotVerified();
         }
 
+        log.info("authenticated user {}", auth.email());
+
         return createTokenResponseAndCacheTokens(user);
     }
 
@@ -81,12 +81,8 @@ public class AuthServiceImpl implements AuthService {
         if (optionalPhoneUser.isPresent()) {
             throw new PhoneNumberRegisteredYetException(registration.phoneNumber());
         }
-        var otp = random.nextInt(100_000, 999_999);
-        kafkaTemplate.send("email_verification",
-                Map.of(
-                        "recipient", registration.email(),
-                        "msgBody", otp
-                ));
+        var otp = randomOtp.get();
+        sendVerificationDetails(registration.email(), otp);
 
         return userRepository.save(userMapper.toModel(registration, otp));
     }
@@ -108,6 +104,8 @@ public class AuthServiceImpl implements AuthService {
         if (!user.getOtp().equals(otp.otp())) {
             throw new InvalidOTPException();
         }
+        user.setEmailConfirmed(true);
+        userRepository.save(user);
 
         return createTokenResponseAndCacheTokens(user);
     }
@@ -135,7 +133,7 @@ public class AuthServiceImpl implements AuthService {
             user = optionalUser.get();
             return createTokenResponseAndCacheTokens(user);
         } catch (Exception e) {
-            var tokens = redisTokenService.get(user.getEmail());
+            var tokens = redisTokenService.get(user.getEmail(), TokenType.REFRESH);
             if (tokens.stream().anyMatch(token -> token.getType() == TokenType.REFRESH)) {
                 return createTokenResponseAndCacheTokens(user);
             }
@@ -145,7 +143,31 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(String email) {
+        redisTokenService.clear(email);
+    }
 
+    @Override
+    public void resendEmail(String email) {
+        log.info("resend new email message {}", email);
+        var otp = randomOtp.get();
+        sendVerificationDetails(email, otp);
+    }
+
+    @Override
+    public StatusResponseDTO changePassword(
+            ChangePasswordDTO changePassword
+    ) {
+        var user = userRepository.findByEmail(changePassword.email())
+                .orElseThrow(InvalidCredentialsException::new);
+
+        if (!passwordEncoder.matches(changePassword.oldPassword(), user.getPassword())) {
+            throw new InvalidCredentialsException();
+        }
+
+        user.setPassword(passwordEncoder.encode(changePassword.newPassword()));
+        userRepository.save(user);
+
+        return new StatusResponseDTO(true);
     }
 
     private TokenResponseDTO createTokenResponseAndCacheTokens(User user) {
@@ -163,5 +185,14 @@ public class AuthServiceImpl implements AuthService {
         );
     }
 
+    private void sendVerificationDetails(String email, int otp) {
+        kafkaTemplate.send("email_verification",
+                Map.of(
+                        "recipient", email,
+                        "msgBody", otp
+                ));
+    }
+
+    private final Supplier<Integer> randomOtp = () -> random.nextInt(100_000, 999_999);
 
 }
