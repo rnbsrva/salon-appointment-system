@@ -18,6 +18,7 @@ import org.springframework.util.StopWatch;
 public class EnableLoggerLibTimeExecutionAspect {
 
     private final String application;
+
     private final static Logger logger = LoggerFactory.getLogger(EnableLoggerLibTimeExecutionAspect.class);
 
 
@@ -33,7 +34,7 @@ public class EnableLoggerLibTimeExecutionAspect {
         var result = pjp.proceed();
         stopWatch.stop();
 
-        var log = ExecutionTimeLog
+        var executionTimeLog = ExecutionTimeLog
                 .builder()
                 .method(methodSignature.getName())
                 .app(application)
@@ -41,9 +42,9 @@ public class EnableLoggerLibTimeExecutionAspect {
                 .className(methodSignature.getDeclaringType().getSimpleName())
                 .build();
 
-        log.addLogProperties();
+        executionTimeLog.addLogProperties();
 
-        logger.info("Log {}", log);
+        logger.info("Log {}", executionTimeLog);
 
         MDC.clear();
 

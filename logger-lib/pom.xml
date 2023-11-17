@@ -11,7 +11,7 @@
 	<groupId>com.akerke</groupId>
 	<artifactId>logger-lib</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>logger-lib-starter</name>
+	<name>logger-lib</name>
 	<description>logger-lib</description>
 	<packaging>jar</packaging>
 	<properties>

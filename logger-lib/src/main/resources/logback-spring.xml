@@ -5,9 +5,10 @@
     <!-- Conditionally include the Logstash appender based on the property -->
 
     <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>localhost:50000</destination>
+        <destination>localhost:5000</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
+
                 <mdc/>
                 <context/>
                 <logLevel/>
@@ -15,7 +16,7 @@
                 <pattern>
                     <pattern>
                         {
-                        "app": "test-log",
+                        "app": "%x{app}",
                         "className" : "%X{className}",
                         "method" : "%X{method}",
                         "execution" : "%X{execution}"
@@ -26,12 +27,15 @@
                 <message/>
                 <logstashMarkers/>
                 <stackTrace/>
+
             </providers>
         </encoder>
     </appender>
-    <springProfile name="!default">
+
+    <springProfile name="logging">
         <root level="info">
             <appender-ref ref="logstash"/>
         </root>
     </springProfile>
+
 </configuration>

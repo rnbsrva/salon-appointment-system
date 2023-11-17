@@ -1,6 +1,7 @@
 package com.akerke.authserver.domain.service.impl;
 
 import com.akerke.authserver.common.constants.TokenType;
+import com.akerke.authserver.infrastructure.redis.RedisTokenService;
 import com.akerke.exceptionlib.exception.*;
 import com.akerke.authserver.common.jwt.JwtService;
 import com.akerke.authserver.domain.dto.AuthDTO;
@@ -33,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwt;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final RedisTokenService redisTokenService;
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final Random random = new Random();
 
@@ -112,32 +114,37 @@ public class AuthServiceImpl implements AuthService {
     public TokenResponseDTO refreshToken(
             String refreshToken
     ) {
+        User user = null;
         try {
             var decodedJWT = jwt.convertToken(refreshToken);
             var tokenType = TokenType.valueOf(decodedJWT.getClaim(TOKEN_CLAIM_KEY).asString());
 
-            if (tokenType!=TokenType.REFRESH){
+            if (tokenType != TokenType.REFRESH) {
                 throw new InvalidTokenTypeException();
             }
 
             var email = decodedJWT.getSubject();
             var optionalUser = userRepository.findByEmail(email);
 
-            if (optionalUser.isEmpty()){
+            if (optionalUser.isEmpty()) {
                 throw new InvalidCredentialsException();
             }
 
-            var user  = optionalUser.get();
+            user = optionalUser.get();
             return createTokenResponse(user);
-        }catch (Exception e){
-            throw new JwtException(e);
+        } catch (Exception e) {
+            var tokens = redisTokenService.get(user.getEmail());
+            if (tokens.stream().anyMatch(token -> token.getType() == TokenType.REFRESH)) {
+                return createTokenResponse(user);
+            }
+            throw new InvalidCredentialsException();
         }
     }
 
     private TokenResponseDTO createTokenResponse(User user) {
         return new TokenResponseDTO(
-                jwt.createToken(user, TokenType.ACCESS),
-                jwt.createToken(user, TokenType.REFRESH),
+                jwt.createToken(user, TokenType.ACCESS).getValue(),
+                jwt.createToken(user, TokenType.REFRESH).getValue(),
                 accessTokenExpiration,
                 refreshTokenExpiration
         );
