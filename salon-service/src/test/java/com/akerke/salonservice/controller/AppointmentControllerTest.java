@@ -1,42 +1,19 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.common.exception.InvalidRequestPayloadException;
-import com.akerke.salonservice.common.constants.Gender;
-import com.akerke.salonservice.domain.dto.AddressDTO;
 import com.akerke.salonservice.domain.dto.AppointmentDTO;
 import com.akerke.salonservice.domain.entity.*;
-import com.akerke.salonservice.domain.repository.*;
 import com.akerke.salonservice.domain.service.AppointmentService;
-import com.akerke.salonservice.infrastructure.elastic.SalonWrapperRepository;
-import com.akerke.salonservice.tc.SalonServicePostgresTestContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.http.ProblemDetail;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.web.servlet.function.RequestPredicates.contentType;
 
 @WebMvcTest(AppointmentController.class)
 public class AppointmentControllerTest {

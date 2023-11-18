@@ -24,7 +24,7 @@ public class ApiGatewayApplication {
                 .route("chat-service", r -> r.path("/api/v1/chat/**")
                         .filters(f -> f.filter(filter))
                         .uri("http://localhost:3000"))
-                .route("notification-service", r -> r.path("/api/v1/notification")
+                .route("notification-service", r -> r.path("/api/v1/notification/**")
                         .uri("http://localhost:2904"))
                 .build();
     }

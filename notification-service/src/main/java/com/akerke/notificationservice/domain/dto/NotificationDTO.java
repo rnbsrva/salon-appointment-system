@@ -1,6 +1,6 @@
 package com.akerke.notificationservice.domain.dto;
 
-import com.akerke.notificationservice.common.constansts.NotificationType;
+import com.akerke.notificationservice.common.constants.NotificationType;
 
 
 public record NotificationDTO (

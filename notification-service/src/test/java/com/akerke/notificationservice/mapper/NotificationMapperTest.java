@@ -1,6 +1,6 @@
 package com.akerke.notificationservice.mapper;
 
-import com.akerke.notificationservice.common.constansts.NotificationType;
+import com.akerke.notificationservice.common.constants.NotificationType;
 import com.akerke.notificationservice.domain.mapper.NotificationMapper;
 import com.akerke.notificationservice.domain.dto.NotificationDTO;
 import com.akerke.notificationservice.domain.entity.Notification;

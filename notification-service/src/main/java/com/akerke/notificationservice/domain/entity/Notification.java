@@ -1,6 +1,6 @@
 package com.akerke.notificationservice.domain.entity;
 
-import com.akerke.notificationservice.common.constansts.NotificationType;
+import com.akerke.notificationservice.common.constants.NotificationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

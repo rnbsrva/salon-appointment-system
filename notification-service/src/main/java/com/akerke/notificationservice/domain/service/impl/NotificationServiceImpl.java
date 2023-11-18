@@ -42,6 +42,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void deleteByUser(Long id) {
-        notificationRepository.deleteNotificationsByRecipientId(id);
+        var notifications = this.findAllByUser(id);
+        for (Notification notification:  notifications) {
+            this.deleteById(notification.getId());
+        }
     }
 }

@@ -6,17 +6,18 @@ type Notification{
     phoneNumber: String!
     type: NotificationType!
     time: String!
+    checked: Boolean!
     recipientTgId:Int!
 }
 
 type Query{
-    getNotificationsByUser(recipientId:ID!):[Notification]
+    getNotificationsByUser(id:ID!):[Notification]!
     getNotificationById(id:ID!):Notification!
 }
 
 type Mutation {
-    deleteNotification(id: ID!): Boolean
-    deleteNotificationsByUser(id: ID!): [Notification]
+    deleteNotificationById(id: ID!): Boolean!
+    deleteNotificationsByUser(id: ID!): Boolean!
 }
 
 enum NotificationType{

@@ -3,6 +3,7 @@ package com.akerke.notificationservice.domain.mapper;
 import com.akerke.notificationservice.domain.dto.NotificationDTO;
 import com.akerke.notificationservice.domain.entity.Notification;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
@@ -12,6 +13,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 )
 public interface NotificationMapper {
 
+    @Mapping(target = "checked", expression = "java(false)")
     Notification toModel (NotificationDTO notificationDTO);
 
     NotificationDTO toDTO (Notification notification);

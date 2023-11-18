@@ -25,7 +25,6 @@ public class NotificationController {
     public Notification getNotificationById(
             @Argument Long id
     ) {
-        System.out.println("get notif");
         return notificationService.findById(id);
     }
 
@@ -37,20 +36,22 @@ public class NotificationController {
         return notificationService.findAllByUser(id);
     }
 
-    @MutationMapping
+    @MutationMapping()
     @ApiOperation("Delete a notification by its ID")
-    public void deleteNotificationById(
+    public Boolean deleteNotificationById(
             @Argument Long id
     ){
         notificationService.deleteById(id);
+        return true;
     }
 
     @MutationMapping
     @ApiOperation("Delete notifications for a user by their ID")
-    public void deleteNotificationsByUser(
+    public Boolean deleteNotificationsByUser(
             @Argument Long id
     ){
         notificationService.deleteByUser(id);
+        return true;
     }
 
 }

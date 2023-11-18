@@ -2,12 +2,9 @@ package com.akerke.salonservice.controller;
 
 import com.akerke.salonservice.domain.dto.AddressDTO;
 import com.akerke.salonservice.domain.dto.SalonDTO;
-import com.akerke.salonservice.domain.entity.Address;
 import com.akerke.salonservice.domain.entity.Salon;
-import com.akerke.salonservice.domain.repository.AddressRepository;
 import com.akerke.salonservice.domain.repository.SalonRepository;
 import com.akerke.salonservice.domain.service.SalonService;
-import com.akerke.salonservice.infrastructure.elastic.SalonWrapperRepository;
 import com.akerke.salonservice.infrastructure.elastic.service.SalonElasticService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

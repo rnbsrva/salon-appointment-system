@@ -1,4 +1,4 @@
-package com.akerke.notificationservice.common.constansts;
+package com.akerke.notificationservice.common.constants;
 
 public enum NotificationType {
     APPOINTMENT_CONFIRMATION,
