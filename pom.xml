@@ -17,7 +17,6 @@
 
   <modules>
     <module>api-gateway</module>
-    <module>auth-service</module>
     <module>storage-service</module>
     <module>mail-sender</module>
     <module>qr-service</module>
@@ -27,7 +26,6 @@
     <module>config-service</module>
     <module>discovery</module>
     <module>chat-service</module>
-    <module>tg-bot</module>
   </modules>
 
   <dependencies>
