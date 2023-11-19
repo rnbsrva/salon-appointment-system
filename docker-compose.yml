@@ -15,43 +15,43 @@ services:
 #      MINIO_CONSOLE_ADDRESS: ':9090'
 #    command: minio server /data
 #
-  mail-sender:
-    image: rnbsrva/mail-sender
-    container_name: mail-sender
-    depends_on:
-      kafka:
-        condition: service_started
-    ports:
-      - "4000:4000"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SERVER_PORT: 4000
-      SMTP_USERNAME: kkraken2005@gmail.com
-      SMTP_PASSWORD: qjgbgobivdwfxlel
-      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
-      'eureka.client.enabled': false
-
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  kafka:
-    image: confluentinc/cp-kafka:7.0.1
-    container_name: kafka
-    ports:
-      - "9092:9092"
-    depends_on:
-      zookeeper:
-        condition: service_started
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka:29092,LISTENER_EXTERNAL://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
+#  mail-sender:
+#    image: rnbsrva/mail-sender
+#    container_name: mail-sender
+#    depends_on:
+#      kafka:
+#        condition: service_started
+#    ports:
+#      - "4000:4000"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#      SERVER_PORT: 4000
+#      SMTP_USERNAME: kkraken2005@gmail.com
+#      SMTP_PASSWORD: qjgbgobivdwfxlel
+#      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
+#      'eureka.client.enabled': false
+#
+#
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:7.0.1
+#    container_name: zookeeper
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#
+#  kafka:
+#    image: confluentinc/cp-kafka:7.0.1
+#    container_name: kafka
+#    ports:
+#      - "9092:9092"
+#    depends_on:
+#      zookeeper:
+#        condition: service_started
+#    environment:
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka:29092,LISTENER_EXTERNAL://localhost:9092
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
 
 #  prometheus:
 #    image: prom/prometheus:v2.37.1

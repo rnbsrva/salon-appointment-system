@@ -51,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
     public TokenResponseDTO authenticate(
             AuthDTO auth
     ) {
-        var optionalUser = userRepository.findByEmail(auth.email());
+        var optionalUser = userRepository.findUserByEmail(auth.email());
         if (optionalUser.isEmpty() || passwordEncoder.matches(auth.password(), optionalUser.get().getPassword())) {
             throw new InvalidCredentialsException();
         }
@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
     public User register(
             RegistrationDTO registration
     ) {
-        var optionalEmailUser = userRepository.findByEmail(registration.email());
+        var optionalEmailUser = userRepository.findUserByEmail(registration.email());
         if (optionalEmailUser.isPresent()) {
             throw new EmailRegisteredYetException(registration.email());
         }
@@ -82,14 +82,14 @@ public class AuthServiceImpl implements AuthService {
             throw new PhoneNumberRegisteredYetException(registration.phoneNumber());
         }
         var otp = randomOtp.get();
-        sendVerificationDetails(registration.email(), otp);
+//        sendVerificationDetails(registration.email(), otp);todo uncomment
 
         return userRepository.save(userMapper.toModel(registration, otp));
     }
 
     @Override
     public TokenResponseDTO confirmEmail(OTP otp) {
-        var optionalUser = userRepository.findByEmail(otp.email());
+        var optionalUser = userRepository.findUserByEmail(otp.email());
 
         if (optionalUser.isEmpty()) {
             throw new InvalidCredentialsException();
@@ -124,7 +124,7 @@ public class AuthServiceImpl implements AuthService {
             }
 
             var email = decodedJWT.getSubject();
-            var optionalUser = userRepository.findByEmail(email);
+            var optionalUser = userRepository.findUserByEmail(email);
 
             if (optionalUser.isEmpty()) {
                 throw new InvalidCredentialsException();
@@ -157,7 +157,7 @@ public class AuthServiceImpl implements AuthService {
     public StatusResponseDTO changePassword(
             ChangePasswordDTO changePassword
     ) {
-        var user = userRepository.findByEmail(changePassword.email())
+        var user = userRepository.findUserByEmail(changePassword.email())
                 .orElseThrow(InvalidCredentialsException::new);
 
         if (!passwordEncoder.matches(changePassword.oldPassword(), user.getPassword())) {
