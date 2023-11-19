@@ -22,9 +22,6 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class QRServiceImpl implements QRService {
 
-
-    private static final String ATTACHMENT_SOURCE = "QR_IMAGE";
-
     @Value("${qr.charset}")
     private String charset;
 

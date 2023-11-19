@@ -15,8 +15,9 @@ public class ApiGatewayApplication {
     }
 
     @Bean
-    RouteLocator routeLocator(RouteLocatorBuilder builder
-            , AuthFilter filter
+    RouteLocator routeLocator(
+            RouteLocatorBuilder builder,
+            AuthFilter filter
     ) {
         return builder.routes()
                 .route("auth-service", r -> r.path("/api/v1/auth/**")

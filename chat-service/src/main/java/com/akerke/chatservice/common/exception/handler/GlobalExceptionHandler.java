@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
      * @return the ProblemDetail response
      */
     @ExceptionHandler(EntityNotFoundException.class)
-    ProblemDetail handle(EntityNotFoundException e) {
+    ProblemDetail handle(EntityNotFoundException e)  {
         return withDetails(e, 404);
     }
 
