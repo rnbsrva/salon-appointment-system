@@ -27,7 +27,6 @@
     <module>config-service</module>
     <module>discovery</module>
     <module>chat-service</module>
-    <module>tg-bot</module>
   </modules>
 
   <dependencies>

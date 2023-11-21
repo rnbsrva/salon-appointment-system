@@ -1,6 +1,5 @@
 package com.akerke.storageservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.storageservice.common.constants.AttachmentSource;
 import com.akerke.storageservice.domain.request.FileOperationRequest;
 import com.akerke.storageservice.domain.service.MinIOService;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("storage")
 @Api("Storage Minio API")
-@EnableLoggerLib
 public class MinIOController {
 
     private final MinIOService minIOService;
