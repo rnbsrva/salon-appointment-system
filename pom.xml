@@ -23,7 +23,6 @@
     <module>notification-service</module>
     <module>salon-service</module>
     <module>logger-lib</module>
-    <module>config-service</module>
     <module>discovery</module>
     <module>chat-service</module>
   </modules>
