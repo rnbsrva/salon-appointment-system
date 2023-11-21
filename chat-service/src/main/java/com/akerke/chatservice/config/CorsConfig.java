@@ -1,14 +1,13 @@
 package com.akerke.chatservice.config;
 
+import com.akerke.chatservice.common.interceptor.LoggingInterceptor;
 import lombok.NonNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -31,7 +30,9 @@ public class CorsConfig {
     private String originPatterns;
 
     @Bean
-    public WebMvcConfigurer webMvcConfigurer() {
+    public WebMvcConfigurer webMvcConfigurer(
+            LoggingInterceptor loggingInterceptor
+    ) {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(
@@ -42,6 +43,12 @@ public class CorsConfig {
                         .allowedMethods(allowedMethods)
                         .allowedHeaders(allowedHeaders)
                         .allowCredentials(allowedCredentials);
+            }
+
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(loggingInterceptor).addPathPatterns("/**");
+                WebMvcConfigurer.super.addInterceptors(registry);
             }
         };
     }
