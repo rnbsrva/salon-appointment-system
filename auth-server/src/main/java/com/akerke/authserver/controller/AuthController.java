@@ -3,6 +3,7 @@ package com.akerke.authserver.controller;
 import com.akerke.authserver.common.jwt.JwtRouteValidator;
 import com.akerke.authserver.domain.dto.*;
 import com.akerke.authserver.domain.service.AuthService;
+import com.akerke.loggingstarter.common.annotation.EnableLoggerLib;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("auth")
 @RequiredArgsConstructor
+@EnableLoggerLib
 public class AuthController {
 
     private final AuthService authService;

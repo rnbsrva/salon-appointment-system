@@ -13,20 +13,17 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>qr-service</name>
     <description>qr-service</description>
+
     <properties>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
         <spring.cloud.versoin>2022.0.1</spring.cloud.versoin>
         <testcontainers.version>1.17.6</testcontainers.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.akerke</groupId>
-            <artifactId>logger-lib</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

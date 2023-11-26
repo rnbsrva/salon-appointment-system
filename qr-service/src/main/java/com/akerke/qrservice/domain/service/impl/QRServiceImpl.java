@@ -28,7 +28,6 @@ public class QRServiceImpl implements QRService {
     @Async("asyncExecutor")
     @Override
     public CompletableFuture<Void> generateQRAsync(HttpServletResponse response, String link) {
-
         return CompletableFuture.runAsync(() -> {
             try {
                 generateMultipartQR(response, link)
