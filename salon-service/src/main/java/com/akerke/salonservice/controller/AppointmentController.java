@@ -1,6 +1,5 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.dto.AppointmentDTO;
 import com.akerke.salonservice.domain.service.AppointmentService;
 import io.swagger.annotations.Api;
@@ -19,7 +18,6 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequiredArgsConstructor
 @RestController
 @Api(value = "Appointment API")
-@EnableLoggerLib
 public class AppointmentController {
 
     private final AppointmentService appointmentService;

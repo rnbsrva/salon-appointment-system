@@ -5,7 +5,6 @@ import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.entity.Salon;
 import com.akerke.salonservice.domain.repository.SalonRepository;
 import com.akerke.salonservice.domain.service.SalonService;
-import com.akerke.salonservice.infrastructure.elastic.service.SalonElasticService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,9 +34,6 @@ public class SalonControllerTest {
 
     @MockBean
     private SalonService salonService;
-    @MockBean
-    private SalonElasticService salonElasticService;
-
     private Salon salon;
     private Long salonId;
 

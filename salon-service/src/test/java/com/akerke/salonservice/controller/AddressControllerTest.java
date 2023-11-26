@@ -3,7 +3,6 @@ package com.akerke.salonservice.controller;
 import com.akerke.salonservice.domain.dto.AddressDTO;
 import com.akerke.salonservice.domain.entity.Address;
 import com.akerke.salonservice.domain.repository.AddressRepository;
-import com.akerke.salonservice.infrastructure.elastic.SalonWrapperRepository;
 import com.akerke.salonservice.tc.SalonServicePostgresTestContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,8 +39,6 @@ class AddressControllerTest {
     @Autowired
     private AddressRepository addressRepository;
 
-    @MockBean
-    private SalonWrapperRepository salonWrapperRepository;
 
     private Address address;
     private Long addressId;

@@ -1,6 +1,5 @@
 package com.akerke.notificationservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.notificationservice.domain.entity.Notification;
 import com.akerke.notificationservice.domain.service.NotificationService;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +14,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@EnableLoggerLib
 public class NotificationController {
 
     private final NotificationService notificationService;

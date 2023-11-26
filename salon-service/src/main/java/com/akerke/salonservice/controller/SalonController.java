@@ -1,10 +1,8 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.common.payload.SalonSearchRequest;
 import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.service.SalonService;
-import com.akerke.salonservice.infrastructure.elastic.service.SalonElasticService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
@@ -21,11 +19,9 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequestMapping("salon")
 @Api("Salon API")
 @RequiredArgsConstructor
-@EnableLoggerLib
 public class SalonController {
 
     private final SalonService salonService;
-    private final SalonElasticService salonElasticService;
 
     @PostMapping()
     @ApiOperation("Create a new salon")
@@ -72,24 +68,24 @@ public class SalonController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("suggest")
-    @ApiOperation("Suggest a salon")
-    ResponseEntity<?> fetchSuggestions(
-            @RequestParam String query
-    ) {
-        return ResponseEntity.
-                ok(salonElasticService.fetchSuggestions(query));
-    }
-
-    @PostMapping("search")
-    @ApiOperation("Search for salon")
-    ResponseEntity<?> search(
-            @RequestBody SalonSearchRequest searchRequest,
-            @RequestParam(defaultValue = "0") int from,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        return ResponseEntity
-                .ok(salonElasticService.search(searchRequest, from, size));
-    }
+//    @GetMapping("suggest")
+//    @ApiOperation("Suggest a salon")
+//    ResponseEntity<?> fetchSuggestions(
+//            @RequestParam String query
+//    ) {
+//        return ResponseEntity.
+//                ok(salonElasticService.fetchSuggestions(query));
+//    }
+//
+//    @PostMapping("search")
+//    @ApiOperation("Search for salon")
+//    ResponseEntity<?> search(
+//            @RequestBody SalonSearchRequest searchRequest,
+//            @RequestParam(defaultValue = "0") int from,
+//            @RequestParam(defaultValue = "10") int size
+//    ) {
+//        return ResponseEntity
+//                .ok(salonElasticService.search(searchRequest, from, size));
+//    }
 }
 

@@ -1,6 +1,5 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.dto.TreatmentDTO;
 import com.akerke.salonservice.domain.service.TreatmentService;
 import io.swagger.annotations.Api;
@@ -16,7 +15,6 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 
 @RestController
 @RequestMapping("treatment")
-@EnableLoggerLib
 @Api("Treatment API")
 @RequiredArgsConstructor
 public class TreatmentController {

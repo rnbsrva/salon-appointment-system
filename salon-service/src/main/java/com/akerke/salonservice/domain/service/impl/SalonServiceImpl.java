@@ -8,7 +8,6 @@ import com.akerke.salonservice.domain.repository.SalonRepository;
 import com.akerke.salonservice.domain.service.AddressService;
 import com.akerke.salonservice.domain.service.SalonService;
 import com.akerke.salonservice.domain.service.UserService;
-import com.akerke.salonservice.infrastructure.elastic.service.SalonElasticService;
 import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.SalonMapper;
@@ -26,7 +25,6 @@ public class SalonServiceImpl implements SalonService {
     private final AddressService addressService;
     private final UserService userService;
     private final KafkaProducer kafkaProducer;
-    private final SalonElasticService salonElasticService;
 
     @Override
     public Salon getById(Long id) {
@@ -53,7 +51,6 @@ public class SalonServiceImpl implements SalonService {
                 new KafkaManageRoleRequest(savedSalon.getId(), savedSalon.getOwner().getEmail(), true)
         );
 
-        salonElasticService.save(savedSalon);
         return savedSalon;
     }
 
@@ -61,9 +58,7 @@ public class SalonServiceImpl implements SalonService {
     public void update(SalonDTO salonDTO, Long id) {
         var salon = this.getById(id);
         salonMapper.update(salonDTO, salon);
-        salonElasticService.save(
-                salonRepository.save(salon)
-        );
+        salonRepository.save(salon);
     }
 
     @Override
@@ -76,6 +71,5 @@ public class SalonServiceImpl implements SalonService {
         );
 
         salonRepository.delete(salon);
-        salonElasticService.delete(salon);
     }
 }

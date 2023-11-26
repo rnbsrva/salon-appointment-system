@@ -1,6 +1,5 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.dto.FeedbackDTO;
 import com.akerke.salonservice.domain.service.FeedbackService;
 import io.swagger.annotations.Api;
@@ -18,7 +17,6 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequestMapping("feedback")
 @RequiredArgsConstructor
 @Api(value = "Feedback API")
-@EnableLoggerLib
 public class FeedbackController {
 
     private final FeedbackService feedbackService;

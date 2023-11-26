@@ -1,6 +1,5 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.dto.MasterDTO;
 import com.akerke.salonservice.domain.service.MasterService;
 import io.swagger.annotations.Api;
@@ -20,7 +19,6 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequestMapping("master")
 @RequiredArgsConstructor
 @Api(value = "Master API")
-@EnableLoggerLib
 public class MasterController {
 
     private final MasterService masterService;

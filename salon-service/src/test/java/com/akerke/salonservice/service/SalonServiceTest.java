@@ -1,6 +1,7 @@
 package com.akerke.salonservice.service;
 
 import com.akerke.salonservice.common.constants.AppConstants;
+import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.dto.AddressDTO;
 import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.entity.Address;
@@ -8,7 +9,6 @@ import com.akerke.salonservice.domain.entity.Salon;
 import com.akerke.salonservice.domain.entity.User;
 import com.akerke.salonservice.domain.service.AddressService;
 import com.akerke.salonservice.domain.service.UserService;
-import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.SalonMapper;

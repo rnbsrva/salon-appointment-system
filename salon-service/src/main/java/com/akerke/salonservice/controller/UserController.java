@@ -1,6 +1,5 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.dto.UserDTO;
 import com.akerke.salonservice.domain.service.UserService;
 import io.swagger.annotations.Api;
@@ -18,7 +17,6 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequestMapping("user")
 @RequiredArgsConstructor
 @Api("User API")
-@EnableLoggerLib
 public class UserController {
 
     private final UserService userService;

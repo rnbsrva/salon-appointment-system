@@ -3,7 +3,7 @@ package com.akerke.salonservice.service;
 import com.akerke.salonservice.common.constants.Gender;
 import com.akerke.salonservice.domain.dto.UserDTO;
 import com.akerke.salonservice.domain.entity.User;
-import com.akerke.exceptionlib.exception.EntityNotFoundException;
+import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.UserMapper;
 import com.akerke.salonservice.domain.repository.UserRepository;
 import com.akerke.salonservice.domain.service.impl.UserServiceImpl;

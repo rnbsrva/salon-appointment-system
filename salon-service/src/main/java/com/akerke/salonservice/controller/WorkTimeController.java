@@ -1,6 +1,5 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import com.akerke.salonservice.domain.dto.WorkTimeDTO;
 import com.akerke.salonservice.domain.service.WorkTimeService;
 import io.swagger.annotations.Api;
@@ -18,7 +17,6 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @RequiredArgsConstructor
 @RequestMapping("worktime")
 @Api("WorkTime API")
-@EnableLoggerLib
 public class WorkTimeController {
 
     private final WorkTimeService workTimeService;
