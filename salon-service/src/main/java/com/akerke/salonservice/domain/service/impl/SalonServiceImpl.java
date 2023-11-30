@@ -1,6 +1,8 @@
 package com.akerke.salonservice.domain.service.impl;
 
 import com.akerke.salonservice.common.constants.AppConstants;
+import com.akerke.salonservice.common.payload.SalonSearch;
+import com.akerke.salonservice.common.specs.SalonSpecifications;
 import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.entity.Salon;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
@@ -12,6 +14,8 @@ import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.SalonMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,5 +75,11 @@ public class SalonServiceImpl implements SalonService {
         );
 
         salonRepository.delete(salon);
+    }
+
+    @Override
+    public Page<Salon> find(SalonSearch salonSearch, int page, int size) {
+        var spec = SalonSpecifications.buildSpecification(salonSearch);
+        return salonRepository.findAll(spec, PageRequest.of(page,size));
     }
 }

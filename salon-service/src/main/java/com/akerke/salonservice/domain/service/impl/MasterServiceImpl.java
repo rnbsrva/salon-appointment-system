@@ -13,6 +13,8 @@ import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.MasterMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,6 +83,7 @@ public class MasterServiceImpl implements MasterService {
     public List<Master> getAll() {
         return masterRepository.findAll();
     }
+
 
 
 }

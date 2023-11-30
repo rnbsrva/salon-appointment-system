@@ -33,6 +33,7 @@ public class Salon extends DateAudit {
     private User owner;
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             mappedBy = "salon",
             cascade = CascadeType.ALL
     )
@@ -49,8 +50,8 @@ public class Salon extends DateAudit {
     @OneToMany(
             mappedBy = "salon",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<WorkDay> workDays;
 

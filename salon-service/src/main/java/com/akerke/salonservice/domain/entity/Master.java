@@ -48,13 +48,15 @@ public class Master extends DateAudit {
     @OneToMany(
             mappedBy ="master",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<Appointment> appointments;
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<WorkTime> workTimes;
 
@@ -62,7 +64,8 @@ public class Master extends DateAudit {
     @OneToMany(
             mappedBy = "master",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<Feedback> feedbacks;
 

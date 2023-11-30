@@ -1,7 +1,9 @@
 package com.akerke.salonservice.domain.service;
 
+import com.akerke.salonservice.common.payload.SalonSearch;
 import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.entity.Salon;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -48,4 +50,5 @@ public interface SalonService {
      */
     void delete(Long id);
 
+    Page<Salon> find(SalonSearch salonSearch, int page, int size);
 }

@@ -1,6 +1,6 @@
 package com.akerke.salonservice.controller;
 
-import com.akerke.salonservice.common.payload.SalonSearchRequest;
+import com.akerke.salonservice.common.payload.SalonSearch;
 import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.service.SalonService;
 import io.swagger.annotations.Api;
@@ -8,11 +8,13 @@ import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import static com.akerke.salonservice.common.specs.SalonSpecifications.buildSpecification;
 import static com.akerke.salonservice.common.validate.Validator.validate;
 
 @Controller
@@ -68,24 +70,15 @@ public class SalonController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("suggest")
-//    @ApiOperation("Suggest a salon")
-//    ResponseEntity<?> fetchSuggestions(
-//            @RequestParam String query
-//    ) {
-//        return ResponseEntity.
-//                ok(salonElasticService.fetchSuggestions(query));
-//    }
-//
-//    @PostMapping("search")
-//    @ApiOperation("Search for salon")
-//    ResponseEntity<?> search(
-//            @RequestBody SalonSearchRequest searchRequest,
-//            @RequestParam(defaultValue = "0") int from,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        return ResponseEntity
-//                .ok(salonElasticService.search(searchRequest, from, size));
-//    }
+    @PostMapping(value = "find")
+    @ApiOperation("Search for salon")
+    ResponseEntity<?> search(
+            @RequestBody SalonSearch searchRequest,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "5") int size
+    ) {
+        return ResponseEntity
+                .ok(salonService.find(searchRequest,page,size));
+    }
 }
 
