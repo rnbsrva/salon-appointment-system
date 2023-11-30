@@ -20,6 +20,7 @@ import static com.akerke.salonservice.common.validate.Validator.validate;
 @Controller
 @RequestMapping("salon")
 @Api("Salon API")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class SalonController {
 
@@ -70,7 +71,7 @@ public class SalonController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "find")
+    @PostMapping(value = "search")
     @ApiOperation("Search for salon")
     ResponseEntity<?> search(
             @RequestBody SalonSearch searchRequest,

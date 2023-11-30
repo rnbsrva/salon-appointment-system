@@ -27,6 +27,8 @@ public class ApiGatewayApplication {
                         .uri("http://localhost:3000"))
                 .route("notification-service", r -> r.path("/api/v1/notification/**")
                         .uri("http://localhost:2904"))
+                .route("salon-service", r -> r.path("/api/v1/salon/**")
+                        .uri("http://localhost:8080"))
                 .build();
     }
 

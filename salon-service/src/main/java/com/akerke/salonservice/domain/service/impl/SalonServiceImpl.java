@@ -14,13 +14,16 @@ import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.SalonMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SalonServiceImpl implements SalonService {
 
@@ -80,6 +83,7 @@ public class SalonServiceImpl implements SalonService {
     @Override
     public Page<Salon> find(SalonSearch salonSearch, int page, int size) {
         var spec = SalonSpecifications.buildSpecification(salonSearch);
+        log.info(Arrays.toString(salonRepository.findAll(spec, PageRequest.of(page, size)).stream().toArray()));
         return salonRepository.findAll(spec, PageRequest.of(page,size));
     }
 }

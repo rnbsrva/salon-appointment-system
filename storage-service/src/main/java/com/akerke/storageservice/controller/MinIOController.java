@@ -49,9 +49,20 @@ public class MinIOController {
         minIOService.removeObjects(target, source);
     }
 
-    @GetMapping("/download")
+    @GetMapping("/downloadFile")
     @ApiOperation("Download a specific file")
     void downloadFile(
+            @RequestParam String name,
+            @RequestParam Long target,
+            @RequestParam AttachmentSource source,
+            HttpServletResponse response
+    ) {
+        minIOService.getObjectToDownload(new FileOperationRequest(target, source, name), response);
+    }
+
+    @GetMapping("/getFile")
+    @ApiOperation("Download a specific file")
+    void getFile(
             @RequestParam String name,
             @RequestParam Long target,
             @RequestParam AttachmentSource source,

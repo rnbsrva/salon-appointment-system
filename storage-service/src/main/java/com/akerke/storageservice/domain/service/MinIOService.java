@@ -10,6 +10,8 @@ import java.util.concurrent.ExecutionException;
 public interface MinIOService {
     void putObject(FileOperationRequest dto, MultipartFile file);
 
+    void getObjectToDownload(FileOperationRequest dto, HttpServletResponse response);
+
     void getObject(FileOperationRequest dto, HttpServletResponse response);
 
     void removeBucket(Long target, AttachmentSource source);

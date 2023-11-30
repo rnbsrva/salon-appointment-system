@@ -54,7 +54,7 @@ public class MinIOServiceImpl implements MinIOService {
 
     @Override
     @SneakyThrows
-    public void getObject(FileOperationRequest dto, HttpServletResponse response) {
+    public void getObjectToDownload(FileOperationRequest dto, HttpServletResponse response) {
         this.getFromFuture(submit(() -> {
             GetObjectResponse minioInputStream;
             try {
@@ -70,6 +70,44 @@ public class MinIOServiceImpl implements MinIOService {
 
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + dto.name() + "\"");
+
+            try (
+                    var inputStream = minioInputStream;
+                    var outputStream = response.getOutputStream()
+            ) {
+
+                var buffer = new byte[10240];
+                int bytesRead;
+
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+            } catch (Exception e) {
+                throw new RuntimeException();
+            }
+        }));
+    }
+
+
+    @Override
+    @SneakyThrows
+    public void getObject(FileOperationRequest dto, HttpServletResponse response) {
+        this.getFromFuture(submit(() -> {
+            GetObjectResponse minioInputStream;
+            try {
+                minioInputStream = minioClient.getObject(
+                        GetObjectArgs.builder()
+                                .bucket(dto.source().getName())
+                                .object(toObjectNameWithFolder(dto))
+                                .build()
+                );
+            } catch (Exception e) {
+                throw new FileOperationException(e.getMessage());
+            }
+
+//            response.setContentType("application/octet-stream");;
+            response.setHeader("Content-Disposition", "inline; filename=\"" + dto.name() + "\"");
 
             try (
                     var inputStream = minioInputStream;
