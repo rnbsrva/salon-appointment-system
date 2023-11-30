@@ -18,6 +18,7 @@ public interface SalonMapper {
     @Mapping(target = "masters", expression = "java(new ArrayList<Master>())")
     @Mapping(target = "treatments", expression = "java(new ArrayList<Treatment>())")
     @Mapping(target = "workDays", expression = "java(new ArrayList<WorkDay>())")
+    @Mapping(target = "imageMetadata", expression = "java(new ArrayList<>())")
     Salon toModel(SalonDTO salonDTO);
 
     @Mapping(target = "ownerId", expression = "java(salon.getOwner().getId())")

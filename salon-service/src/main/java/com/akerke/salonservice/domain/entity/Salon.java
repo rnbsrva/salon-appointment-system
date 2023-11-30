@@ -55,6 +55,14 @@ public class Salon extends DateAudit {
     )
     private List<WorkDay> workDays;
 
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private List<ImageMetadata> imageMetadata;
+
+
     @JsonGetter("ownerId")
     public Long getUserId(){
         return owner.getId();

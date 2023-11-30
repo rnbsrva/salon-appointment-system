@@ -4,6 +4,7 @@ import com.akerke.salonservice.common.constants.AppConstants;
 import com.akerke.salonservice.common.payload.SalonSearch;
 import com.akerke.salonservice.common.specs.SalonSpecifications;
 import com.akerke.salonservice.domain.dto.SalonDTO;
+import com.akerke.salonservice.domain.entity.ImageMetadata;
 import com.akerke.salonservice.domain.entity.Salon;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.repository.SalonRepository;
@@ -85,5 +86,12 @@ public class SalonServiceImpl implements SalonService {
         var spec = SalonSpecifications.buildSpecification(salonSearch);
         log.info(Arrays.toString(salonRepository.findAll(spec, PageRequest.of(page, size)).stream().toArray()));
         return salonRepository.findAll(spec, PageRequest.of(page,size));
+    }
+
+    @Override
+    public void addImage(Long id, String imageId) {
+        var salon = this.getById(id);
+        salon.getImageMetadata().add(new ImageMetadata(imageId));
+        salonRepository.save(salon);
     }
 }

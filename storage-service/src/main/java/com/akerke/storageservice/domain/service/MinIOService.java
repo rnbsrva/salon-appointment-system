@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.concurrent.ExecutionException;
 
 public interface MinIOService {
-    void putObject(FileOperationRequest dto, MultipartFile file);
+    void putObject(FileOperationRequest dto, MultipartFile file, Boolean isMainImage);
 
     void getObjectToDownload(FileOperationRequest dto, HttpServletResponse response);
 

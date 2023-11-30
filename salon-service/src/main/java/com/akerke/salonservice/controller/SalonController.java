@@ -62,6 +62,15 @@ public class SalonController {
         return ResponseEntity.accepted().build();
     }
 
+    @RequestMapping(method = {RequestMethod.PUT}, value = "add-image/{id}")
+    ResponseEntity<?> addImage(
+            @RequestParam String imageId,
+            @PathVariable Long id
+    ) {
+        salonService.addImage(id, imageId);
+        return ResponseEntity.accepted().build();
+    }
+
     @DeleteMapping("{id}")
     @ApiOperation("Delete an salon by ID")
     ResponseEntity<?> delete(

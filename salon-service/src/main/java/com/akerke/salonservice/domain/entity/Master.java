@@ -70,6 +70,14 @@ public class Master extends DateAudit {
     private List<Feedback> feedbacks;
 
 
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private List<ImageMetadata> imageMetadata;
+
+
     @JsonGetter("salonId")
     public Long getSalonId(){
         return salon.getId();

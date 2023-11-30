@@ -1,3 +1,5 @@
 databaseChangeLog:
-  - includeAll:
-      path: db/changelog/changeset
+  - include:
+     file: classpath:db/changelog/changeset/create-tables.sql
+  - include:
+      file: classpath:db/changelog/changeset/create-image-metadata-tables.sql

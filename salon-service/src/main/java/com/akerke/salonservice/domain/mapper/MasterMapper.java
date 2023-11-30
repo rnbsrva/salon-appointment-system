@@ -25,6 +25,7 @@ public interface MasterMapper {
     @Mapping(target = "workTimes", expression = "java(new ArrayList<>())")
     @Mapping(target = "appointments", expression = "java(new ArrayList<>())")
     @Mapping(target = "treatments", expression = "java(new ArrayList<>())")
+    @Mapping(target = "imageMetadata", expression = "java(new ArrayList<>())")
     Master toModel(MasterDTO masterDTO);
 
     @Mapping(target = "userId", expression = "java(master.getUser().getId())")

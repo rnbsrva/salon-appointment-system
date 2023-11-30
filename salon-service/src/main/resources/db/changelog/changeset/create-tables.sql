@@ -202,5 +202,3 @@ ALTER TABLE feedback
 
 ALTER TABLE feedback
     ADD CONSTRAINT FK_FEEDBACK_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);
-
-

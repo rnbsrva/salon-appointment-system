@@ -1,6 +1,7 @@
 package com.akerke.storageservice.controller;
 
 import com.akerke.storageservice.common.constants.AttachmentSource;
+import com.akerke.storageservice.domain.dto.ImageMetadataDTO;
 import com.akerke.storageservice.domain.request.FileOperationRequest;
 import com.akerke.storageservice.domain.service.MinIOService;
 import io.swagger.annotations.Api;
@@ -19,15 +20,15 @@ public class MinIOController {
 
     private final MinIOService minIOService;
 
-    @PostMapping("/upload")
-    @ApiOperation("Upload a file to MinIO storage")
-    void uploadFileToMinIO(
+    @PostMapping("/upload-image")
+    @ApiOperation("Upload an image to MinIO storage")
+    void uploadImageToMinIO(
             @RequestParam("file") MultipartFile file,
             @RequestParam Long target,
             @RequestParam AttachmentSource source,
-            @RequestParam String name
+            @RequestParam Boolean isMainImage
     ) {
-        minIOService.putObject(new FileOperationRequest(target, source, name), file);
+        minIOService.putObject(new FileOperationRequest(target, source, null), file, isMainImage);
     }
 
     @GetMapping("/downloadByGroup")

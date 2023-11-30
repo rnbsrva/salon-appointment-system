@@ -2,6 +2,9 @@ package com.akerke.storageservice.domain.service.impl;
 
 import com.akerke.storageservice.common.constants.AttachmentSource;
 import com.akerke.storageservice.common.exception.FileOperationException;
+import com.akerke.storageservice.common.feign.SalonServiceFeignClient;
+import com.akerke.storageservice.domain.entity.ImageMetadata;
+import com.akerke.storageservice.domain.repository.ImageMetadataRepository;
 import com.akerke.storageservice.domain.request.FileOperationRequest;
 import com.akerke.storageservice.domain.service.MinIOService;
 import io.minio.*;
@@ -27,6 +30,8 @@ public class MinIOServiceImpl implements MinIOService {
 
     private final MinioClient minioClient;
     private final AsyncTaskExecutor applicationTaskExecutor;
+    private final ImageMetadataRepository repository;
+    private final SalonServiceFeignClient feignClient;
 
     private static final Integer TIME_LIMIT = 3;
 
@@ -34,7 +39,18 @@ public class MinIOServiceImpl implements MinIOService {
     private String urlPrefix;
 
     @Override
-    public void putObject(FileOperationRequest dto, MultipartFile file) {
+    public void putObject(FileOperationRequest dto, MultipartFile file, Boolean isMainImage) {
+
+        var imageMetadata = repository.save(new ImageMetadata(
+                isMainImage,
+                file.getOriginalFilename(),
+                dto.target(),
+                dto.source()
+                )
+        );
+
+        this.feignClient.addImage(imageMetadata.getId(), imageMetadata.getTarget());
+
         this.getFromFuture(submit(() -> {
             try {
                 var in = new ByteArrayInputStream(file.getBytes());
