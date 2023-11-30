@@ -2,6 +2,7 @@ package com.akerke.storageservice.common.exception.handler;
 
 import com.akerke.storageservice.common.exception.BucketInitializerException;
 import com.akerke.storageservice.common.exception.FileOperationException;
+import com.akerke.storageservice.common.exception.ImageMetadataNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -36,6 +37,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FileOperationException.class)
     ProblemDetail handle(FileOperationException e) {
         return withDetails(e, 500);
+    }
+
+    @ExceptionHandler(FileOperationException.class)
+    ProblemDetail handle(ImageMetadataNotFoundException e) {
+        return withDetails(e, 404);
     }
 
     private ProblemDetail withDetails(RuntimeException e, int sc) {

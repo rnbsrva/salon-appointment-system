@@ -82,6 +82,14 @@ public class MinIOController {
         minIOService.removeObject(dto);
     }
 
+    @GetMapping("{imageId}")
+    void getImage(
+            HttpServletResponse response,
+            @PathVariable String imageId
+    ) { 
+        minIOService.getObject(imageId, response);
+    }
+
 
 
 }

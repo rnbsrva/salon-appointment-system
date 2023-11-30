@@ -22,4 +22,5 @@ public interface MinIOService {
 
     void removeObjects(Long target, AttachmentSource source);
 
+    void getObject(String id, HttpServletResponse response);
 }

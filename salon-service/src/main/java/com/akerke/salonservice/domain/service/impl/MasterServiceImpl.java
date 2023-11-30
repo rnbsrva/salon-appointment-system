@@ -2,6 +2,7 @@ package com.akerke.salonservice.domain.service.impl;
 
 import com.akerke.salonservice.common.constants.AppConstants;
 import com.akerke.salonservice.domain.dto.MasterDTO;
+import com.akerke.salonservice.domain.entity.ImageMetadata;
 import com.akerke.salonservice.domain.entity.Master;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.repository.MasterRepository;
@@ -84,6 +85,12 @@ public class MasterServiceImpl implements MasterService {
         return masterRepository.findAll();
     }
 
+    @Override
+    public void addImage(Long id, String imageId) {
+        var master = this.getById(id);
+        master.getImageMetadata().add(new ImageMetadata(imageId));
+        masterRepository.save(master);
+    }
 
 
 }

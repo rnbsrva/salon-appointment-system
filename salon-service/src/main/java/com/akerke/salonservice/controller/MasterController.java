@@ -59,6 +59,15 @@ public class MasterController {
         return ResponseEntity.accepted().build();
     }
 
+    @PutMapping("add-image/{id}")
+    ResponseEntity<?> addImage(
+            @RequestParam String imageId,
+            @PathVariable Long id
+    ) {
+        masterService.addImage(id, imageId);
+        return ResponseEntity.accepted().build();
+    }
+
     @DeleteMapping("{id}")
     @ApiOperation("Delete an master by ID")
     ResponseEntity<?> delete (

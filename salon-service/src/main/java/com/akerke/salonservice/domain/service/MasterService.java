@@ -56,4 +56,5 @@ public interface MasterService {
      */
     List<Master> getAll();
 
+    void addImage(Long id, String imageId);
 }
