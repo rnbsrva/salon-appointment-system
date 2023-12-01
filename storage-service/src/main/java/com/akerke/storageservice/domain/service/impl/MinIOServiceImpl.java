@@ -47,9 +47,9 @@ public class MinIOServiceImpl implements MinIOService {
                 var imageMetadata = repository.save(toImageMetadata(isMainImage, dto, file));
 
                 if (dto.source() == AttachmentSource.SALON_IMAGE)
-                    this.feignClient.addImageToSalon(imageMetadata.getId(), imageMetadata.getTarget());
+                    this.feignClient.addImageToSalon(imageMetadata.getId(), imageMetadata.getTarget(), isMainImage);
                 else
-                    this.feignClient.addImageToMaster(imageMetadata.getId(), imageMetadata.getTarget());
+                    this.feignClient.addImageToMaster(imageMetadata.getId(), imageMetadata.getTarget(), isMainImage);
 
                 var in = new ByteArrayInputStream(file.getBytes());
                 var objectName = file.getOriginalFilename();

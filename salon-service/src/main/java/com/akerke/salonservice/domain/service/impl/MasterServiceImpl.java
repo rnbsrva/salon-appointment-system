@@ -14,8 +14,6 @@ import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.MasterMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -86,9 +84,9 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public void addImage(Long id, String imageId) {
+    public void addImage(Long id, String imageId, Boolean isMainImage) {
         var master = this.getById(id);
-        master.getImageMetadata().add(new ImageMetadata(imageId));
+        master.getImageMetadata().add(new ImageMetadata(imageId, isMainImage));
         masterRepository.save(master);
     }
 

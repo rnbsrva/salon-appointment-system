@@ -52,6 +52,6 @@ public interface SalonService {
 
     Page<Salon> find(SalonSearch salonSearch, int page, int size);
 
-    void addImage(Long id, String imageId);
+    void addImage(Long id, String imageId, Boolean isMainImage);
 
 }

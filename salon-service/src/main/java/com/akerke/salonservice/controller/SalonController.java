@@ -65,9 +65,10 @@ public class SalonController {
     @PutMapping("add-image/{id}")
     ResponseEntity<?> addImage(
             @RequestParam String imageId,
-            @PathVariable Long id
+            @PathVariable Long id,
+            @RequestParam Boolean isMainImage
     ) {
-        salonService.addImage(id, imageId);
+        salonService.addImage(id, imageId, isMainImage);
         return ResponseEntity.accepted().build();
     }
 

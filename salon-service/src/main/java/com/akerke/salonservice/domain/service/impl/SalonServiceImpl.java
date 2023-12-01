@@ -89,9 +89,9 @@ public class SalonServiceImpl implements SalonService {
     }
 
     @Override
-    public void addImage(Long id, String imageId) {
+    public void addImage(Long id, String imageId, Boolean isMainImage) {
         var salon = this.getById(id);
-        salon.getImageMetadata().add(new ImageMetadata(imageId));
+        salon.getImageMetadata().add(new ImageMetadata(imageId, isMainImage));
         salonRepository.save(salon);
     }
 }

@@ -17,7 +17,10 @@ public class ImageMetadata {
 
     private String imageId;
 
-    public ImageMetadata(String imageId) {
+    private Boolean isMainImage;
+
+    public ImageMetadata(String imageId, Boolean isMainImage) {
         this.imageId = imageId;
+        this.isMainImage = isMainImage;
     }
 }

@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
         return withDetails(e, 500);
     }
 
-    @ExceptionHandler(FileOperationException.class)
+    @ExceptionHandler(ImageMetadataNotFoundException.class)
     ProblemDetail handle(ImageMetadataNotFoundException e) {
         return withDetails(e, 404);
     }

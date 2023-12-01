@@ -61,10 +61,11 @@ public class MasterController {
 
     @PutMapping("add-image/{id}")
     ResponseEntity<?> addImage(
+            @PathVariable Long id,
             @RequestParam String imageId,
-            @PathVariable Long id
+            @RequestParam Boolean isMainImage
     ) {
-        masterService.addImage(id, imageId);
+        masterService.addImage(id, imageId, isMainImage);
         return ResponseEntity.accepted().build();
     }
 

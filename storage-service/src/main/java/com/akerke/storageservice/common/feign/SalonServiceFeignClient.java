@@ -10,13 +10,15 @@ public interface SalonServiceFeignClient {
     @RequestMapping(method = RequestMethod.PUT, value = "salon/add-image/{id}")
     ResponseEntity<?> addImageToSalon(
             @RequestParam String imageId,
-            @PathVariable Long id
+            @PathVariable Long id,
+            @RequestParam Boolean isMainImage
     );
 
     @RequestMapping(method = RequestMethod.PUT, value = "master/add-image/{id}")
     ResponseEntity<?> addImageToMaster(
             @RequestParam String imageId,
-            @PathVariable Long id
+            @PathVariable Long id,
+            @RequestParam Boolean isMainImage
     );
 
 

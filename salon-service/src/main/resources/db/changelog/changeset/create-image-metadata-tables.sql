@@ -4,7 +4,8 @@
 CREATE TABLE image_metadata
 (
     id       BIGSERIAL primary key ,
-    image_id VARCHAR(255)
+    image_id VARCHAR(255),
+    is_main_image BOOLEAN
 );
 --rollback drop table image_metadata;
 
