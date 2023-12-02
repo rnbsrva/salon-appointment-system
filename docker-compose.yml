@@ -1,168 +1,263 @@
-version: '3'
-services:
-#  minio:
-#    image: quay.io/minio/minio
-#    container_name: minio
-#    volumes:
-#      - ./storage-service/data:/data
-#    ports:
-#      - "9000:9000"
-#      - "9090:9090"
-#    environment:
-#      MINIO_ROOT_USER: 'minioadmin'
-#      MINIO_ROOT_PASSWORD: 'minioadmin'
-#      MINIO_ADDRESS: ':9000'
-#      MINIO_CONSOLE_ADDRESS: ':9090'
-#    command: minio server /data
+#version: '3'
+#services:
+##  minio:
+##    image: quay.io/minio/minio
+##    container_name: minio
+##    volumes:
+##      - ./storage-service/data:/data
+##    ports:
+##      - "9000:9000"
+##      - "9090:9090"
+##    environment:
+##      MINIO_ROOT_USER: 'minioadmin'
+##      MINIO_ROOT_PASSWORD: 'minioadmin'
+##      MINIO_ADDRESS: ':9000'
+##      MINIO_CONSOLE_ADDRESS: ':9090'
+##    command: minio server /data
+##
+##  mail-sender:
+##    image: rnbsrva/mail-sender
+##    container_name: mail-sender
+##    depends_on:
+##      kafka:
+##        condition: service_started
+##    ports:
+##      - "4000:4000"
+##    environment:
+##      SPRING_PROFILES_ACTIVE: dev
+##      SERVER_PORT: 4000
+##      SMTP_USERNAME: kkraken2005@gmail.com
+##      SMTP_PASSWORD: qjgbgobivdwfxlel
+##      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
+##      'eureka.client.enabled': false
+##
+##
+##  zookeeper:
+##    image: confluentinc/cp-zookeeper:7.0.1
+##    container_name: zookeeper
+##    environment:
+##      ZOOKEEPER_CLIENT_PORT: 2181
+##      ZOOKEEPER_TICK_TIME: 2000
+##
+##  kafka:
+##    image: confluentinc/cp-kafka:7.0.1
+##    container_name: kafka
+##    ports:
+##      - "9092:9092"
+##    depends_on:
+##      zookeeper:
+##        condition: service_started
+##    environment:
+##      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+##      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka:29092,LISTENER_EXTERNAL://localhost:9092
+##      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT
+##      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
 #
-#  mail-sender:
-#    image: rnbsrva/mail-sender
-#    container_name: mail-sender
-#    depends_on:
-#      kafka:
-#        condition: service_started
-#    ports:
-#      - "4000:4000"
-#    environment:
-#      SPRING_PROFILES_ACTIVE: dev
-#      SERVER_PORT: 4000
-#      SMTP_USERNAME: kkraken2005@gmail.com
-#      SMTP_PASSWORD: qjgbgobivdwfxlel
-#      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
-#      'eureka.client.enabled': false
+##  prometheus:
+##    image: prom/prometheus:v2.37.1
+##    container_name: prometheus
+##    ports:
+##      - "9090:9090"
+##    volumes:
+##      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+##    depends_on:
+##     - mail-sender
+##
+##  grafana:
+##    image: grafana/grafana-oss:8.5.2
+##    container_name: grafana
+##    ports:
+##      - "3000:3000"
+##    links:
+##      - prometheus:prometheus
+##    volumes:
+##      - ./docker/grafana:/var/lib/grafana
+##    environment:
+##      - GF_SECURITY_ADMIN_USER=admin
+##      - GF_SECURITY_ADMIN_PASSWORD=password
+##  kafdrop:
+##    container_name: kafka-ui
+##    image: obsidiandynamics/kafdrop:latest
+##    networks:
+##      - broker-kafka
+##    depends_on:
+##      - kafka
+##    ports:
+##      - "19000:9000"
+##    environment:
+##      KAFKA_BROKERCONNECT: kafka:29092
 #
-#
-#  zookeeper:
-#    image: confluentinc/cp-zookeeper:7.0.1
-#    container_name: zookeeper
-#    environment:
-#      ZOOKEEPER_CLIENT_PORT: 2181
-#      ZOOKEEPER_TICK_TIME: 2000
-#
-#  kafka:
-#    image: confluentinc/cp-kafka:7.0.1
-#    container_name: kafka
-#    ports:
-#      - "9092:9092"
-#    depends_on:
-#      zookeeper:
-#        condition: service_started
-#    environment:
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka:29092,LISTENER_EXTERNAL://localhost:9092
-#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT
-#      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
-
-#  prometheus:
-#    image: prom/prometheus:v2.37.1
-#    container_name: prometheus
-#    ports:
-#      - "9090:9090"
-#    volumes:
-#      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-#    depends_on:
-#     - mail-sender
-#
-#  grafana:
-#    image: grafana/grafana-oss:8.5.2
-#    container_name: grafana
-#    ports:
-#      - "3000:3000"
-#    links:
-#      - prometheus:prometheus
-#    volumes:
-#      - ./docker/grafana:/var/lib/grafana
-#    environment:
-#      - GF_SECURITY_ADMIN_USER=admin
-#      - GF_SECURITY_ADMIN_PASSWORD=password
-#  kafdrop:
-#    container_name: kafka-ui
-#    image: obsidiandynamics/kafdrop:latest
-#    networks:
-#      - broker-kafka
-#    depends_on:
-#      - kafka
-#    ports:
-#      - "19000:9000"
-#    environment:
-#      KAFKA_BROKERCONNECT: kafka:29092
-
-#
+##
 #  discovery:
 #    image: rnbsrva/discovery
 #    container_name: discovery
 #    ports:
 #      - "8761:8761"
 #    environment:
-#      'eureka.client.serviceUrl.defaultZone': 'http://server-akerke.fibo.cloud:8761/eureka'
+#      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
+##
+##
+#  redis:
+#    image: redis
+#    container_name: sas-redis
+#    command: redis-server --appendonly yes --requirepass qwerfvp.o654ijnQWE.RFVP654O.IJN --replica-read-only no
+#    ports:
+#      - "6379:6379"
+#  qr-service:
+#    image: rnbsrva/qr-service
+#    container_name: qr-service
+#    ports:
+#      - "8085:8085"
+#    environment:
+#      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
+#
+#  storage-service:
+#    image: rnbsrva/storage-service
+#    container_name: storage-service
+#    ports:
+#      - "8084:8084"
+#    environment:
+#      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
+#      'spring.minio.endpoint': 'http://46.8.43.125:9090'
+#      'spring.minio.access-key': 'minioadmin'
+#      'spring.minio.secret-key': 'minioadmin'
 #
 #
-  redis:
-    image: redis
-    container_name: sas-redis
-    command: redis-server --appendonly yes --requirepass qwerfvp.o654ijnQWE.RFVP654O.IJN --replica-read-only no
+#
+##  elasticsearch:
+##    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
+##    container_name: elasticsearch
+##    environment:
+##      - bootstrap.memory_lock=true
+##      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+##      - "discovery.type=single-node"
+##      - xpack.security.enabled=false
+##    ports:
+##      - "9200:9200"
+##    volumes:
+##      - elasticsearch_data:/usr/share/elasticsearch/data
+##
+##  kibana:
+##    image: docker.elastic.co/kibana/kibana:8.3.3
+##    container_name: kibana
+##    ports:
+##      - "5601:5601"
+##    environment:
+##      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+##      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+##    depends_on:
+##      - elasticsearch
+##      - logstash
+##
+##  logstash:
+##    image: docker.elastic.co/logstash/logstash:8.3.3
+##    container_name: logstash
+##    volumes:
+##      - ./docker/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+##      - ./docker/logstash/pipeline:/usr/share/logstash/pipeline:ro
+##    ports:
+##      - "5044:5044"
+##      - "5000:5000/tcp"
+##      - "5000:5000/udp"
+##      - "9600:9600"
+##    environment:
+##      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+##
+##    depends_on:
+##      - elasticsearch
+##  postgres:
+##    container_name: postgres
+##    image: postgres:15.1
+##    environment:
+##      POSTGRES_USER: akerke
+##      POSTGRES_PASSWORD: werytcjvcykblccjdbsbcjds
+##      POSTGRES_DB: salon
+##    ports:
+##      - "5433:5432"
+##    volumes:
+##      - postgres_data:/var/lib/postgresql/data
+#
+#
+#
+#volumes:
+#  elasticsearch_data:
+#    driver: local
+#  postgres_data: { }
+#  minio_storage: { }
+#networks:
+#  broker-kafka:
+#    driver: bridge
+version: '3'
+services:
+  discovery:
+    image: rnbsrva/discovery
+    container_name: discovery
     ports:
-      - "6379:6379"
+      - "8761:8761"
+    environment:
+      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
 
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
-#    container_name: elasticsearch
-#    environment:
-#      - bootstrap.memory_lock=true
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#      - "discovery.type=single-node"
-#      - xpack.security.enabled=false
-#    ports:
-#      - "9200:9200"
-#    volumes:
-#      - elasticsearch_data:/usr/share/elasticsearch/data
-#
-#  kibana:
-#    image: docker.elastic.co/kibana/kibana:8.3.3
-#    container_name: kibana
-#    ports:
-#      - "5601:5601"
-#    environment:
-#      ELASTICSEARCH_URL: "http://elasticsearch:9200"
-#      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
-#    depends_on:
-#      - elasticsearch
-#      - logstash
-#
-#  logstash:
-#    image: docker.elastic.co/logstash/logstash:8.3.3
-#    container_name: logstash
-#    volumes:
-#      - ./docker/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-#      - ./docker/logstash/pipeline:/usr/share/logstash/pipeline:ro
-#    ports:
-#      - "5044:5044"
-#      - "5000:5000/tcp"
-#      - "5000:5000/udp"
-#      - "9600:9600"
-#    environment:
-#      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-#
-#    depends_on:
-#      - elasticsearch
-#  postgres:
-#    container_name: postgres
-#    image: postgres:15.1
-#    environment:
-#      POSTGRES_USER: akerke
-#      POSTGRES_PASSWORD: werytcjvcykblccjdbsbcjds
-#      POSTGRES_DB: salon
-#    ports:
-#      - "5433:5432"
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
+  mail-sender:
+    image: rnbsrva/mail-sender
+    container_name: mail-sender
+    depends_on:
+      kafka:
+        condition: service_started
+    ports:
+      - "4000:4000"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev,logging
+      SERVER_PORT: 4000
+      SMTP_USERNAME: kkraken2005@gmail.com
+      SMTP_PASSWORD: qjgbgobivdwfxlel
+      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
+      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
 
-
-volumes:
-  elasticsearch_data:
-    driver: local
-  postgres_data: { }
-  minio_storage: { }
+  qr-service:
+    image: rnbsrva/qr-service
+    container_name: qr-service
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_PROFILES_ACTIVE: logging,dev
+      'server.port': 8085
+      'eureka.client.enabled': true
+      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    networks:
+      - broker-kafka
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    restart: always
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    networks:
+      - broker-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    restart: always
+  storage-service:
+    image: rnbsrva/storage-service
+    container_name: storage-service
+    ports:
+      - "8080:8080"
+    environment:
+      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
+      'spring.minio.endpoint': 'http://46.8.43.125:9000'
+      'spring.minio.access-key': 'minioadmin'
+      'spring.minio.secret-key': 'minioadmin'
+      SPRING_PROFILES_ACTIVE: dev,logging
 networks:
   broker-kafka:
     driver: bridge

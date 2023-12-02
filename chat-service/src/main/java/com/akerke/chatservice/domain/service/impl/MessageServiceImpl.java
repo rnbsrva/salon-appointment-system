@@ -75,7 +75,6 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Set<String> keys(String pattern) {
         var f = redis.keys(pattern);
-        System.out.println(f);
         return redis.keys(pattern);
     }
 

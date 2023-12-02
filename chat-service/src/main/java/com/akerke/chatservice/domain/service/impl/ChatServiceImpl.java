@@ -36,7 +36,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Chat getById(String id) {
-        return chatRepository.findById(id)
+        return chatRepository.findByIdExcludingChatMessages(id)
                 .orElseThrow(() -> new EntityNotFoundException(Chat.class));
     }
 }

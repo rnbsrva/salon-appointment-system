@@ -16,7 +16,7 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    @PostMapping
+    @PostMapping("create")
     @ApiOperation("Create a new chat")
     ResponseEntity<?> create(
             @RequestBody ChatCreateRequest createRequest

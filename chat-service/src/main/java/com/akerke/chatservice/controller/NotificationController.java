@@ -18,6 +18,5 @@ public class NotificationController {
     void notifyUser(NotificationDTO notificationDTO) {
         ws.convertAndSend("/topic/notification/" + notificationDTO.recipientId(), notificationDTO);
     }
-    // TODO: 10/27/2023  caching notification if user offline
 
 }

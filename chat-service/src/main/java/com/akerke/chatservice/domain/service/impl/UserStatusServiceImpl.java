@@ -16,7 +16,6 @@ public class UserStatusServiceImpl implements UserStatusService {
 
     private final RedisTemplate<String, Object> redis;
 
-
     @Override
     public void setOnline(Long applicationId) {
         redis.opsForSet()
