@@ -7,6 +7,7 @@ import com.akerke.salonservice.domain.dto.SalonDTO;
 import com.akerke.salonservice.domain.entity.ImageMetadata;
 import com.akerke.salonservice.domain.entity.Salon;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.salonservice.domain.repository.ImageMetadataRepository;
 import com.akerke.salonservice.domain.repository.SalonRepository;
 import com.akerke.salonservice.domain.service.AddressService;
 import com.akerke.salonservice.domain.service.SalonService;
@@ -14,15 +15,13 @@ import com.akerke.salonservice.domain.service.UserService;
 import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.SalonMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.beans.Transient;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -30,11 +29,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SalonServiceImpl implements SalonService {
 
+    private final ImageMetadataRepository imageMetadataRepository;
     private final SalonRepository salonRepository;
     private final SalonMapper salonMapper;
     private final AddressService addressService;
     private final UserService userService;
     private final KafkaProducer kafkaProducer;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public Salon getById(Long id) {
@@ -92,7 +93,23 @@ public class SalonServiceImpl implements SalonService {
     @Override
     public void addImage(Long id, String imageId, Boolean isMainImage) {
         var salon = this.getById(id);
+        if(isMainImage){
+            salon.getImageMetadata().forEach(imageMetadata -> imageMetadata.setIsMainImage(false));
+        }
         salon.getImageMetadata().add(new ImageMetadata(imageId, isMainImage));
         salonRepository.save(salon);
+    }
+
+    @Override
+    public void deleteImage(String imageId) {
+        var imageMetadataOptional = imageMetadataRepository.findImageMetadataByImageId(imageId);
+
+        if(imageMetadataOptional.isEmpty()){
+            throw new EntityNotFoundException(ImageMetadata.class, imageId);
+        }
+        var image = imageMetadataOptional.get();
+
+        jdbcTemplate.update("DELETE FROM salon_image_metadata WHERE image_metadata_id = ?", image.getId());
+        imageMetadataRepository.delete(image);
     }
 }

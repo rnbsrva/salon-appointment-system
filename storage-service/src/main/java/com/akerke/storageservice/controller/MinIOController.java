@@ -1,8 +1,6 @@
 package com.akerke.storageservice.controller;
 
 import com.akerke.storageservice.common.constants.AttachmentSource;
-import com.akerke.storageservice.domain.dto.ImageMetadataDTO;
-import com.akerke.storageservice.domain.request.FileOperationRequest;
 import com.akerke.storageservice.domain.service.MinIOService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +26,7 @@ public class MinIOController {
             @RequestParam AttachmentSource source,
             @RequestParam Boolean isMainImage
     ) {
-        minIOService.putObject(new FileOperationRequest(target, source, null), file, isMainImage);
+        minIOService.putObject(target, source, file, isMainImage);
     }
 
     @GetMapping("/downloadByGroup")
@@ -50,46 +48,31 @@ public class MinIOController {
         minIOService.removeObjects(target, source);
     }
 
-    @GetMapping("/downloadFile")
+    @GetMapping("/downloadFile/{imageId}")
     @ApiOperation("Download a specific file")
     void downloadFile(
-            @RequestParam String name,
-            @RequestParam Long target,
-            @RequestParam AttachmentSource source,
+            @PathVariable String imageId,
             HttpServletResponse response
     ) {
-        minIOService.getObjectToDownload(new FileOperationRequest(target, source, name), response);
+        minIOService.getObjectToDownload(imageId, response);
     }
-
-    @GetMapping("/getFile")
-    @ApiOperation("Download a specific file")
-    void getFile(
-            @RequestParam String name,
-            @RequestParam Long target,
-            @RequestParam AttachmentSource source,
-            HttpServletResponse response
-    ) {
-        minIOService.getObject(new FileOperationRequest(target, source, name), response);
-    }
-
 
     @ApiOperation("Delete an object")
-    @PatchMapping("delete")
+    @DeleteMapping("{imageId}")
     @SneakyThrows
     void deleteObject(
-            @RequestBody FileOperationRequest dto
+            @PathVariable String imageId
     ) {
-        minIOService.removeObject(dto);
+        minIOService.removeObject(imageId);
     }
 
-    @GetMapping("{imageId}")
+    @GetMapping("/getFile/{imageId}")
+    @ApiOperation("Get a specific image by ID")
     void getImage(
             HttpServletResponse response,
             @PathVariable String imageId
-    ) { 
+    ) {
         minIOService.getObject(imageId, response);
     }
-
-
 
 }

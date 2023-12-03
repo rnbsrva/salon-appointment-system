@@ -72,6 +72,14 @@ public class SalonController {
         return ResponseEntity.accepted().build();
     }
 
+    @DeleteMapping("delete-image/{imageId}")
+    ResponseEntity<?> deleteImage(
+            @PathVariable String imageId
+    ) {
+        salonService.deleteImage(imageId);
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("{id}")
     @ApiOperation("Delete an salon by ID")
     ResponseEntity<?> delete(

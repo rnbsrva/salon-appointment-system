@@ -37,8 +37,8 @@ public class WorkDay extends DateAudit {
     @OneToMany(
             mappedBy = "workDay",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<WorkTime> workTimes;
 

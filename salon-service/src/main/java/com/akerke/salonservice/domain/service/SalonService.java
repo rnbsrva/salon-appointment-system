@@ -54,4 +54,5 @@ public interface SalonService {
 
     void addImage(Long id, String imageId, Boolean isMainImage);
 
+    void deleteImage(String imageId);
 }

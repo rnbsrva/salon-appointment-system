@@ -24,7 +24,7 @@ public class Appointment extends DateAudit {
     @ManyToOne
     @JsonProperty("userId")
     private User user;
-    @ManyToOne
+    @ManyToOne()
     @JsonProperty("masterId")
     private Master master;
 

@@ -21,5 +21,14 @@ public interface SalonServiceFeignClient {
             @RequestParam Boolean isMainImage
     );
 
+    @DeleteMapping("salon/delete-image/{imageId}")
+    ResponseEntity<?> deleteImageOfSalon(
+            @PathVariable String imageId
+    );
+
+    @DeleteMapping("master/delete-image/{imageId}")
+    ResponseEntity<?> deleteImageOfMaster(
+            @PathVariable String imageId
+    );
 
 }

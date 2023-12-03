@@ -58,4 +58,6 @@ public interface MasterService {
     List<Master> getAll();
 
     void addImage(Long id, String imageId, Boolean isMainImage);
+
+    void deleteImage(String imageId);
 }

@@ -6,7 +6,6 @@ import com.akerke.storageservice.common.exception.ImageMetadataNotFoundException
 import com.akerke.storageservice.common.feign.SalonServiceFeignClient;
 import com.akerke.storageservice.domain.entity.ImageMetadata;
 import com.akerke.storageservice.domain.repository.ImageMetadataRepository;
-import com.akerke.storageservice.domain.request.FileOperationRequest;
 import com.akerke.storageservice.domain.service.MinIOService;
 import io.minio.*;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,13 +39,19 @@ public class MinIOServiceImpl implements MinIOService {
     private String urlPrefix;
 
     @Override
-    public void putObject(FileOperationRequest dto, MultipartFile file, Boolean isMainImage) {
+    public void putObject(Long target, AttachmentSource source, MultipartFile file, Boolean isMainImage) {
 
         this.getFromFuture(submit(() -> {
             try {
-                var imageMetadata = repository.save(toImageMetadata(isMainImage, dto, file));
+                if (repository.findByAttachmentSourceAndTargetAndIsMainImage(source, target, isMainImage).isPresent()){
+                    var image = repository.findByAttachmentSourceAndTargetAndIsMainImage(source, target, isMainImage).get();
+                    image.setIsMainImage(false);
+                    repository.save(image);
+                }
 
-                if (dto.source() == AttachmentSource.SALON_IMAGE)
+                var imageMetadata = repository.save(toImageMetadata(isMainImage, target, source, file));
+
+                if (source == AttachmentSource.SALON_IMAGE)
                     this.feignClient.addImageToSalon(imageMetadata.getId(), imageMetadata.getTarget(), isMainImage);
                 else
                     this.feignClient.addImageToMaster(imageMetadata.getId(), imageMetadata.getTarget(), isMainImage);
@@ -55,8 +60,8 @@ public class MinIOServiceImpl implements MinIOService {
                 var objectName = file.getOriginalFilename();
                 minioClient.putObject(
                         PutObjectArgs.builder()
-                                .bucket(dto.source().getName())
-                                .object(dto.target().toString().concat("/").concat(objectName))
+                                .bucket(source.getName())
+                                .object(target.toString().concat("/").concat(objectName))
                                 .stream(in, -1, 10485760).build()
                 );
             } catch (Exception e) {
@@ -68,14 +73,16 @@ public class MinIOServiceImpl implements MinIOService {
 
     @Override
     @SneakyThrows
-    public void getObjectToDownload(FileOperationRequest dto, HttpServletResponse response) {
+    public void getObjectToDownload(String imageId, HttpServletResponse response) {
+        var image = this.getById(imageId);
+
         this.getFromFuture(submit(() -> {
             GetObjectResponse minioInputStream;
             try {
                 minioInputStream = minioClient.getObject(
                         GetObjectArgs.builder()
-                                .bucket(dto.source().getName())
-                                .object(toObjectNameWithFolder(dto))
+                                .bucket(image.getAttachmentSource().getName())
+                                .object(toObjectNameWithFolder(image))
                                 .build()
                 );
             } catch (Exception e) {
@@ -83,45 +90,7 @@ public class MinIOServiceImpl implements MinIOService {
             }
 
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + dto.name() + "\"");
-
-            try (
-                    var inputStream = minioInputStream;
-                    var outputStream = response.getOutputStream()
-            ) {
-
-                var buffer = new byte[10240];
-                int bytesRead;
-
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
-        }));
-    }
-
-
-    @Override
-    @SneakyThrows
-    public void getObject(FileOperationRequest dto, HttpServletResponse response) {
-        this.getFromFuture(submit(() -> {
-            GetObjectResponse minioInputStream;
-            try {
-                minioInputStream = minioClient.getObject(
-                        GetObjectArgs.builder()
-                                .bucket(dto.source().getName())
-                                .object(toObjectNameWithFolder(dto))
-                                .build()
-                );
-            } catch (Exception e) {
-                throw new FileOperationException(e.getMessage());
-            }
-
-//            response.setContentType("application/octet-stream");;
-            response.setHeader("Content-Disposition", "inline; filename=\"" + dto.name() + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + image.getName() + "\"");
 
             try (
                     var inputStream = minioInputStream;
@@ -164,15 +133,24 @@ public class MinIOServiceImpl implements MinIOService {
 
     @Override
     @SneakyThrows
-    public void removeObject(FileOperationRequest dto) {
+    public void removeObject(String imageId) {
         this.getFromFuture(submit(() -> {
+
+            var image = this.getById(imageId);
+
+            if(image.getAttachmentSource()==AttachmentSource.SALON_IMAGE)
+                this.feignClient.deleteImageOfSalon(imageId);
+            else
+                this.feignClient.deleteImageOfMaster(imageId);
+
             try {
                 minioClient.removeObject(
                         RemoveObjectArgs.builder()
-                                .bucket(dto.source().getName())
-                                .object(toObjectNameWithFolder(dto))
+                                .bucket(image.getAttachmentSource().getName())
+                                .object(toObjectNameWithFolder(image))
                                 .build()
                 );
+                repository.delete(image);
             } catch (Exception e) {
                 throw new FileOperationException(e.getMessage());
             }
@@ -243,16 +221,15 @@ public class MinIOServiceImpl implements MinIOService {
     public void getObject(String id, HttpServletResponse response) {
 
         this.getFromFuture(submit(() -> {
-            var imageMetadata = repository.findById(id).orElseThrow(() -> new ImageMetadataNotFoundException("Image Not Found"));
+
+            var imageMetadata = this.getById(id);
 
             GetObjectResponse minioInputStream;
             try {
                 minioInputStream = minioClient.getObject(
                         GetObjectArgs.builder()
                                 .bucket(imageMetadata.getAttachmentSource().getName())
-                                .object(toObjectNameWithFolder(
-                                        new FileOperationRequest(imageMetadata.getTarget(), imageMetadata.getAttachmentSource(), imageMetadata.getName())
-                                ))
+                                .object(toObjectNameWithFolder(imageMetadata))
                                 .build()
                 );
             } catch (Exception e) {
@@ -283,8 +260,9 @@ public class MinIOServiceImpl implements MinIOService {
         return source.getName().concat("-") + target;
     }
 
-    private String toObjectNameWithFolder(FileOperationRequest dto) {
-        return dto.target().toString().concat("/").concat(dto.name());
+
+    private String toObjectNameWithFolder(ImageMetadata image) {
+        return image.getTarget().toString().concat("/").concat(image.getName());
     }
 
     private Future<?> submit(Runnable r) {
@@ -303,12 +281,18 @@ public class MinIOServiceImpl implements MinIOService {
         return urlPrefix + "/storage/download?source=" + source + "&name=" + originalName + "&target=" + target;
     }
 
-    private static ImageMetadata toImageMetadata(Boolean isMainImage, FileOperationRequest dto, MultipartFile file) {
+    private static ImageMetadata toImageMetadata(Boolean isMainImage, Long target, AttachmentSource source, MultipartFile file) {
         return new ImageMetadata(
                 isMainImage,
                 file.getOriginalFilename(),
-                dto.target(),
-                dto.source()
+                target,
+                source
+        );
+    }
+
+    private ImageMetadata getById(String id){
+        return repository.findById(id).orElseThrow(
+                () -> new ImageMetadataNotFoundException("Image with id %s Not Found".formatted(id))
         );
     }
 

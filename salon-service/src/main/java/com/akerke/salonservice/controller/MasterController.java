@@ -70,6 +70,15 @@ public class MasterController {
         return ResponseEntity.accepted().build();
     }
 
+    @DeleteMapping("delete-image/{imageId}")
+    ResponseEntity<?> deleteImage(
+            @PathVariable String imageId
+    ) {
+        masterService.deleteImage(imageId);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @DeleteMapping("{id}")
     @ApiOperation("Delete an master by ID")
     ResponseEntity<?> delete (
