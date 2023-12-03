@@ -1,5 +1,6 @@
 package com.akerke.apigateway.config;
 
+import com.akerke.apigateway.utils.RouteValidateDTO;
 import com.akerke.apigateway.utils.StatusResponse;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,7 +45,6 @@ public class AuthFilter implements GatewayFilter {
     ) {
         var request = exchange.getRequest();
 
-
         if (this.authHeaderMissing.test(request)) {
             logger.info("auth missing " + request.getURI());
             return onAuthError(exchange, AuthErrorType.MISSING_BEARER_TOKEN);
@@ -53,9 +53,9 @@ public class AuthFilter implements GatewayFilter {
         final var token = request.getHeaders().getOrEmpty("Authorization").get(0);
 
         var res = webClient.post()
-                .uri(validateTokenUrl(token))
+                .uri("validate-route")
                 .bodyValue(new RouteValidateDTO(
-                        request.getMethod(),
+                        request.getMethod().toString(),
                         request.getPath().toString(),
                         token
                 ))
@@ -70,12 +70,6 @@ public class AuthFilter implements GatewayFilter {
 
     }
 
-    private static Function<UriBuilder, URI> validateTokenUrl(String token) {
-        return uriBuilder ->
-                uriBuilder.path("validate-route")
-                        .queryParam("access_token", token.substring("Bearer ".length()))
-                        .build();
-    }
 
     private Mono<Void> onAuthError(ServerWebExchange exchange, AuthErrorType errorType) {
         var response = exchange.getResponse();
@@ -87,13 +81,6 @@ public class AuthFilter implements GatewayFilter {
     enum AuthErrorType {
         INVALID_BEARER_TOKEN,
         MISSING_BEARER_TOKEN
-    }
-
-    record RouteValidateDTO(
-            HttpMethod httpMethod,
-            String route,
-            String token
-    ) {
     }
 
 

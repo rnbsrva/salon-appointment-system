@@ -3,7 +3,7 @@ package com.akerke.authserver.common.jwt;
 import com.akerke.authserver.common.constants.SecurityRole;
 import com.akerke.authserver.domain.dto.RouteValidateDTO;
 import com.akerke.authserver.domain.dto.StatusResponseDTO;
-import jakarta.ws.rs.HttpMethod;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,8 +17,11 @@ public class JwtRouteValidator {
     private final JwtService jwtService;
     private Map<SecurityRole, List<RouteRequirements>> roleRouteRequirementsMap;
 
-    public JwtRouteValidator(JwtService jwtService) {
+    public JwtRouteValidator(
+            JwtService jwtService
+    ) {
         this.jwtService = jwtService;//todo
+
         this.roleRouteRequirementsMap = new HashMap<>() {{
             put(SecurityRole.ADMIN, new ArrayList<>() {{
                 add(new RouteRequirements(
@@ -26,10 +29,11 @@ public class JwtRouteValidator {
                 ));
             }});
         }};
+
     }
 
     private record RouteRequirements(
-            String httpMethod,
+            HttpMethod httpMethod,
             List<String> routes
     ) {
     }

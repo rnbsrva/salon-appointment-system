@@ -2,10 +2,6 @@ package com.akerke.authserver.common.jwt;
 
 import com.akerke.authserver.common.constants.TokenType;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +11,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.akerke.authserver.common.jwt.JwtService.TOKEN_CLAIM_KEY;
@@ -37,7 +37,18 @@ public class JwtFilter extends OncePerRequestFilter {
         final String userEmail;
         final DecodedJWT decodedJWT;
 
+        if (!req.getRequestURL().toString().contains("auth") || !req.getRequestURL().toString().contains("role")) {
+            var ctx = SecurityContextHolder.createEmptyContext();
+            SecurityContextHolder.setContext(ctx);
+
+            chain.doFilter(req, res);
+            return;
+        }
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            var ctx = SecurityContextHolder.createEmptyContext();
+            SecurityContextHolder.setContext(ctx);
+
             chain.doFilter(req, res);
             return;
         }
@@ -64,6 +75,7 @@ public class JwtFilter extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
+
         chain.doFilter(req, res);
     }
 

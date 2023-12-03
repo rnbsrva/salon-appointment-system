@@ -4,9 +4,9 @@ package com.akerke.authserver.common.exception.handler;
 import com.akerke.authserver.common.exception.EmailRegisteredYetException;
 import com.akerke.authserver.common.exception.InvalidCredentialsException;
 import com.akerke.authserver.common.exception.PhoneNumberRegisteredYetException;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
 
 
     /**
@@ -54,7 +53,18 @@ public class GlobalExceptionHandler {
 
     private ProblemDetail withDetails(RuntimeException e, int sc) {
         log.error("created problem details message={} status_code={}", e.getMessage(), sc);
-        return ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(sc), e.getMessage());
+        return ProblemDetail.forStatusAndDetail(sc, e.getMessage());
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class ProblemDetail {
+        private String message;
+        private Integer statusCode;
+
+        public static ProblemDetail forStatusAndDetail(Integer code, String message) {
+            return new ProblemDetail(message, code);
+        }
     }
 
 
