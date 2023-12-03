@@ -15,7 +15,7 @@ public class ManagerController {
 
     private final ManagerService managerService;
 
-    @PostMapping
+    @PostMapping("admin")
     @ApiOperation("Make the manager")
     ResponseEntity<?> makeManager(
             @RequestParam Long userId,
@@ -25,7 +25,7 @@ public class ManagerController {
         return ResponseEntity.accepted().build();
     }
 
-    @DeleteMapping
+    @DeleteMapping("admin")
     @ApiOperation("Remove the manager")
     ResponseEntity<?> removeManager (
             @RequestParam Long userId,

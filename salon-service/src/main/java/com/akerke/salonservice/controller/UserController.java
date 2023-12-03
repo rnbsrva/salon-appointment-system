@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.akerke.salonservice.common.validate.Validator.validate;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("users")
 @RequiredArgsConstructor
 @Api("User API")
 public class UserController {

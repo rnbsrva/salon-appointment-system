@@ -46,7 +46,7 @@ public class SalonController {
         return ResponseEntity.ok(salonService.getById(id));
     }
 
-    @GetMapping()
+    @GetMapping("application-manager")
     @ApiOperation("Get a list of all salons")
     ResponseEntity<?> getAll() {
         return ResponseEntity.ok(salonService.getAll());
@@ -80,7 +80,7 @@ public class SalonController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("admin/{id}")
     @ApiOperation("Delete an salon by ID")
     ResponseEntity<?> delete(
             @PathVariable Long id

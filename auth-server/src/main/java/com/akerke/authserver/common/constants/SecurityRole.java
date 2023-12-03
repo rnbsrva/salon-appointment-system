@@ -1,9 +1,10 @@
 package com.akerke.authserver.common.constants;
 
 public enum SecurityRole {
-    APPLICATION_ADMIN,
-    APPLICATION_MANAGER,
     USER,
+    MASTER,
     ADMIN,
-    MANAGER
+    MANAGER,
+    APPLICATION_MANAGER,
+    APPLICATION_ADMIN
 }

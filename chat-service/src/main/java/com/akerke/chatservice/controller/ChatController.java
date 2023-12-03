@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("chat")
 @Api("Chat API")
-//@EnableLoggerLib
 public class ChatController {
 
     private final ChatService chatService;

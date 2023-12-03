@@ -21,6 +21,7 @@
     <module>storage-service</module>
     <module>mail-sender</module>
     <module>qr-service</module>
+    <module>notification-service</module>
     <module>salon-service</module>
     <module>discovery</module>
     <module>chat-service</module>

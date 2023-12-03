@@ -17,14 +17,14 @@ import java.util.List;
 import static com.akerke.salonservice.common.validate.Validator.validate;
 
 @RestController
-@RequestMapping("master")
+@RequestMapping("masters")
 @RequiredArgsConstructor
 @Api(value = "Master API")
 public class MasterController {
 
     private final MasterService masterService;
 
-    @PostMapping()
+    @PostMapping("manager")
     @ApiOperation("Save a new master")
     ResponseEntity<?> save (
             @Valid
@@ -44,7 +44,7 @@ public class MasterController {
         return ResponseEntity.ok(masterService.getById(id));
     }
 
-    @GetMapping()
+    @GetMapping("manager")
     @ApiOperation("Get a list of all masters")
     ResponseEntity<?> getAll (){
         return  ResponseEntity.ok(masterService.getAll());

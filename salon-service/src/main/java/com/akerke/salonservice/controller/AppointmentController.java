@@ -43,7 +43,7 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.getById(id));
     }
 
-    @GetMapping()
+    @GetMapping("application-manager")
     @ApiOperation("Get a list of all appointments")
     ResponseEntity<?> getAll() {
         return ResponseEntity.ok(appointmentService.getAll());

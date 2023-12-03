@@ -42,7 +42,7 @@ public class FeedbackController {
         return ResponseEntity.ok(feedbackService.getById(id));
     }
 
-    @GetMapping()
+    @GetMapping("application-manager")
     @ApiOperation("Get a list of all feedbacks")
     ResponseEntity<?> getAll (){
         return  ResponseEntity.ok(feedbackService.getAll());

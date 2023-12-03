@@ -42,7 +42,7 @@ public class TreatmentController {
         return ResponseEntity.ok(treatmentService.getById(id));
     }
 
-    @GetMapping()
+    @GetMapping("manager")
     @ApiOperation("Get a list of all treatments")
     ResponseEntity<?> getAll (){
         return  ResponseEntity.ok(treatmentService.getAll());
