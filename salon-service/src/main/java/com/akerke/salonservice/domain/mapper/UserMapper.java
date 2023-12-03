@@ -22,5 +22,7 @@ public interface UserMapper {
     UserDTO toDTO (User user);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target="email", ignore = true)
+    @Mapping(target="phone", ignore = true)
     void update(UserDTO userDTO, @MappingTarget User user);
 }

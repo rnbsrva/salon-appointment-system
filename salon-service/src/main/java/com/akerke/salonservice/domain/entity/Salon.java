@@ -22,7 +22,7 @@ public class Salon extends DateAudit {
     private String phone;
     private String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     private Address address;
 
     @Column( length = 1000)
@@ -35,7 +35,8 @@ public class Salon extends DateAudit {
     @OneToMany(
             fetch = FetchType.EAGER,
             mappedBy = "salon",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<Master> masters;
 

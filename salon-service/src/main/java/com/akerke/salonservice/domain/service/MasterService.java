@@ -1,5 +1,6 @@
 package com.akerke.salonservice.domain.service;
 
+import com.akerke.salonservice.domain.dto.AddTreatmentDTO;
 import com.akerke.salonservice.domain.dto.MasterDTO;
 import com.akerke.salonservice.domain.entity.Master;
 
@@ -45,9 +46,9 @@ public interface MasterService {
      * Adds treatments to a master.
      *
      * @param id            the ID of the master
-     * @param treatmentIds  the IDs of the treatments to be added
+     * @param addTreatmentDTO  the IDs of the treatments to be added
      */
-    void addTreatment(Long id, List<Long> treatmentIds);
+    void addTreatment(Long id, AddTreatmentDTO addTreatmentDTO);
 
     /**
      * Retrieves all masters.

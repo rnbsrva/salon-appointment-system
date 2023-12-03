@@ -1,5 +1,6 @@
 package com.akerke.salonservice.domain.service.impl;
 
+import com.akerke.salonservice.common.exception.InvalidRequestPayloadException;
 import com.akerke.salonservice.domain.dto.WorkTimeDTO;
 import com.akerke.salonservice.domain.entity.WorkTime;
 import com.akerke.salonservice.domain.repository.WorkTimeRepository;
@@ -7,6 +8,7 @@ import com.akerke.salonservice.domain.service.WorkDayService;
 import com.akerke.salonservice.domain.service.WorkTimeService;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.mapper.WorkTimeMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,14 @@ public class WorkTimeServiceImpl implements WorkTimeService {
 
     @Override
     public WorkTime save(WorkTimeDTO workTimeDTO) {
+        var workDay = workDayService.getById(workTimeDTO.workDayId());
+
+        if(workDay.getIsHoliday()){
+            throw new InvalidRequestPayloadException("Work time cannot be created at holidays");
+        }
+
         var workTime = workTimeMapper.toModel(workTimeDTO);
-        workTime.setWorkDay(workDayService.getById(workTimeDTO.workDayId()));
+        workTime.setWorkDay(workDay);
         return workTimeRepository.save(workTime);
     }
 

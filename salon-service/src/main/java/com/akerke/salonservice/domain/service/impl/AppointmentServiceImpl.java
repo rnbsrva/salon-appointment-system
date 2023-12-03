@@ -2,6 +2,7 @@ package com.akerke.salonservice.domain.service.impl;
 
 import com.akerke.salonservice.common.constants.AppConstants;
 import com.akerke.salonservice.common.constants.NotificationType;
+import com.akerke.salonservice.common.exception.InvalidRequestPayloadException;
 import com.akerke.salonservice.domain.dto.AppointmentDTO;
 import com.akerke.salonservice.domain.entity.Appointment;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
@@ -10,6 +11,7 @@ import com.akerke.salonservice.domain.service.*;
 import com.akerke.salonservice.domain.mapper.AppointmentMapper;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.infrastructure.kafka.NotificationDTO;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,16 +38,28 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         var user = userService.getById(appointmentDTO.userId());
         var master = masterService.getById(appointmentDTO.masterId());
+        var workTime = workTimeService.getById(appointmentDTO.workTimeId());
+        var treatment = treatmentService.getById(appointmentDTO.treatmentId());
+
+        if(workTime.getIsBreak()){
+            throw new InvalidRequestPayloadException(
+                    "Appointment scheduling is not available on break time."
+            );
+        } else if (master.getTreatments().contains(treatment)) {
+            throw new InvalidRequestPayloadException(
+                    "Master with id %s does not have treatment with id %s.".formatted(master.getId().toString(), treatment.getId().toString())
+            );
+        }
 
         var appointment = appointmentMapper.toModel(appointmentDTO);
         appointment.setUser(user);
         appointment.setMaster(master);
-        appointment.setTreatment(treatmentService.getById(appointmentDTO.treatmentId()));
-        appointment.setWorkTime(workTimeService.getById(appointmentDTO.workTimeId()) );
+        appointment.setTreatment(treatment);
+        appointment.setWorkTime(workTime);
 
         var savedAppointment = appointmentRepository.save(appointment);
 
-        System.out.println(savedAppointment.toString());
+        System.out.println(savedAppointment);
 
         kafkaProducer.produce(AppConstants.NOTIFY_TOPIC_NAME,
                 new NotificationDTO(

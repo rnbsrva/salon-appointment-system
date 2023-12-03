@@ -36,7 +36,7 @@ public class Master extends DateAudit {
     @JsonProperty("salonId")
     private Salon salon;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "master_treatments",
             joinColumns = @JoinColumn(name = "master_id", referencedColumnName = "id"),

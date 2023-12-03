@@ -29,6 +29,7 @@ public class User extends DateAudit {
 
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true
@@ -36,6 +37,7 @@ public class User extends DateAudit {
     private List<Appointment> appointments;
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             mappedBy = "owner",
             cascade = CascadeType.ALL,
             orphanRemoval = true

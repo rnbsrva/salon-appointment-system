@@ -6,6 +6,7 @@ import com.akerke.salonservice.common.exception.EntityNotFoundException;
 import com.akerke.salonservice.domain.repository.AddressRepository;
 import com.akerke.salonservice.domain.service.AddressService;
 import com.akerke.salonservice.domain.mapper.AddressMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

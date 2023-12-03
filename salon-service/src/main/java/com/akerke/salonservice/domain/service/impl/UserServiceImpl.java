@@ -1,5 +1,6 @@
 package com.akerke.salonservice.domain.service.impl;
 
+import com.akerke.salonservice.common.exception.InvalidRequestPayloadException;
 import com.akerke.salonservice.domain.dto.UserDTO;
 import com.akerke.salonservice.domain.entity.User;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,5 @@ public class UserServiceImpl implements UserService {
         userMapper.update(userDTO, user);
         userRepository.save(user);
     }
-
 
 }

@@ -21,6 +21,7 @@ public interface AppointmentMapper {
     AppointmentDTO toDTO(Appointment appointment);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
     void update(AppointmentDTO appointmentDTO, @MappingTarget Appointment appointment);
 
 }

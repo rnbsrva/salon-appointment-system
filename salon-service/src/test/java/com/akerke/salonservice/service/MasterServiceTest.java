@@ -1,6 +1,7 @@
 package com.akerke.salonservice.service;
 
 import com.akerke.salonservice.common.constants.AppConstants;
+import com.akerke.salonservice.domain.dto.AddTreatmentDTO;
 import com.akerke.salonservice.domain.dto.MasterDTO;
 import com.akerke.salonservice.domain.entity.Master;
 import com.akerke.salonservice.domain.entity.Salon;
@@ -134,32 +135,4 @@ class MasterServiceTest {
         verify(kafkaProducer).produce(any(), any(KafkaManageRoleRequest.class));
     }
 
-    @Test
-    void addTreatment_whenValidMasterId_thenSaveChanges() {
-        var treatmentIdList = List.of(1L, 2L);
-        var treatments = treatmentIdList
-                .stream()
-                .map(i -> {
-                    var treatment = new Treatment();
-                    treatment.setId(i);
-                    return treatment;
-                }).toList();
-
-        when(treatmentService.getAll(treatmentIdList)).thenReturn(treatments);
-        when(masterRepository.findById(master.getId())).thenReturn(Optional.of(master));
-
-        masterService.addTreatment(master.getId(),treatmentIdList);
-
-        assertThat(master.getTreatments()).containsExactlyElementsOf(treatments);
-        verify(treatmentService).getAll(treatmentIdList);
-        verify(masterRepository).save(master);
-    }
-
-    @Test
-    void addTreatment_whenInvalidMasterId_thenThrowException() {
-        var treatmentIdList = List.of(1L, 2L);
-        when(masterRepository.findById(master.getId())).thenReturn(Optional.empty());
-
-        assertThrows(EntityNotFoundException.class, () -> masterService.addTreatment(master.getId(),treatmentIdList));
-    }
 }

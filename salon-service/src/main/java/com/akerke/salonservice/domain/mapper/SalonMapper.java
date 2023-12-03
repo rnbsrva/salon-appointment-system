@@ -25,6 +25,8 @@ public interface SalonMapper {
     SalonDTO toDTO(Salon salon);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "email", ignore = true)
+    @Mapping(target = "phone", ignore = true)
     void update(SalonDTO salonDTO, @MappingTarget Salon salon);
 
     default List<String> treatmentList(Salon salon) {

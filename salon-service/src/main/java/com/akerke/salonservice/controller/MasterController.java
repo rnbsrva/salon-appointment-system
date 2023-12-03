@@ -1,5 +1,6 @@
 package com.akerke.salonservice.controller;
 
+import com.akerke.salonservice.domain.dto.AddTreatmentDTO;
 import com.akerke.salonservice.domain.dto.MasterDTO;
 import com.akerke.salonservice.domain.service.MasterService;
 import io.swagger.annotations.Api;
@@ -81,10 +82,10 @@ public class MasterController {
     @ApiOperation("Add a new treatment to the master")
     @PatchMapping("{id}/add")
     ResponseEntity<?> addTreatment(
-            @RequestBody List<Long> treatmentIds,
+            @RequestBody AddTreatmentDTO addTreatmentDTO,
             @PathVariable Long id
             ){
-        masterService.addTreatment(id,  treatmentIds);
+        masterService.addTreatment(id,  addTreatmentDTO);
         return ResponseEntity.accepted().build();
 
     }

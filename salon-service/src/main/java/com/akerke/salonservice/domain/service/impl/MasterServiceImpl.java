@@ -1,10 +1,13 @@
 package com.akerke.salonservice.domain.service.impl;
 
 import com.akerke.salonservice.common.constants.AppConstants;
+import com.akerke.salonservice.common.exception.InvalidRequestPayloadException;
+import com.akerke.salonservice.domain.dto.AddTreatmentDTO;
 import com.akerke.salonservice.domain.dto.MasterDTO;
 import com.akerke.salonservice.domain.entity.ImageMetadata;
 import com.akerke.salonservice.domain.entity.Master;
 import com.akerke.salonservice.common.exception.EntityNotFoundException;
+import com.akerke.salonservice.domain.entity.Treatment;
 import com.akerke.salonservice.domain.repository.MasterRepository;
 import com.akerke.salonservice.domain.service.MasterService;
 import com.akerke.salonservice.domain.service.SalonService;
@@ -13,6 +16,7 @@ import com.akerke.salonservice.domain.service.UserService;
 import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.MasterMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -67,15 +71,29 @@ public class MasterServiceImpl implements MasterService {
     public Master getById(Long id) {
         return masterRepository
                 .findById(id)
-                .orElseThrow(()-> new EntityNotFoundException(Master.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Master.class, id));
     }
 
     @Override
-    public void addTreatment(Long id, List<Long> treatmentIds) {
+    public void addTreatment(Long id, AddTreatmentDTO addTreatmentDTO) {
         var master = this.getById(id);
-        var treatments = treatmentService.getAll(treatmentIds);
-        master.getTreatments().addAll(treatments);
-        masterRepository.save(master);
+        var treatments = treatmentService.getAll(addTreatmentDTO.treatmentIds());
+        boolean anyTreatmentAdded = false;
+
+        for (Treatment treatment : treatments) {
+            if (master.getSalon().getTreatments().stream().noneMatch(s -> s.getId().equals(treatment.getId()))) {
+                throw new InvalidRequestPayloadException("Treatment with ID " + treatment.getId() + " does not belong to this salon");
+            }
+
+            if (master.getTreatments().stream().noneMatch(t -> t.getId().equals(treatment.getId()))) {
+                master.getTreatments().add(treatment);
+                anyTreatmentAdded = true;
+            }
+        }
+
+        if (anyTreatmentAdded) {
+            masterRepository.save(master);
+        }
     }
 
     @Override

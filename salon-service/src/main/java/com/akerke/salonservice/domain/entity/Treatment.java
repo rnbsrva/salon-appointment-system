@@ -35,11 +35,12 @@ public class Treatment extends DateAudit {
     @OneToMany(
             mappedBy = "treatment",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<Appointment> appointments;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "master_treatments",
             joinColumns = @JoinColumn(name = "treatment_id", referencedColumnName = "id"),

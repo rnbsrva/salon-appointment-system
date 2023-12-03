@@ -14,12 +14,14 @@ import com.akerke.salonservice.domain.service.UserService;
 import com.akerke.salonservice.infrastructure.kafka.KafkaManageRoleRequest;
 import com.akerke.salonservice.infrastructure.kafka.KafkaProducer;
 import com.akerke.salonservice.domain.mapper.SalonMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,20 +73,19 @@ public class SalonServiceImpl implements SalonService {
 
     @Override
     public void delete(Long id) {
-        var salon = this.getById(id);
+            var salon = this.getById(id);
 
-        kafkaProducer.produce(
-                AppConstants.ADMIN_TOPIC_NAME,
-                new KafkaManageRoleRequest(salon.getId(), salon.getOwner().getEmail(), false)
-        );
+            kafkaProducer.produce(
+                    AppConstants.ADMIN_TOPIC_NAME,
+                    new KafkaManageRoleRequest(salon.getId(), salon.getOwner().getEmail(), false)
+            );
 
-        salonRepository.delete(salon);
+            salonRepository.deleteById(id);
     }
 
     @Override
     public Page<Salon> find(SalonSearch salonSearch, int page, int size) {
         var spec = SalonSpecifications.buildSpecification(salonSearch);
-        log.info(Arrays.toString(salonRepository.findAll(spec, PageRequest.of(page, size)).stream().toArray()));
         return salonRepository.findAll(spec, PageRequest.of(page,size));
     }
 

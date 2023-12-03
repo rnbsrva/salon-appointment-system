@@ -7,6 +7,7 @@ import com.akerke.salonservice.domain.repository.TreatmentRepository;
 import com.akerke.salonservice.domain.service.SalonService;
 import com.akerke.salonservice.domain.service.TreatmentService;
 import com.akerke.salonservice.domain.mapper.TreatmentMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,6 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     @Override
     public List<Treatment> getAll(List<Long> ids) {
-        return treatmentRepository.findAllById(ids);
+        return ids.stream().map(this::getById).toList();
     }
 }

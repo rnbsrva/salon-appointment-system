@@ -26,6 +26,7 @@ public interface TreatmentMapper {
     TreatmentDTO toDTO(Treatment treatment);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "salonId", ignore = true)
     void update(TreatmentDTO treatmentDTO, @MappingTarget Treatment treatment);
 
 }

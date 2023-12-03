@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 public class Appointment extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

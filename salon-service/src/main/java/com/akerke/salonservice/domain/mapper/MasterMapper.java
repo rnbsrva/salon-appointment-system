@@ -33,6 +33,7 @@ public interface MasterMapper {
     MasterDTO toDTO(Master master);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "userId", ignore = true)
     void update(MasterDTO masterDTO, @MappingTarget Master master);
 
 }
