@@ -1,45 +1,39 @@
 package com.akerke.apigateway.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.reactive.config.CorsRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-public class CorsConfig extends CorsConfiguration {
+public class CorsConfig extends CorsConfiguration implements WebFluxConfigurer {
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**").allowedOrigins("/**")
+//                .allowedHeaders("*")
+//                .allowedMethods("*")
+//                .allowCredentials(false);
+//    }
 
-    @Value("${spring.cors.allowed-methods}")
-    private String[] allowedMethods;
-    @Value("${spring.cors.allowed-headers}")
-    private String[] allowedHeaders;
-
-    @Value("${spring.cors.allowed-origin}")
-    private String allowedOrigin;
-    @Value("${spring.cors.allowed-credentials}")
-    private Boolean allowedCredentials;
-
-    @Bean
-    public CorsWebFilter corsWebFilter() {
-        var cors = new CorsConfiguration();
-
-        cors.setAllowCredentials(allowedCredentials);
-        cors.addAllowedOrigin(allowedOrigin);
-
-        cors.setAllowedMethods(List.of(allowedMethods));
-
-        Arrays.stream(allowedHeaders)
-                .forEach(cors::addAllowedHeader);
-
-        var source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", cors);
-
+    //    @Bean
+    public CorsWebFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(false);
+        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        corsConfiguration.addAllowedHeader("origin");
+        corsConfiguration.addAllowedHeader("content-type");
+        corsConfiguration.addAllowedHeader("accept");
+        corsConfiguration.addAllowedHeader("authorization");
+        corsConfiguration.addAllowedHeader("cookie");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsWebFilter(source);
     }
-
-
 }

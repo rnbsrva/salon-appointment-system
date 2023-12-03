@@ -1,0 +1,17 @@
+#spring:
+#  cloud:
+#    gateway:
+#      default-filters:
+#        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+#      globalcors:
+#        add-to-simple-url-handler-mapping: true
+#        corsConfigurations:
+#          '[/**]':
+#            allowedOrigins: "http://localhost:4200"
+#            allowedHeaders: "*"
+#            allowedMethods:
+#              - GET
+#              - POST
+#              - DELETE
+#              - PATCH
+#              - PUT

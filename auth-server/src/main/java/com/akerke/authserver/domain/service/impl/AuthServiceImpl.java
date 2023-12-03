@@ -85,7 +85,9 @@ public class AuthServiceImpl implements AuthService {
 //        sendVerificationDetails(registration.email(), otp);todo uncomment
         log.info("new user register");
 
-        return userRepository.save(userMapper.toModel(registration, otp));
+        var user = userMapper.toModel(registration, otp);
+        user.setPassword(passwordEncoder.encode(registration.password()));
+        return userRepository.save(user);
     }
 
     @Override

@@ -236,7 +236,8 @@ services:
     networks:
       - broker-kafka
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_started
     ports:
       - "9092:9092"
     environment:
