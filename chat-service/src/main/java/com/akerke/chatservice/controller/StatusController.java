@@ -1,6 +1,7 @@
 package com.akerke.chatservice.controller;
 
 import com.akerke.chatservice.domain.service.UserStatusService;
+//import com.akerke.loggerlib.common.annotation.EnableLoggerLib;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.CompletableFuture;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("status")
 @Api("Status API")
+//@EnableLoggerLib
 public class StatusController {
 
     private final UserStatusService userStatusService;

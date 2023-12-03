@@ -17,4 +17,5 @@ public class User {
     private String name;
     private String surname;
     private Long applicationId;
+    private LocalDateTime lastSeen;
 }
