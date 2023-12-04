@@ -1,0 +1,51 @@
+name: CI CD Salon appointment system
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'api-gateway/**'
+      - 'chat-service/**'
+      - 'auth-service/**'
+      - 'mail-sender/**'
+      - 'discovery/**'
+      - 'notification-service/**'
+      - 'qr-service/**'
+      - 'salon-service/**'
+      - 'storage-service/**'
+
+jobs:
+  build:
+    name: Trigger build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            api-gateway:
+              - 'api-gateway/**'
+            chat-service:
+              - 'chat-service/**'
+            auth-service:
+              - 'auth-service/**'
+            mail-sender:
+              - 'mail-sender/**'
+            discovery:
+              - 'discovery/**'
+            notification-service:
+              - 'notification-service/**'
+            qr-service:
+              - 'qr-service/**'
+            salon-service:
+              - 'salon-service/**'
+            storage-service:
+              - 'storage-service/**'
+
+      - name: Check changes for each service
+        run: |
+          echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
+          echo "Changed services: ${{ steps.changes.outputs.services }}"
+        env:
+          SERVICES: ${{ steps.changes.outputs.services }}
