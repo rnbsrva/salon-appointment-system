@@ -100,7 +100,9 @@ public class AuthServiceImpl implements AuthService {
 
         var user = optionalUser.get();
 
-        if (user.getOtpCreationTime().isBefore(LocalDateTime.now().minusSeconds(otpExpiration))) {
+        var time = LocalDateTime.now();
+
+        if (user.getOtpCreationTime().isBefore(time.minusSeconds(otpExpiration))) {
             throw new OTPExpiredException();
         }
 

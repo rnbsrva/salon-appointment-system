@@ -1,12 +1,12 @@
 package com.akerke.chatservice.domain.service.impl;
 
+import com.akerke.chatservice.common.exception.EntityNotFoundException;
 import com.akerke.chatservice.domain.mapper.ChatMapper;
 import com.akerke.chatservice.domain.model.Chat;
 import com.akerke.chatservice.domain.repository.ChatRepository;
 import com.akerke.chatservice.domain.repository.UserRepository;
 import com.akerke.chatservice.domain.request.ChatCreateRequest;
 import com.akerke.chatservice.domain.service.ChatService;
-import com.akerke.exceptionlib.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

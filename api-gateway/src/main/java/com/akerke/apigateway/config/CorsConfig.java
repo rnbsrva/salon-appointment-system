@@ -13,6 +13,7 @@ import java.util.List;
 
 @Configuration
 public class CorsConfig extends CorsConfiguration implements WebFluxConfigurer {
+
 //    @Override
 //    public void addCorsMappings(CorsRegistry registry) {
 //        registry.addMapping("/**").allowedOrigins("/**")
@@ -21,11 +22,11 @@ public class CorsConfig extends CorsConfiguration implements WebFluxConfigurer {
 //                .allowCredentials(false);
 //    }
 
-    //    @Bean
+    @Bean
     public CorsWebFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(false);
-        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         corsConfiguration.addAllowedHeader("origin");
         corsConfiguration.addAllowedHeader("content-type");

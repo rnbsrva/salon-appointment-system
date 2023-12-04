@@ -13,7 +13,8 @@ import java.util.function.Supplier;
 @Mapper(
         imports = {
                 SecurityRole.class,
-                List.class
+                List.class,
+                LocalDateTime.class
         }
 )
 public interface UserMapper {
@@ -21,11 +22,9 @@ public interface UserMapper {
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "otp" , expression = "java(otp)")
     @Mapping(target = "emailConfirmed" , expression = "java(false)")
-    @Mapping(target = "registeredTime", expression = "java(now.get())")
-    @Mapping(target = "otpCreationTime", expression = "java(now.get())")
+    @Mapping(target = "registeredTime", expression = "java(LocalDateTime.now())")
+    @Mapping(target = "otpCreationTime", expression = "java(LocalDateTime.now())")
     @Mapping(target = "roles", expression = "java(List.of(SecurityRole.USER))")
     User toModel(RegistrationDTO registrationDTO,Integer otp);
-
-    Supplier<LocalDateTime> now = LocalDateTime::now;
 
 }
