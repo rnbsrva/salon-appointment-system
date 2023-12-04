@@ -19,15 +19,15 @@ jobs:
     name: Trigger build
     runs-on: ubuntu-latest
     outputs:
-      api-gateway: ${{ steps.filter.outputs.api-gateway }}
-      auth-server: ${{ steps.filter.outputs.auth-server }}
-      chat-service: ${{ steps.filter.outputs.chat-service }}
-      mail-sender: ${{ steps.filter.outputs.mail-sender}}
-      qr-service: ${{ steps.filter.outputs.qr-service }}
-      storage-service: ${{ steps.filter.outputs.storage-service }}
-      salon-service: ${{ steps.filter.outputs.salon-service }}
-      discovery: ${{ steps.filter.outputs.discovery }}
-      notification-service: ${{ steps.filter.outputs.notification-service }}
+      api-gateway: ${{ steps.changes.outputs.api-gateway }}
+      auth-server: ${{ steps.changes.outputs.auth-server }}
+      chat-service: ${{ steps.changes.outputs.chat-service }}
+      mail-sender: ${{ steps.changes.outputs.mail-sender}}
+      qr-service: ${{ steps.changes.outputs.qr-service }}
+      storage-service: ${{ steps.changes.outputs.storage-service }}
+      salon-service: ${{ steps.changes.outputs.salon-service }}
+      discovery: ${{ steps.changes.outputs.discovery }}
+      notification-service: ${{ steps.changes.outputs.notification-service }}
 
     steps:
       - name: Checkout repository
@@ -63,7 +63,7 @@ jobs:
           SERVICES: ${{ steps.changes.outputs.services }}
   api-gateway:
     needs: changes
-    if: ${{ needs.changes.outputs.api-gateway == 'true' }}
+    if: ${{ steps.changes.outputs.api-gateway == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
