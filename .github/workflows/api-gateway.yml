@@ -2,9 +2,9 @@ name: CI/CD with Jib and Docker Hub Api gateway
 
 on:
   push:
-    paths:
-      - "api-gateway/**"
-      - ".github/workflows/api-gateway.yml"
+    paths-ignore:
+      - "!api-gateway/**"
+      - "!.github/workflows/api-gateway.yml"
 
 jobs:
   build:

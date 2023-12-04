@@ -2,9 +2,9 @@ name: CI/CD with manual docker actions
 
 on:
   push:
-    paths:
-      - "mail-sender/**"
-      - ".github/workflows/mail-sender.yml"
+    paths-ignore:
+      - "!mail-sender/**"
+      - "!.github/workflows/mail-sender.yml"
 
 jobs:
   build:

@@ -2,9 +2,9 @@ name: CI/CD with Jib and Docker Hub Chat service
 
 on:
   push:
-    paths:
-      - "chat-service/**"
-      - ".github/workflows/chat-service.yml"
+    paths-ignore:
+      - "!chat-service/**"
+      - "!.github/workflows/chat-service.yml"
 
 jobs:
   build:

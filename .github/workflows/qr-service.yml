@@ -1,10 +1,10 @@
-name: CI/CD with Jib and Docker Hub
+name: CI/CD with Jib and Docker Hub Qr service
 
 on:
   push:
-    paths:
-      - "qr-service/**"
-      - ".github/workflows/qr-service.yml"
+    paths-ignore:
+      - "!qr-service/**"
+      - "!.github/workflows/qr-service.yml"
 
 jobs:
   build:
