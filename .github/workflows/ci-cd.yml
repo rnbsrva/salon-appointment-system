@@ -19,8 +19,15 @@ jobs:
     name: Trigger build
     runs-on: ubuntu-latest
     outputs:
-      id: ${{ steps.outputs.id }}
-      services: ${{ steps.outputs.services }}
+      api-gateway: ${{ steps.filter.outputs.api-gateway }}
+      auth-server: ${{ steps.filter.outputs.auth-server }}
+      chat-service: ${{ steps.filter.outputs.chat-service }}
+      mail-sender: ${{ steps.filter.outputs.mail-sender}}
+      qr-service: ${{ steps.filter.outputs.qr-service }}
+      storage-service: ${{ steps.filter.outputs.storage-service }}
+      salon-service: ${{ steps.filter.outputs.salon-service }}
+      discovery: ${{ steps.filter.outputs.discovery }}
+      notification-service: ${{ steps.filter.outputs.notification-service }}
 
     steps:
       - name: Checkout repository
@@ -56,7 +63,7 @@ jobs:
           SERVICES: ${{ steps.changes.outputs.services }}
   api-gateway:
     needs: changes
-    if: steps.filter.outputs.frontend == 'true'
+    if: ${{ needs.changes.outputs.api-gateway == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
