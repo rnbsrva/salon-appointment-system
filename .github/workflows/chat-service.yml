@@ -3,8 +3,8 @@ name: CI/CD with Jib and Docker Hub
 on:
   push:
     paths:
-      - "api-gateway/**"
-      - ".github/workflows/api-gateway.yml"
+      - "chat-service/**"
+      - ".github/workflows/chat-service.yml"
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          cd api-gateway
+          cd chat-service
           mvn compile jib:build -Pprod \
             -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
             -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
@@ -43,7 +43,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            sudo docker stop rnbsrva/api-gateway
-            sudo docker rmi -f rnbsrva/api-gateway
+            sudo docker stop rnbsrva/chat-service
+            sudo docker rmi -f rnbsrva/chat-service
             cd sas
             sudo docker compose up -d
