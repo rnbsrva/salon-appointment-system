@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequiredArgsConstructor
-@Api
+@Api("qr")
 public class QRController {
 
     private final QRService qrService;
