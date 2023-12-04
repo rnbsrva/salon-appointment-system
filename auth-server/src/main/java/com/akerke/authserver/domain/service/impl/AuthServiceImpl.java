@@ -82,6 +82,7 @@ public class AuthServiceImpl implements AuthService {
             throw new PhoneNumberRegisteredYetException(registration.phoneNumber());
         }
         var otp = randomOtp.get();
+
         sendVerificationDetails(registration.email(), otp);
         log.info("new user register");
 
