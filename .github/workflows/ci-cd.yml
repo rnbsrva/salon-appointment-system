@@ -49,5 +49,9 @@ jobs:
         run: |
           echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
           echo "Changed services: ${{ steps.changes.outputs.services }}"
+      - name: Trigger api gateway changes
+        if: steps.changes.output.api-gateway == 'true'
+        uses: .github/workflows/api-gateway.yml
+
         env:
           SERVICES: ${{ steps.changes.outputs.services }}
