@@ -6,7 +6,7 @@ on:
     paths:
       - 'api-gateway/**'
       - 'chat-service/**'
-      - 'auth-service/**'
+      - 'auth-server/**'
       - 'mail-sender/**'
       - 'discovery/**'
       - 'notification-service/**'
@@ -29,8 +29,8 @@ jobs:
               - 'api-gateway/**'
             chat-service:
               - 'chat-service/**'
-            auth-service:
-              - 'auth-service/**'
+            auth-server:
+              - 'auth-server/**'
             mail-sender:
               - 'mail-sender/**'
             discovery:
