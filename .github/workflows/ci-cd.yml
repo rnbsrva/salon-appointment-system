@@ -93,3 +93,270 @@ jobs:
             sudo docker rmi -f rnbsrva/api-gateway
             cd sas
             sudo docker compose up -d
+  auth-server:
+    needs: changes
+    if: ${{ needs.changes.outputs.auth-server == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and Push Docker Image
+        run: |
+          cd auth-server
+          mvn compile jib:build -Pprod \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/auth-server
+            sudo docker rmi -f rnbsrva/auth-server
+            cd sas
+            sudo docker compose up -d
+  mail-sender:
+    needs: changes
+    if: ${{ needs.changes.outputs.mail-sender == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and Push Docker Image
+        run: |
+          cd mail-sender
+          mvn compile jib:build -Pprod \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/mail-sender
+            sudo docker rmi -f rnbsrva/mail-sender
+            cd sas
+            sudo docker compose up -d
+  chat-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.chat-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and Push Docker Image
+        run: |
+          cd chat-service
+          mvn compile jib:build -Pprod \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/chat-service
+            sudo docker rmi -f rnbsrva/chat-service
+            cd sas
+            sudo docker compose up -d
+  discovery:
+    needs: changes
+    if: ${{ needs.changes.outputs.discovery == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and Push Docker Image
+        run: |
+          cd discovery
+          mvn compile jib:build -Pprod \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/discovery
+            sudo docker rmi -f rnbsrva/discovery
+            cd sas
+            sudo docker compose up -d
+  notification-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.notification-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and Push Docker Image
+        run: |
+          cd notification-service
+          mvn compile jib:build -Pprod \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/notification-service
+            sudo docker rmi -f rnbsrva/notification-service
+            cd sas
+            sudo docker compose up -d
+  salon-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.salon-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and Push Docker Image
+        run: |
+          cd salon-service
+          mvn compile jib:build -Pprod \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/salon-service
+            sudo docker rmi -f rnbsrva/salon-service
+            cd sas
+            sudo docker compose up -d
+  qr-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.qr-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Qr service
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '19'
+
+      - name: Maven clean install
+        run: mvn clean install -f qr-service/pom.xml
+
+      - name: Build Docker Image Qr service
+        run: docker build -t rnbsrva/qr-service -f qr-service/Dockerfile qr-service/
+
+      - name: Log in to Docker Hub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker Image Qr service
+        run: docker push rnbsrva/qr-service
+
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/qr-service
+            sudo docker rmi -f rnbsrva/qr-service
+            cd sas
+            sudo docker compose up -d
+  storage-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.storage-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Qr service
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '19'
+
+      - name: Maven clean install
+        run: mvn clean install -f storage-service/pom.xml
+
+      - name: Build Docker Image storage service
+        run: docker build -t rnbsrva/storage-service -f storage-service/Dockerfile storage-service/
+
+      - name: Log in to Docker Hub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker Image storage service
+        run: docker push rnbsrva/storage-service
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/storage-service
+            sudo docker rmi -f rnbsrva/storage-service
+            cd sas
+            sudo docker compose up -d
