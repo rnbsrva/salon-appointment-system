@@ -15,7 +15,7 @@ on:
       - 'storage-service/**'
 
 jobs:
-  build:
+  changes:
     name: Trigger build
     runs-on: ubuntu-latest
 
@@ -49,14 +49,37 @@ jobs:
         run: |
           echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
           echo "Changed services: ${{ steps.changes.outputs.services }}"
-      - name: Trigger api gateway changes
-        if: steps.changes.output.api-gateway == 'true'
-        run: |
-          cd .github/workflows
-          mv api-gateway.yml workflow.yml
-          cd ../..
-          mv .github/workflows/workflow.yml .github/workflows/api-gateway.yml
-
-
         env:
           SERVICES: ${{ steps.changes.outputs.services }}
+  api-gateway:
+    needs: changes
+    if: ${{ needs.changes.outputs.api-gateway == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and Push Docker Image
+        run: |
+          cd api-gateway
+          mvn compile jib:build -Pprod \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo docker stop rnbsrva/api-gateway
+            sudo docker rmi -f rnbsrva/api-gateway
+            cd sas
+            sudo docker compose up -d
