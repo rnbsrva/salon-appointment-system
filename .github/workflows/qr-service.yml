@@ -22,9 +22,9 @@ jobs:
 
       - name: Build and Push Docker Image Qr service
         run: |
-          docker build -t rnbsrva/qr-service -f Dockerfile . \
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} \
-          docker push rnbsrva/$service
+          docker build -t rnbsrva/qr-service -f Dockerfile qr-service/ \
+          docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }} \
+          docker push rnbsrva/qr-service
 
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
