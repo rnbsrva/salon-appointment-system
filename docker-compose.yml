@@ -233,7 +233,7 @@ services:
       discovery:
         condition: service_started
     environment:
-      'eureka.client.enabled':true
+      'eureka.client.enabled': true
       'eureka.client.service-url.defaultZone': 'http://51.250.91.198:8761/eureka'
       'spring.cloud.gateway.routes.auth-server.url': http://auth-server:3000/api/v1/
       'spring.cloud.gateway.routes.chat-service.url': http://chat-service:8001/api/v1/chat
