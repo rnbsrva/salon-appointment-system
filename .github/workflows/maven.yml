@@ -30,7 +30,7 @@ jobs:
         run: |
           for service in ${{ steps.identify-changes.outputs.changed_services }}; do
             echo "Building and pushing Docker image for $service"
-            if [ "$service" == "qrservice" ] || [ "$service" == "storage-service" ]; then
+            if [ "$service" == "qr-service" ] || [ "$service" == "storage-service" ]; then
               cd "services/$service"
               docker build -t rnbsrva/$service .
               docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
