@@ -29,7 +29,6 @@ public class CorsConfig extends CorsConfiguration implements WebFluxConfigurer {
 
     @Bean
     public CorsWebFilter corsFilter() {
-
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(allowCredentials);
         corsConfiguration.setAllowedOrigins(Arrays.stream(allowedOrigins).toList());
