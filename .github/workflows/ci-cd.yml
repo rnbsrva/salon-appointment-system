@@ -63,7 +63,7 @@ jobs:
           SERVICES: ${{ steps.changes.outputs.services }}
   api-gateway:
     needs: changes
-    if: ${{ steps.changes.outputs.api-gateway == 'true' }}
+    if: ${{ jobs.changes.outputs.api-gateway == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
