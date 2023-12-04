@@ -12,7 +12,7 @@ import java.util.Comparator;
 public class StorageServiceApplication {
 
     public static void main(String[] args) {
-        System.out.println("hello world +++++");
+        System.out.println("hello world --------");
         SpringApplication.run(StorageServiceApplication.class, args);
     }
 
