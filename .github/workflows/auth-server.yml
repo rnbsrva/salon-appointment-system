@@ -1,10 +1,10 @@
-name: CI/CD with Jib and Docker Hub Chat service
+name: CI/CD with Jib and Docker Hub Auth server
 
 on:
   push:
     paths:
-      - "chat-service/**"
-      - ".github/workflows/chat-service.yml"
+      - "auth-server/**"
+      - ".github/workflows/auth-server.yml"
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          cd chat-service
+          cd auth-server
           mvn compile jib:build -Pprod \
             -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
             -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
@@ -43,7 +43,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            sudo docker stop rnbsrva/chat-service
-            sudo docker rmi -f rnbsrva/chat-service
+            sudo docker stop rnbsrva/auth-server
+            sudo docker rmi -f rnbsrva/auth-server
             cd sas
             sudo docker compose up -d

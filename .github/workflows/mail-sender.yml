@@ -1,4 +1,4 @@
-name: CI/CD with Jib and Docker Hub
+name: CI/CD with manual docker actions
 
 on:
   push:
