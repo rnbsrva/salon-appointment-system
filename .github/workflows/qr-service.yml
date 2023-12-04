@@ -20,11 +20,15 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: Build and Push Docker Image Qr service
-        run: |
-          docker build -t rnbsrva/qr-service -f Dockerfile qr-service/ \
-          docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }} \
-          docker push rnbsrva/qr-service
+      - name: Build Docker Image Qr service
+        run: docker build -t rnbsrva/qr-service -f qr-service/Dockerfile qr-service/
+
+      - name: Log in to Docker Hub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker Image Qr service
+        run: docker push rnbsrva/qr-service
+
 
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
