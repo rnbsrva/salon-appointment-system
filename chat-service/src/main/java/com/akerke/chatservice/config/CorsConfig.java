@@ -1,50 +1,42 @@
 package com.akerke.chatservice.config;
 
-import lombok.NonNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+
 @Configuration
-@EnableWebMvc
-public class CorsConfig {
+public class CorsConfig  extends CorsConfiguration implements WebMvcConfigurer{
 
-    @Value("${spring.mvc.allowed.headers}")
-    private String allowedHeaders;
+        @Value("${cors.allowCredentials}")
+        private boolean allowCredentials;
 
-    @Value("${spring.mvc.allowed.methods}")
-    private String allowedMethods;
+        @Value("${cors.allowedOrigins}")
+        private String[] allowedOrigins;
 
-    @Value("${spring.mvc.allowed.credentials}")
-    private Boolean allowedCredentials;
+        @Value("${cors.allowedMethods}")
+        private String[] allowedMethods;
 
-    @Value("${spring.mvc.mapping}")
-    private String mapping;
+        @Value("${cors.allowedHeaders}")
+        private String[] allowedHeaders;
 
-    @Value("${spring.mvc.allowed.origin-patterns}")
-    private String originPatterns;
 
-    @Bean
-    public WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(
-                    @NonNull CorsRegistry registry
-            ) {
-                registry.addMapping(mapping)
-                        .allowedOriginPatterns(originPatterns)
-                        .allowedMethods(allowedMethods)
-                        .allowedHeaders(allowedHeaders)
-                        .allowCredentials(allowedCredentials);
-            }
-        };
-    }
 
+        @Bean
+        public CorsWebFilter corsFilter() {
+            CorsConfiguration corsConfiguration = new CorsConfiguration();
+            corsConfiguration.setAllowCredentials(allowCredentials);
+            corsConfiguration.setAllowedOrigins(Arrays.stream(allowedOrigins).toList());
+            corsConfiguration.setAllowedMethods(Arrays.stream(allowedMethods).toList());
+            corsConfiguration.setAllowedHeaders(Arrays.stream(allowedHeaders).toList());
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", corsConfiguration);
+            return new CorsWebFilter(source);
+        }
 
 }

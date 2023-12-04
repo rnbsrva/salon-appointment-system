@@ -1,17 +1,17 @@
-package com.akerke.apigateway.config;
+package com.akerke.storageservice.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
 @Configuration
-public class CorsConfig extends CorsConfiguration implements WebFluxConfigurer {
+public class CorsConfig extends CorsConfiguration implements WebMvcConfigurer {
 
     @Value("${cors.allowCredentials}")
     private boolean allowCredentials;

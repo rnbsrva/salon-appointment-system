@@ -9,22 +9,31 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class CorsConfig extends CorsConfiguration implements WebMvcConfigurer {
+
+    @Value("${cors.allowCredentials}")
+    private boolean allowCredentials;
+
+    @Value("${cors.allowedOrigins}")
+    private String[] allowedOrigins;
+
+    @Value("${cors.allowedMethods}")
+    private String[] allowedMethods;
+
+    @Value("${cors.allowedHeaders}")
+    private String[] allowedHeaders;
+
+
 
     @Bean
     public CorsWebFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(false);
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
-        corsConfiguration.addAllowedHeader("origin");
-        corsConfiguration.addAllowedHeader("content-type");
-        corsConfiguration.addAllowedHeader("accept");
-        corsConfiguration.addAllowedHeader("authorization");
-        corsConfiguration.addAllowedHeader("cookie");
+        corsConfiguration.setAllowCredentials(allowCredentials);
+        corsConfiguration.setAllowedOrigins(Arrays.stream(allowedOrigins).toList());
+        corsConfiguration.setAllowedMethods(Arrays.stream(allowedMethods).toList());
+        corsConfiguration.setAllowedHeaders(Arrays.stream(allowedHeaders).toList());
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsWebFilter(source);
