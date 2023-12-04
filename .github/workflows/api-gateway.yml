@@ -22,6 +22,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
+          cd api-gateway
           mvn compile jib:build -Pprod \
             -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
             -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
