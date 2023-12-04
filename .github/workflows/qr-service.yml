@@ -20,6 +20,9 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
+      - name: Maven clean install
+        run: mvn clean install -f qr-service/pom.xml
+
       - name: Build Docker Image Qr service
         run: docker build -t rnbsrva/qr-service -f qr-service/Dockerfile qr-service/
 
