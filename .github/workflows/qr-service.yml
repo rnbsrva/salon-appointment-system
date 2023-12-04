@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Repository Qr service
         uses: actions/checkout@v2
 
       - name: Set up JDK 17
@@ -20,11 +20,12 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Docker Image Qr service
         run: |
-          mvn compile jib:build -Pprod \
-            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
-            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+          docker build -t rnbsrva/qr-service -f Dockerfile . \
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} \
+          docker push rnbsrva/$service
+
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
