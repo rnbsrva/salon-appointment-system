@@ -56,7 +56,7 @@ jobs:
           SERVICES: ${{ steps.changes.outputs.services }}
   api-gateway:
     needs: changes
-    if: ${{ contains(needs.changes.outputs.services, 'api-gateway') }}
+    if: steps.filter.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
