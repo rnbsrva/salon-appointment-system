@@ -17,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("status")
 @Api("Status API")
-//@EnableLoggerLib
 public class StatusController {
 
     private final UserStatusService userStatusService;

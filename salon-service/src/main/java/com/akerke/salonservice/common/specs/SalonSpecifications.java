@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class SalonSpecifications {
 
     public static Specification<Salon> nameLike(String name) {
-        return ((root, query, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("name"), "%" + name + "%"));
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%");
     }
 
     public static Specification<Salon> stateLike(String state) {

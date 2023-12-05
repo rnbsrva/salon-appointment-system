@@ -1,25 +1,22 @@
 version: '3'
 services:
-
   mail-sender:
     image: rnbsrva/mail-sender
     container_name: mail-sender
     depends_on:
-      kafka:
-        condition: service_started
-      discovery:
-        condition: service_started
+      - kafka
+      - discovery
     networks:
       - broker-kafka
     ports:
-      - "4000:4000"
+      - "1000:1000"
     environment:
-      SPRING_PROFILES_ACTIVE: dev, logging
-      SERVER_PORT: 4000
-      SMTP_USERNAME: kkraken2005@gmail.com
-      SMTP_PASSWORD: qjgbgobivdwfxlel
-      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
-      'eureka.client.enabled': false
+      SPRING_PROFILES_ACTIVE: "dev,logging"
+      SERVER_PORT: 1000
+      SMTP_USERNAME: "orynbasarovaakerke88@gmail.com"
+      SMTP_PASSWORD: "zbetlegvaudfrjmg"
+      KAFKA_BOOTSTRAP_SERVERS: "http://kafka:29092"
+      'eureka.client.enabled': "false"
 
   discovery:
     image: rnbsrva/discovery
@@ -29,7 +26,7 @@ services:
     ports:
       - "8761:8761"
     environment:
-      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
+      'eureka.client.serviceUrl.defaultZone': 'http://discovery:8761/eureka'
 
   qr-service:
     image: rnbsrva/qr-service
@@ -37,17 +34,15 @@ services:
     networks:
       - broker-kafka
     depends_on:
-      api-gateway:
-        condition: service_started
-      discovery:
-        condition: service_started
+      - api-gateway
+      - discovery
     ports:
-      - "8085:8085"
+      - "8004:8004"
     environment:
-      SPRING_PROFILES_ACTIVE: logging,dev
-      'server.port': 8085
-      'eureka.client.enabled': true
-      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
+      SPRING_PROFILES_ACTIVE: "logging,dev"
+      'server.port': 8004
+      'eureka.client.enabled': "true"
+      'eureka.client.serviceUrl.defaultZone': 'http://discovery:8761/eureka'
 
   storage-service:
     image: rnbsrva/storage-service
@@ -55,18 +50,20 @@ services:
     networks:
       - broker-kafka
     depends_on:
-      api-gateway:
-        condition: service_started
-      discovery:
-        condition: service_started
+      - api-gateway
+      - discovery
     ports:
-      - "8080:8080"
+      - "8005:8005"
     environment:
-      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
+      'eureka.client.serviceUrl.defaultZone': 'http://discovery:8761/eureka'
       'spring.minio.endpoint': 'http://46.8.43.125:9000'
       'spring.minio.access-key': 'minioadmin'
+      'spring.data.mongodb.uri': 'mongodb://mongo/test'
       'spring.minio.secret-key': 'minioadmin'
-      SPRING_PROFILES_ACTIVE: dev,logging
+      'server.servlet.context-path': '/api/v1/storage'
+      SPRING_PROFILES_ACTIVE: "dev,logging"
+      SERVER_PORT: 8005
+      'server.port' : 8005
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -85,13 +82,12 @@ services:
     ports:
       - "9092:9092"
     depends_on:
-      zookeeper:
-        condition: service_started
+      - zookeeper
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka:29092,LISTENER_EXTERNAL://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: "LISTENER_INTERNAL://kafka:29092,LISTENER_EXTERNAL://localhost:9092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "LISTENER_INTERNAL"
 
   prometheus:
     image: prom/prometheus:v2.37.1
@@ -103,10 +99,9 @@ services:
     volumes:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
-      mail-sender:
-        condition: service_started
-      grafana:
-        condition: service_started
+      - mail-sender
+
+
 
   grafana:
     image: grafana/grafana-oss:8.5.2
@@ -123,31 +118,29 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
 
-
   salon-service:
     image: rnbsrva/salon-service
     container_name: salon-service
     networks:
       - broker-kafka
     depends_on:
-      kafka:
-        condition: service_started
-      discovery:
-        condition: service_started
+      - kafka
+      - discovery
     ports:
-      - "8005:8005"
+      - "8008:8008"
     environment:
-      'spring.datasource.url': 'jdbc:postgresql://ep-raspy-wildflower-49813213.eu-central-1.postgres.vercel-storage.com:5432'
-      'spring.datasource.username': default
-      'eureka.client.service-url.defaultZone': 'http://51.250.91.198:8761/eureka'
-      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
-      'spring.datasource.password': KmVMtEHJwQ06
-      'spring.profiles.active': logging, dev
+      'server.port': 8008
+      'spring.datasource.url': 'jdbc:postgresql://ep-raspy-wildflower-49813213.eu-central-1.postgres.vercel-storage.com:5432/verceldb'
+      'spring.datasource.username': "default"
+      'eureka.client.service-url.defaultZone': 'http://discovery:8761/eureka'
+      KAFKA_BOOTSTRAP_SERVERS: "http://kafka:29092"
+      'spring.datasource.password': "KmVMtEHJwQ06"
+      'spring.profiles.active': "logging,dev"
 
   redis:
     image: redis
     container_name: redis
-    command: redis-server --appendonly yes --requirepass qwerfvp.o654ijnQWE.RFVP654O.IJN --replica-read-only no
+    command: "redis-server --appendonly yes --requirepass qwerfvp.o654ijnQWE.RFVP654O.IJN --replica-read-only no"
     networks:
       - broker-kafka
     ports:
@@ -159,18 +152,17 @@ services:
     networks:
       - broker-kafka
     depends_on:
-      discovery:
-        condition: service_started
-      redis:
-        condition: service_started
+      - discovery
+      - redis
     ports:
       - "8001:8001"
     environment:
       SERVER_PORT: 8001
-      REDIS_PORT: 6379
-      REDIS_HOST: redis
-      REDIS_PASSWORD: qwerfvp.o654ijnQWE.RFVP654O.IJN
-      'eureka.client.service-url.defaultZone': 'http://51.250.91.198:8761/eureka'
+      'spring.data.redis.port': 6379
+      'spring.data.mongodb.uri': 'mongodb://mongo/test'
+      'spring.data.redis.host': "redis"
+      'spring.data.redis.password': "qwerfvp.o654ijnQWE.RFVP654O.IJN"
+      'eureka.client.service-url.defaultZone': 'http://discovery:8761/eureka'
 
   notification-service:
     networks:
@@ -178,20 +170,18 @@ services:
     image: rnbsrva/notification-service
     container_name: notification-service
     depends_on:
-      discovery:
-        condition: service_started
-      kafka:
-        condition: service_started
+      - discovery
+      - kafka
     ports:
       - "8002:8002"
     environment:
-      'spring.datasource.url': 'jdbc:postgresql://ep-raspy-wildflower-49813213.eu-central-1.postgres.vercel-storage.com:5432'
-      'spring.datasource.username': default
-      'eureka.client.service-url.defaultZone': 'http://51.250.91.198:8761/eureka'
-      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
-      'spring.datasource.password': KmVMtEHJwQ06
-      'spring.profiles.active': logging, dev
-      CHAT_SERVICE_URL: http://chat-service:8001/api/v1/chat
+      'spring.datasource.url': 'jdbc:postgresql://ep-raspy-wildflower-49813213.eu-central-1.postgres.vercel-storage.com:5432/verceldb'
+      'spring.datasource.username': "default"
+      'eureka.client.service-url.defaultZone': 'http://discovery:8761/eureka'
+      KAFKA_BOOTSTRAP_SERVERS: "http://kafka:29092"
+      'spring.datasource.password': "KmVMtEHJwQ06"
+      'spring.profiles.active': "logging,dev"
+      CHAT_SERVICE_URL: "http://chat-service:8001/api/v1/chat"
 
   mongo:
     networks:
@@ -209,18 +199,17 @@ services:
     image: rnbsrva/auth-server
     container_name: auth-server
     depends_on:
-      discovery:
-        condition: service_started
-      mongo:
-        condition: service_started
-      kafka:
-        condition: service_started
+      - discovery
+      - mongo
+      - kafka
     ports:
-      - "3000:3000"
+      - "4000:4000"
     environment:
-      'eureka.client.service-url.defaultZone': 'http://51.250.91.198:8761/eureka'
-      KAFKA_BOOTSTRAP_SERVERS: http://kafka:29092
-      'spring.profiles.active': logging, dev
+      'jwt.token.secret': 'dmfeivn3ionfio2n3iopm2il3ngfv32ion3vo2niov3n2ionmvio32nv233von2v3s'
+      'eureka.client.service-url.defaultZone': 'http://discovery:8761/eureka'
+      KAFKA_BOOTSTRAP_SERVERS: "http://kafka:29092"
+      'spring.profiles.active': "logging,dev"
+      'spring.data.mongodb.uri': 'mongodb://mongo/test'
 
   api-gateway:
     networks:
@@ -230,24 +219,20 @@ services:
     ports:
       - "4317:4317"
     depends_on:
-      discovery:
-        condition: service_started
+      - discovery
     environment:
-      'eureka.client.enabled': true
-      'eureka.client.service-url.defaultZone': 'http://51.250.91.198:8761/eureka'
-      'spring.cloud.gateway.routes.auth-server.url': http://auth-server:3000/api/v1/
-      'spring.cloud.gateway.routes.chat-service.url': http://chat-service:8001/api/v1/chat
-      'spring.cloud.gateway.routes.notification-service.url': http://notification-service:8002/api/v1/notification/graphiql
-      'spring.cloud.gateway.routes.storage-service.url': http://storage-service:8003/api/v1/storage/
-      'spring.cloud.gateway.routes.qr-service.url': http://qr-service:8004/api/v1/qr/
-      'spring.cloud.gateway.routes.salon-service.url': http://salon-service:8005/api/v1/salon-service/
-      'spring.cloud.gateway.routes.discovery.url': http://discovery:8761/eureka
-
-
-
-
+      'eureka.client.enabled': "true"
+      'eureka.client.service-url.defaultZone': 'http://discovery:8761/eureka'
+      'spring.cloud.gateway.routes.auth-server.url': "http://auth-server:4000/api/v1/"
+      'spring.cloud.gateway.routes.chat-service.url': "http://chat-service:8001/api/v1/chat"
+      'spring.cloud.gateway.routes.notification-service.url': "http://notification-service:8002/api/v1/notification/graphiql"
+      'spring.cloud.gateway.routes.storage-service.url': "http://storage-service:8003/api/v1/storage/"
+      'spring.cloud.gateway.routes.qr-service.url': "http://qr-service:8004/api/v1/qr/"
+      'spring.cloud.gateway.routes.salon-service.url': "http://salon-service:8008/api/v1/salon-service/"
+      'spring.cloud.gateway.routes.discovery.url': "http://discovery:8761/eureka"
+      'spring.auth-service.url': 'http://auth-server:4000/api/v1/auth/'
 networks:
   broker-kafka:
     driver: bridge
 volumes:
-  mean_urls_data:
+  mean_urls_data: {}

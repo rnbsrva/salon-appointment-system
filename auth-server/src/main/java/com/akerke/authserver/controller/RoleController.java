@@ -15,7 +15,6 @@ public class RoleController {
 
     private final RoleService roleService;
 
-//    @PreAuthorize("hasRole('APPLICATION_ADMIN')")
     @PostMapping("manage-app-manager")
     ResponseEntity<?> manageApplicationManager(
             @RequestBody ManageRoleDTO manageRoleDTO
@@ -23,7 +22,6 @@ public class RoleController {
         return ResponseEntity.ok(roleService.makeChanges(manageRoleDTO, SecurityRole.APPLICATION_MANAGER));
     }
 
-//    @PreAuthorize("hasAnyRole('APPLICATION_ADMIN', 'APPLICATION_MANAGER')")
     @PostMapping("manage-admin")
     ResponseEntity<?> manageAdmin(
             @RequestBody ManageRoleDTO manageRoleDTO
@@ -31,7 +29,6 @@ public class RoleController {
         return ResponseEntity.ok(roleService.makeChanges(manageRoleDTO, SecurityRole.ADMIN));
     }
 
-//    @PreAuthorize("hasAnyRole('APPLICATION_ADMIN', 'APPLICATION_MANAGER', 'ADMIN')")
     @PostMapping("manage-manager")
     ResponseEntity<?> manageManager(
             @RequestBody ManageRoleDTO manageRoleDTO

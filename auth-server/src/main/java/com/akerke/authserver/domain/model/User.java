@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private String surname;
     private String email;
     private String phoneNumber;
+    @JsonIgnore
     private String password;
     private Boolean emailConfirmed;
     private Integer otp;

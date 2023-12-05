@@ -49,7 +49,7 @@ public class MinIOController {
     }
 
     @GetMapping("master/downloadFile/{imageId}")
-    @ApiOperation("Download a specific file")
+    @ApiOperation("Download a specific file by ID")
     void downloadFile(
             @PathVariable String imageId,
             HttpServletResponse response
@@ -57,7 +57,7 @@ public class MinIOController {
         minIOService.getObjectToDownload(imageId, response);
     }
 
-    @ApiOperation("Delete an object")
+    @ApiOperation("Delete an object by ID")
     @DeleteMapping("master/{imageId}")
     @SneakyThrows
     void deleteObject(

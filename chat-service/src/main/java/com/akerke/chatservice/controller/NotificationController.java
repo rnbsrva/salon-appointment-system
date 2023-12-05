@@ -1,6 +1,7 @@
 package com.akerke.chatservice.controller;
 
 import com.akerke.chatservice.domain.dto.NotificationDTO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Api("Notification API")
 public class NotificationController {
 
     private final SimpMessagingTemplate ws;
@@ -18,6 +20,4 @@ public class NotificationController {
     void notifyUser(NotificationDTO notificationDTO) {
         ws.convertAndSend("/topic/notification/" + notificationDTO.recipientId(), notificationDTO);
     }
-    // TODO: 10/27/2023  caching notification if user offline
-
 }

@@ -35,7 +35,7 @@ public class AuthFilter implements GatewayFilter {
 
     private final Predicate<ServerHttpRequest> authHeaderMissing = r -> !r.getHeaders().containsKey("Authorization");
     private final Predicate<ServerHttpRequest> isNotSecured = req ->
-            Stream.of("swagger-ui", "qr", "eureka","auth")
+            Stream.of("swagger", "qr", "eureka","auth", "api-docs")
                     .anyMatch(url -> req.getPath().toString().contains(url));
 
     @Override
@@ -68,6 +68,7 @@ public class AuthFilter implements GatewayFilter {
                             chain.filter(exchange) :
                             onAuthError(exchange, AuthErrorType.INVALID_BEARER_TOKEN)
             );
+//            return chain.filter(exchange);
         }else {
             logger.info("open endpoint authorization will be skip" + request.getURI());
             return chain.filter(exchange);

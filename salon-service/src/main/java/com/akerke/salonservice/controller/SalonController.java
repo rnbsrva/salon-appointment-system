@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import static com.akerke.salonservice.common.specs.SalonSpecifications.buildSpecification;
 import static com.akerke.salonservice.common.validate.Validator.validate;
 
-@Controller
+@RestController
 @RequestMapping("salon")
 @Api("Salon API")
-@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class SalonController {
 
