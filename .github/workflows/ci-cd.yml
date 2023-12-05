@@ -90,6 +90,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/api-gateway
+            sudo docker rm -f api-gateway
             sudo docker rmi -f rnbsrva/api-gateway
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build api-gateway
@@ -122,6 +123,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/auth-server
+            sudo docker rm -f auth-server
             sudo docker rmi -f rnbsrva/auth-server
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build auth-server
@@ -155,6 +157,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/mail-sender
+            sudo docker rm -f mail-sender
             sudo docker rmi -f rnbsrva/mail-sender
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build mail-sender
@@ -187,6 +190,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/chat-service
+            sudo docker rm -f chat-service
             sudo docker rmi -f rnbsrva/chat-service
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build chat-service
@@ -219,6 +223,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/discovery
+            sudo docker rm -f discovery
             sudo docker rmi -f rnbsrva/discovery
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build discovery
@@ -251,6 +256,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/notification-service
+            sudo docker rm -f notification-service
             sudo docker rmi -f rnbsrva/notification-service
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build notification-service
@@ -322,6 +328,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/qr-service
+            sudo docker rm -f qr-service
             sudo docker rmi -f rnbsrva/qr-service
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build qr-service
@@ -359,6 +366,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/storage-service
+            sudo docker rm -f storage-service
             sudo docker rmi -f rnbsrva/storage-service
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build storage-service
