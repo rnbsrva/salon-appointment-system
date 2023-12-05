@@ -283,6 +283,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/salon-service
+            sudo docker rm -f salon-service
             sudo docker rmi -f rnbsrva/salon-service
             cd sas
             sudo docker compose -f docker-compose.yml up -d --build salon-service
