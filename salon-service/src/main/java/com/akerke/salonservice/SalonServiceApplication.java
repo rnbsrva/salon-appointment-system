@@ -13,7 +13,7 @@ public class SalonServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(SalonServiceApplication.class, args);
 
-        log.info("hello world!!!!!!!!!!!!!!!!!!");
+        log.info("hello world");
     }
 
 
