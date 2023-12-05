@@ -90,6 +90,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/api-gateway
+            sudo docker rm api-gateway
             sudo docker rmi -f rnbsrva/api-gateway
             cd sas
             sudo docker compose up -d
@@ -122,6 +123,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/auth-server
+            sudo docker rm auth-server
             sudo docker rmi -f rnbsrva/auth-server
             cd sas
             sudo docker compose up -d
@@ -154,6 +156,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/mail-sender
+            sudo docker rm mail-sender
             sudo docker rmi -f rnbsrva/mail-sender
             cd sas
             sudo docker compose up -d
@@ -186,6 +189,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/chat-service
+            sudo docker rm chat-service
             sudo docker rmi -f rnbsrva/chat-service
             cd sas
             sudo docker compose up -d
@@ -218,6 +222,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/discovery
+            sudo docker rm discovery-service
             sudo docker rmi -f rnbsrva/discovery
             cd sas
             sudo docker compose up -d
@@ -250,6 +255,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/notification-service
+            sudo docker rm notification-service
             sudo docker rmi -f rnbsrva/notification-service
             cd sas
             sudo docker compose up -d
@@ -282,6 +288,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/salon-service
+            sudo docker rm salon-service
             sudo docker rmi -f rnbsrva/salon-service
             cd sas
             sudo docker compose up -d
@@ -320,6 +327,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/qr-service
+            sudo docker rm qr-service
             sudo docker rmi -f rnbsrva/qr-service
             cd sas
             sudo docker compose up -d
@@ -357,6 +365,7 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/storage-service
+            sudo docker rm storage-service
             sudo docker rmi -f rnbsrva/storage-service
             cd sas
             sudo docker compose up -d

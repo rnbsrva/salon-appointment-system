@@ -2,6 +2,7 @@ package com.akerke.notificationservice.controller;
 
 import com.akerke.notificationservice.domain.entity.Notification;
 import com.akerke.notificationservice.domain.service.NotificationService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -13,6 +14,7 @@ import java.util.List;
 
 
 @Controller
+@Api("Notification API")
 @RequiredArgsConstructor
 public class NotificationController {
 
