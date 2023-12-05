@@ -90,10 +90,9 @@ jobs:
           port: 22
           script: |
             sudo docker stop rnbsrva/api-gateway
-            sudo docker rm api-gateway
             sudo docker rmi -f rnbsrva/api-gateway
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build api-gateway
   auth-server:
     needs: changes
     if: ${{ needs.changes.outputs.auth-server == 'true' }}
@@ -126,7 +125,8 @@ jobs:
             sudo docker rm auth-server
             sudo docker rmi -f rnbsrva/auth-server
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build auth-server
+
   mail-sender:
     needs: changes
     if: ${{ needs.changes.outputs.mail-sender == 'true' }}
@@ -159,7 +159,7 @@ jobs:
             sudo docker rm mail-sender
             sudo docker rmi -f rnbsrva/mail-sender
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build mail-sender
   chat-service:
     needs: changes
     if: ${{ needs.changes.outputs.chat-service == 'true' }}
@@ -192,7 +192,7 @@ jobs:
             sudo docker rm chat-service
             sudo docker rmi -f rnbsrva/chat-service
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build chat-service
   discovery:
     needs: changes
     if: ${{ needs.changes.outputs.discovery == 'true' }}
@@ -225,7 +225,7 @@ jobs:
             sudo docker rm discovery-service
             sudo docker rmi -f rnbsrva/discovery
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build discovery
   notification-service:
     needs: changes
     if: ${{ needs.changes.outputs.notification-service == 'true' }}
@@ -258,7 +258,7 @@ jobs:
             sudo docker rm notification-service
             sudo docker rmi -f rnbsrva/notification-service
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build notification-service
   salon-service:
     needs: changes
     if: ${{ needs.changes.outputs.salon-service == 'true' }}
@@ -291,7 +291,7 @@ jobs:
             sudo docker rm salon-service
             sudo docker rmi -f rnbsrva/salon-service
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build salon-service
   qr-service:
     needs: changes
     if: ${{ needs.changes.outputs.qr-service == 'true' }}
@@ -330,7 +330,7 @@ jobs:
             sudo docker rm qr-service
             sudo docker rmi -f rnbsrva/qr-service
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build qr-service
   storage-service:
     needs: changes
     if: ${{ needs.changes.outputs.storage-service == 'true' }}
@@ -368,4 +368,4 @@ jobs:
             sudo docker rm storage-service
             sudo docker rmi -f rnbsrva/storage-service
             cd sas
-            sudo docker compose up -d
+            sudo docker-compose -f docker-compose.yml up -d --build storage-service
