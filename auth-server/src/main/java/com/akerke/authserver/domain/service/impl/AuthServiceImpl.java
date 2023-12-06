@@ -54,7 +54,8 @@ public class AuthServiceImpl implements AuthService {
             AuthDTO auth
     ) {
         var optionalUser = userRepository.findUserByEmail(auth.email());
-        if (optionalUser.isEmpty() || passwordEncoder.matches(auth.password(), optionalUser.get().getPassword())) {
+
+        if (optionalUser.isEmpty() || passwordEncoder.matches( optionalUser.get().getPassword(),auth.password())) {
             throw new InvalidCredentialsException();
         }
 
