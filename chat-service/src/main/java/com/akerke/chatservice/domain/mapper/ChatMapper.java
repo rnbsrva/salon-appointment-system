@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public interface ChatMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
+    @Mapping(target = "createdAt", expression = "java(String.valueOf(LocalDateTime.now()))")
     Chat toModel(ChatCreateRequest createRequest);
 
 }

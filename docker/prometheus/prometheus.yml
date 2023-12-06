@@ -27,3 +27,15 @@ scrape_configs:
       - targets: ['chat-service:8001']
         labels:
           application: 'chat service Application'
+  - job_name: 'storage-service'
+    metrics_path: 'api/v1/storage/actuator/prometheus'
+    static_configs:
+      - targets: ['storage-service:8005']
+        labels:
+          application: 'storage service Application'
+  - job_name: 'salon-service'
+    metrics_path: 'api/v1/storage/actuator/prometheus'
+    static_configs:
+      - targets: [ 'salon-service:8005' ]
+        labels:
+          application: 'salon service Application'
