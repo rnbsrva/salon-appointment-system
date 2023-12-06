@@ -21,10 +21,10 @@ public class ManagerServiceImpl implements ManagerService {
 
         var user = userService.getById(userId);
 
-        kafkaProducer.produce(
-                AppConstants.MANAGER_TOPIC_NAME,
-                new KafkaManageRoleRequest(salonId, user.getEmail(), true)
-        );
+//        kafkaProducer.produce(
+//                AppConstants.MANAGER_TOPIC_NAME,
+//                new KafkaManageRoleRequest(salonId, user.getEmail(), true)
+//        );
     }
 
     @Override
@@ -32,9 +32,9 @@ public class ManagerServiceImpl implements ManagerService {
 
         var user = userService.getById(userId);
 
-        kafkaProducer.produce(
-                AppConstants.MANAGER_TOPIC_NAME,
-                new KafkaManageRoleRequest(salonId, user.getEmail(), false)
-        );
+//        kafkaProducer.produce(
+//                AppConstants.MANAGER_TOPIC_NAME,
+//                new KafkaManageRoleRequest(salonId, user.getEmail(), false)
+//        );
     }
 }
