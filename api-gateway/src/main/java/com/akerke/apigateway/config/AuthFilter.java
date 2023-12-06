@@ -35,7 +35,7 @@ public class AuthFilter implements GatewayFilter {
 
     private final Predicate<ServerHttpRequest> authHeaderMissing = r -> !r.getHeaders().containsKey("Authorization");
     private final Predicate<ServerHttpRequest> isNotSecured = req ->
-            Stream.of("swagger", "qr", "eureka","auth", "api-docs")
+            Stream.of("swagger", "qr", "eureka","auth", "api-docs","akerke")
                     .anyMatch(url -> req.getPath().toString().contains(url));
 
     @Override
