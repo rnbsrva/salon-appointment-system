@@ -18,7 +18,7 @@ public class MinIOController {
 
     private final MinIOService minIOService;
 
-    @PostMapping("master/upload-image")
+    @PostMapping("upload")
     @ApiOperation("Upload an image to MinIO storage")
     void uploadImageToMinIO(
             @RequestParam("file") MultipartFile file,
@@ -29,7 +29,7 @@ public class MinIOController {
         minIOService.putObject(target, source, file, isMainImage);
     }
 
-    @GetMapping("/downloadByGroup")
+    @GetMapping("/download-by-group")
     @ApiOperation("Download files by group")
     void downloadFiles(
             @RequestParam Long target,
@@ -39,7 +39,7 @@ public class MinIOController {
         minIOService.getObjects(target, source, httpServletResponse);
     }
 
-    @DeleteMapping("master/deleteByGroup")
+    @DeleteMapping("delete-by-group")
     @ApiOperation("Delete files by group")
     void deleteFolder(
             @RequestParam Long target,
@@ -48,7 +48,7 @@ public class MinIOController {
         minIOService.removeObjects(target, source);
     }
 
-    @GetMapping("master/downloadFile/{imageId}")
+    @GetMapping("download-file/{imageId}")
     @ApiOperation("Download a specific file by ID")
     void downloadFile(
             @PathVariable String imageId,
@@ -58,7 +58,7 @@ public class MinIOController {
     }
 
     @ApiOperation("Delete an object by ID")
-    @DeleteMapping("master/{imageId}")
+    @DeleteMapping("{imageId}")
     @SneakyThrows
     void deleteObject(
             @PathVariable String imageId
@@ -66,7 +66,7 @@ public class MinIOController {
         minIOService.removeObject(imageId);
     }
 
-    @GetMapping("/getFile/{imageId}")
+    @GetMapping("/get-file/{imageId}")
     @ApiOperation("Get a specific image by ID")
     void getImage(
             HttpServletResponse response,

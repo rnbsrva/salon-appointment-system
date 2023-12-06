@@ -3,6 +3,8 @@ package com.akerke.authserver.controller;
 import com.akerke.authserver.common.jwt.JwtRouteValidator;
 import com.akerke.authserver.domain.dto.*;
 import com.akerke.authserver.domain.service.AuthService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

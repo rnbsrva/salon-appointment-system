@@ -74,9 +74,10 @@ public class MinIOServiceImpl implements MinIOService {
     @Override
     @SneakyThrows
     public void getObjectToDownload(String imageId, HttpServletResponse response) {
-        var image = this.getById(imageId);
 
         this.getFromFuture(submit(() -> {
+            var image = this.getById(imageId);
+
             GetObjectResponse minioInputStream;
             try {
                 minioInputStream = minioClient.getObject(
@@ -192,6 +193,7 @@ public class MinIOServiceImpl implements MinIOService {
     @Override
     @SneakyThrows
     public void removeObjects(Long target, AttachmentSource source) {
+
         this.getFromFuture(submit(() -> {
             try {
                 var objects = minioClient.listObjects(
