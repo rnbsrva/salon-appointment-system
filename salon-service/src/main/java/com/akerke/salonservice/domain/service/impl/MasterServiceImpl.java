@@ -44,10 +44,10 @@ public class MasterServiceImpl implements MasterService {
         master.setSalon(salonService.getById(masterDTO.salonId()));
 
         var savedMaster = masterRepository.save(master);
-        kafkaProducer.produce(
-                AppConstants.MASTER_TOPIC_NAME,
-                new KafkaManageRoleRequest(savedMaster.getSalonId(), savedMaster.getUser().getEmail(), true)
-        );
+//        kafkaProducer.produce(
+//                AppConstants.MASTER_TOPIC_NAME,
+//                new KafkaManageRoleRequest(savedMaster.getSalonId(), savedMaster.getUser().getEmail(), true)
+//        );
 
         return savedMaster;
     }
