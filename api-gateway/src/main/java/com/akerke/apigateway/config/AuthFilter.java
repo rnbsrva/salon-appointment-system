@@ -68,7 +68,6 @@ public class AuthFilter implements GatewayFilter {
                             chain.filter(exchange) :
                             onAuthError(exchange, AuthErrorType.INVALID_BEARER_TOKEN)
             );
-//            return chain.filter(exchange);
         }else {
             logger.info("open endpoint authorization will be skip" + request.getURI());
             return chain.filter(exchange);
