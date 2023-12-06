@@ -10,7 +10,7 @@ public interface ChatWSServiceFeignClient {
 
     @PostMapping(value = "notify")
     void notify(
-            @RequestBody NotificationDTO notificationDTO
+                @RequestBody NotificationDTO notificationDTO
     );
 
 }
