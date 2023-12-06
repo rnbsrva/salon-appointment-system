@@ -192,11 +192,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void sendVerificationDetails(String email, int otp) {
-        kafkaTemplate.send("email_verification",
+        kafkaTemplate.send("email_verification-0",
                 Map.of(
                         "recipient", email,
                         "msgBody", otp
                 ));
+        log.info("sent to kafka ");
+
     }
 
     private final Supplier<Integer> randomOtp = () -> random.nextInt(100_000, 999_999);

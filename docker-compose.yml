@@ -26,7 +26,7 @@ services:
     ports:
       - "8761:8761"
     environment:
-      'eureka.client.serviceUrl.defaultZone': 'http://discovery:8761/eureka'
+      'eureka.client.serviceUrl.defaultZone': 'http://51.250.91.198:8761/eureka'
 
   qr-service:
     image: rnbsrva/qr-service
@@ -208,7 +208,8 @@ services:
       'jwt.token.secret': 'dmfeivn3ionfio2n3iopm2il3ngfv32ion3vo2niov3n2ionmvio32nv233von2v3s'
       'eureka.client.service-url.defaultZone': 'http://discovery:8761/eureka'
       KAFKA_BOOTSTRAP_SERVERS: "http://kafka:29092"
-      'spring.profiles.active': "logging,dev"
+      'spring.profiles.active': "logging, dev"
+      'server.port': '4000'
       'spring.data.mongodb.uri': 'mongodb://mongo/test'
 
   api-gateway:
@@ -223,14 +224,14 @@ services:
     environment:
       'eureka.client.enabled': "true"
       'eureka.client.service-url.defaultZone': 'http://discovery:8761/eureka'
-      'spring.cloud.gateway.routes.auth-server.url': "http://auth-server:4000/api/v1/"
+      'spring.cloud.gateway.routes.auth-server.url': "htpp://auth-server:4000/api/v1/"
       'spring.cloud.gateway.routes.chat-service.url': "http://chat-service:8001/api/v1/chat"
       'spring.cloud.gateway.routes.notification-service.url': "http://notification-service:8002/api/v1/notification/graphiql"
-      'spring.cloud.gateway.routes.storage-service.url': "http://storage-service:8003/api/v1/storage/"
+      'spring.cloud.gateway.routes.storage-service.url': "http://storage-service:8005/api/v1/storage/"
       'spring.cloud.gateway.routes.qr-service.url': "http://qr-service:8004/api/v1/qr/"
       'spring.cloud.gateway.routes.salon-service.url': "http://salon-service:8008/api/v1/salon-service/"
       'spring.cloud.gateway.routes.discovery.url': "http://discovery:8761/eureka"
-      'spring.auth-service.url': 'http://auth-server:4000/api/v1/auth/'
+      'spring.auth-service.url': 'http://auth-server:4000/api/v1/'
 networks:
   broker-kafka:
     driver: bridge
